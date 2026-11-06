@@ -21,7 +21,7 @@ measured against the exact response g(u(T)) of the full quadratic equation.
                 calculated error budget
 
 The reference engine is the reference simulator's dynamic programme over time cells
-(../implementation_guide/reference/reference_block.py), which the gate-level runs reproduce to
+(not part of this repository; see tests/reference_bridge.py), which the gate-level runs reproduce to
 within 1e-14; the responses at large n come from ftfr_q04.accuracy (O(n) per step).  Against n the
 circuit is not simulated: the error of its estimate is formed from the exact responses, the realised
 selector weights and, for M = 1, the time grid in closed form (for M = 4 the grid's error, below
@@ -70,7 +70,8 @@ def log(*a):
 def reference():
     from reference_bridge import R, family_for
     if R is None:
-        raise RuntimeError('the reference simulator (../implementation_guide/reference) is needed')
+        raise RuntimeError('the reference simulator is needed (see tests/reference_bridge.py); the results '
+                           'it produced are in data/error_checks.json')
     return R, family_for
 
 

@@ -1,5 +1,5 @@
 """Figures comparing this package (the Qualtran 0.4 port) with the reference implementation
-(../circuit, written for Qualtran 0.7).
+(written for Qualtran 0.7; not included, its counts are recorded in data/).
 
     python tools/plot_versions.py        # writes figures/*.png and figures/*.csv
 

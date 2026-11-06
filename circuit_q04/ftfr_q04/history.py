@@ -1,6 +1,6 @@
 """The history preparation P: selector, step flags, time registers, sort, parents (Qualtran 0.4).
 
-The same bloqs, in the same order, as the reference implementation (../circuit/ftfr/history.py).  The
+The same bloqs, in the same order, as the reference implementation (Qualtran 0.7, not included).  The
 selector is our own `AliasSampler`, with the structure of Qualtran's StatePreparationAliasSampling
 but hashable and with its controlled swap written as one AND per qubit pair; Qualtran 0.4's QROM,
 LessThanEqual, LessThanConstant and PrepareUniformSuperposition are used as they are.

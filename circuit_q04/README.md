@@ -4,16 +4,18 @@ This is the estimator circuit written from scratch for Qualtran 0.4.0 and pyLIQT
 here is a Qualtran 0.4 bloq, and a compiler that walks them (`decompose_bloq()` or the call graph)
 reaches only the leaf gates listed below.
 
-The repository's earlier implementation in `../circuit` serves only as the **reference
-implementation**: it was written for Qualtran 0.7, nothing in `ftfr_q04` or `tests` imports it, and
-its gate counts and peak qubit counts were recorded once into `data/reference_counts.json` and
-`data/reference_cells.json` by `tools/reference_counts.py`, the one script here that runs in its
-environment. The tests check that this package reproduces those counts exactly, and the cost
-model's numbers behind Tables IV and V of the paper (`data/cells.json`). Where a docstring names a
-Qualtran 0.7 bloq, it says which gate sequence of the reference implementation is reproduced; the
-code itself uses Qualtran 0.4 only. (The *reference simulator* is a different thing: the paper's
-state-vector simulation of one block, `../implementation_guide/reference/reference_block.py`,
-which the block tests compare against.)
+The circuit was first written for Qualtran 0.7. That earlier version is the **reference
+implementation**: it is not part of this repository, nothing in `ftfr_q04` or `tests` imports it,
+and its gate counts and peak qubit counts were recorded once into `data/reference_counts.json` and
+`data/reference_cells.json` by `tools/reference_counts.py`, the one script here that needs it. The
+tests check that this package reproduces those counts exactly, and the cost model's numbers for
+the nine costed configurations of the paper's resource estimate (`data/cells.json`). Where a
+docstring names a Qualtran 0.7 bloq, it says which gate sequence of the reference implementation
+is reproduced; the code itself uses Qualtran 0.4 only. (The *reference simulator* is a different
+thing: a numpy/scipy state-vector simulation of one block that sums the histories directly, which
+the block tests compare against. It is not part of this repository either; `tests/reference_bridge.py`
+loads it if it is placed at `../implementation_guide/reference/reference_block.py`, and the tests
+that need it are skipped otherwise.)
 
 The port is done in four checkpoints:
 
@@ -27,23 +29,25 @@ The port is done in four checkpoints:
    contractions, the middle block C-X.
 4. **The block, the readout and the run** (done): the block W, the Hadamard test, the reflection,
    the Grover iterate, the run plan; whole blocks simulated gate by gate against the reference
-   simulator; the nine costed cells streamed at n = 2^20 and counted against the cost model and
-   Tables IV and V.
+   simulator; the nine costed cells streamed at n = 2^20 and counted against the cost model.
 
 ## Environment
 
 ```
 python3.11 -m venv venv && . venv/bin/activate
-pip install -r requirements.txt        # qualtran 0.4.0, pyLIQTR 1.4.2 (pins qualtran 0.4.0),
-                                       # cirq-core 1.4.0, numpy 1.26
-python -m pytest tests -q              # 685 tests, about 4 min (15 skipped, see the next line)
+pip install -r requirements.txt        # qualtran 0.4.0 from PyPI; pyLIQTR 1.4.2 from its GitHub
+                                       # tag (it is not on PyPI); cirq-core 1.4.0, numpy 1.26
+python -m pytest tests -q              # 685 tests, about 3 min: 616 pass, 69 are skipped without
+                                       # the reference simulator (15 with it)
 FTFR_SLOW=1 python -m pytest tests -q  # also the cells with tables streamed again and all
                                        # sixteen Clifford+T blocks (about 15 min)
 python tools/probe.py                  # what a compiler sees, for each bloq in ftfr_q04/catalog.py
 python tools/probe.py Square CAdd      # only those whose name contains one of the words
 python tools/probe.py --json out.json  # also write the report as JSON
+python tools/headline.py               # the n = 2^40, eps = 1e-8 point of the paper (seconds)
 python tools/plot_versions.py          # figures comparing this package with the reference
-python tools/error_checks.py           # the errors at small n and against n (about 40 min)
+python tools/error_checks.py           # the errors at small n and against n (about 40 min;
+                                       # needs the reference simulator)
 python tools/plot_errors.py            # figures of those errors
 ```
 
@@ -233,7 +237,7 @@ In `ftfr_q04/block.py`, in the same order as the reference implementation:
 
 | bloq | what it is |
 |---|---|
-| `Cell` | one costed configuration: family, row data, b, M, b_t, w_phi, selector precision, row-data widths, T per rotation, `nq`. `load_cells()` reads the nine costed cells (the eight of Tables IV and V, and PS-F) from `data/cells.json` |
+| `Cell` | one costed configuration: family, row data, b, M, b_t, w_phi, selector precision, row-data widths, T per rotation, `nq`. `load_cells()` reads the nine costed cells of the resource estimate from `data/cells.json` |
 | `Block(cell)` | W = P-dagger (C-X) P, on the Hadamard-test qubit `anc`, the history registers, the work registers and the phase-gradient register; the comparison record of the sort lives only inside the block |
 | `HadamardTest(cell, imag=False)` | A: H on `anc` (then S-dagger for the imaginary part), W, H on `anc` |
 | `ReflectZero(cell)` | S_0 = I - 2\|0><0\| on `anc` and every history and work register (not the phase gradient): one `ZeroReflection` |
@@ -256,8 +260,8 @@ for cell in load_cells():
 starts in |0>, `anc` is set to 1 and the phase gradient prepared, then W runs gate by gate, then the
 phase gradient and `anc` are undone and the amplitude <0|W|0> is read off. `tests/test_block.py`
 compares it with the paper's reference simulator
-(`../implementation_guide/reference/reference_block.py`, numpy and scipy), which sums the
-histories directly, using the selector weights the alias sampler actually realises:
+(numpy and scipy; not included here, see the top of this page), which sums the histories
+directly, using the selector weights the alias sampler actually realises:
 
 - 15 blocks (dense, sparse, PD and PS; no row data, closed form and tables; b = 2 and 3; M = 1 to
   3) agree to within 1e-12 (in practice about 1e-15);
@@ -272,8 +276,8 @@ histories directly, using the selector weights the alias sampler actually realis
 `tools/count_cells.py` streams P, P-dagger, C-X, W, the reflection, the phase-gradient state and
 Q for each of the nine cells and writes `data/stream_counts.json` (about 14 minutes, most of it the
 three cells with tables). Every part of every cell has exactly the reference implementation's gate
-counts and peak qubit count, and the totals are the cost model's (`data/cells.json`), which for the
-eight cells in the paper are the numbers of Tables IV and V:
+counts and peak qubit count, and the totals are the cost model's (`data/cells.json`). The paper
+quotes the dense cell at eps = 1e-6 (1.3 x 10^12 T); the nine cells are:
 
 | cell | M | b_t | T per block | T per iterate | qubits | nq | T per run | gates per iterate |
 |---|---|---|---|---|---|---|---|---|
@@ -290,9 +294,10 @@ eight cells in the paper are the numbers of Tables IV and V:
 T counts here include the rotations at the cell's T per rotation; "qubits" is the peak of the
 iterate, in the greedy order. A run is `nq` iterates plus the phase-gradient state. An iterate is
 two blocks and two reflections (the Hadamard test adds only H and S-dagger), and in every block
-each `And` is uncomputed by measurement. One block's counts by gate type are the columns of
-Table V: ANDs, T, rotations, Cliffords (the conditioned CZs included), measurements (the `And`
-uncomputes and the `MeasureX` qubits), T per block. `tests/test_block.py` checks all of this
+each `And` is uncomputed by measurement. One block's counts by gate type (ANDs, T, rotations,
+Cliffords with the conditioned CZs included, measurements, which are the `And` uncomputes and the
+`MeasureX` qubits, and T per block) are the rows of `TABLE_V` in `tests/test_block.py`, which
+were the gate table of the resource estimate. `tests/test_block.py` checks all of this
 against the recorded file; it also streams the six cells without tables again (seconds each),
 and with `FTFR_SLOW=1` the three with tables.
 
@@ -303,6 +308,22 @@ none different), one iterate by gate type at each cell (`fig2_iterate_gate_mix.p
 of each part at each cell (`fig3_t_by_part.png`), and the peak qubits of each part in the greedy
 order and in Qualtran 0.4's own order (`fig4_qubit_peaks.png`). The numbers plotted are in
 `figures/*.csv`.
+
+### The point at n = 2^40
+
+The paper also quotes one point beyond the nine cells: a run on the dense family with n = 2^40
+coordinates to absolute error 1e-8 uses 3.6 x 10^14 T gates and 1,169 logical qubits.
+`tools/headline.py` streams the Grover iterate at that point and forms the run total as
+`data/cells.json` does (the phase-gradient state once, plus `nq` iterates), with the cost model's
+parameter choices read off the nine cells: M = 6, the smallest order whose certified truncation
+error (6.6e-10) is below eps (M = 5 certifies 1.19e-8); b_t = 28 time bits (time-grid bound
+4.0e-10); w_phi = b + b_t + 1 = 69; selector precision 2^-38; 130 T per rotation (the cells' rule
+ts = 3 log2(1/eps_rot) + 10); the readout takes the rest of eps, and nq = c Xi_M / eps_read with
+c = 26.65, the value of nq eps_read / Xi_M at every one of the nine cells. The iterate has 300,912 T
+gates (740 of them rotations) and a peak of 1,169 qubits; nq = 1.21 x 10^9, and the run
+3.64 x 10^14 T. The result is `data/headline.json`. The script first streams the dense eps = 1e-6
+cell as a check of the path (88,560 T and 558 qubits, as recorded), and takes the parameters as
+options for other points.
 
 ### pyLIQTR and the one-bit comparison
 
@@ -371,7 +392,7 @@ for example, 1.22e-3 truncation, 7.1e-4 time grid, 9.7e-5 selector and 1.3e-4 ro
 
 ## Counting conventions
 
-`paper_counts` in `ftfr_q04/stream.py` counts a gate stream as the paper's Table V does:
+`paper_counts` in `ftfr_q04/stream.py` counts a gate stream in the conventions of the resource estimate:
 
 - an `And` or `And†` with a control value 0 counts two X gates for each such control;
 - a `ZPowGate` or `Rz` within 1e-12 of a Clifford+T gate counts as that gate (T, S, Z and their
@@ -460,7 +481,7 @@ instead of 7,651 (`tools/count_cells.py --q04-order` records the peaks of P, C-X
   against the reference; at the nine n = 2^20 cells the counts and peaks of W, the reflection, the
   phase-gradient state and Q against the reference implementation, and their T counts, the run
   total and the qubit count against the cost model (`data/stream_counts.json` for the cells with
-  tables, unless `FTFR_SLOW=1`); every column of Table V against the counts of one block; the
+  tables, unless `FTFR_SLOW=1`); every column of the gate table against the counts of one block; the
   peaks in Qualtran 0.4's order; the run plan.
 - `tests/test_accuracy.py`: the O(n) instances equal the G1 the circuit block-encodes; their
   responses equal the reference simulator's; the closed form of the first order equals the
@@ -504,8 +525,10 @@ that is still in use ("Duplicate qids"). This already happens for Qualtran 0.4's
 | `tools/plot_versions.py` | figures 1 to 4 in `figures/`: this package against the reference implementation, gate counts and qubit peaks, with the numbers as CSV |
 | `tools/error_checks.py` | the errors of the estimate at small n (gate level and reference engine) and with the cells' parameters at n = 4 to 2^20; writes `data/error_checks.json` |
 | `tools/plot_errors.py` | figures 5 to 7 in `figures/` from `data/error_checks.json`, with the numbers as CSV |
-| `tools/reference_counts.py` | writes `data/reference_counts.json` and `data/reference_cells.json` from the reference implementation (the only file here that needs Qualtran 0.7 and `../circuit`; not needed to use or test this package) |
-| `data/cells.json` | the nine costed cells (the eight of Tables IV and V, and PS-F): parameters and the cost model's numbers |
+| `tools/headline.py` | the paper's point beyond the nine cells, the dense family at n = 2^40 and eps = 1e-8: streams the Grover iterate there and forms the run total; writes `data/headline.json` |
+| `tools/reference_counts.py` | writes `data/reference_counts.json` and `data/reference_cells.json` from the reference implementation (the only file here that needs Qualtran 0.7 and the reference implementation, which is not included; not needed to use or test this package) |
+| `data/cells.json` | the nine costed cells of the resource estimate: parameters and the cost model's numbers |
+| `data/headline.json` | the n = 2^40, eps = 1e-8 point, as `tools/headline.py` writes it |
 | `data/stream_counts.json` | the counts, peaks and T counts streamed by `tools/count_cells.py` |
 | `data/error_budget.json` | the nine cells' error budget (truncation, time grid, selector, rotations, readout) from the cost model's best reading |
 | `data/error_checks.json` | the errors computed by `tools/error_checks.py` |

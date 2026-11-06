@@ -33,7 +33,7 @@ default) the walker uses it instead of building the tree.
     Z q / CZ a b  with a Condition   applied only if the condition holds (measured bloqs only)
 
 `SparseSim` simulates such a stream exactly; `count` and `t_count` count it.  `paper_counts`
-converts the counts to the conventions of the paper's Table V (an AND with a control value 0
+converts the counts to the conventions of the paper's gate table (an AND with a control value 0
 carries two X gates; a rotation within 1e-12 of a Clifford+T gate is that gate).
 """
 from __future__ import annotations
@@ -421,7 +421,7 @@ def count(ops: Iterable[Op]) -> Counter:
 
 
 def paper_counts(ops: Iterable[Op]) -> Counter:
-    """Counts in the conventions of the paper's gate stream (Table V): an AND or AND-dagger with a
+    """Counts in the conventions of the paper's gate table: an AND or AND-dagger with a
     control value 0 carries two X gates per such control; ZPOW, RZ and CZPOW within 1e-12 of a
     Clifford+T gate count as that gate (T, S, Z ...); other ZPOW and RZ count as RZ."""
     c = Counter()

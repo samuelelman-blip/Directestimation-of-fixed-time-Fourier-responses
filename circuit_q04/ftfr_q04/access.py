@@ -1,5 +1,5 @@
 """Row access for the profiled families: the row norm w_j as an amplitude, the row phase e^{i psi_j}
-(Qualtran 0.4; the same bloqs as ../circuit/ftfr/access.py).
+(Qualtran 0.4; the same bloqs as the reference implementation, which is not included).
 
 Closed form (F): w_j = 1 - j/(2n) and psi_j = (pi/4)(2j/n - 1)^2, exact with b_v = b + 1 value bits
 and a (2b+1)-qubit phase.  Tables (T): W_j = round(2^b_v w_j) and Psi_j = round(2^b_psi psi_j / 2 pi)

@@ -1,5 +1,5 @@
 """Whole blocks streamed gate by gate against the reference simulator; the full-size counts of the
-block, the reflection, the Grover iterate and the run against the cost model behind Tables IV and V
+block, the reflection, the Grover iterate and the run against the cost model of the resource estimate
 and against the reference implementation; the run plan.
 
 The cells with closed-form or equal rows are streamed here (seconds each).  The cells with tables
@@ -160,8 +160,8 @@ def test_recorded_peaks_in_qualtran_04_order():
             assert part['peak_q04_order'] == part['peak'] + extra, (label, key)
 
 
-# Table V of the paper (main.tex, tab:gates), one row per cell; the paper gives the Clifford counts
-# of the cells with tables to two figures.  "qubits" is the peak of the Grover iterate.
+# The gate table of the resource estimate (one row per cell; the Clifford counts of the cells with
+# tables to two figures).  "qubits" is the peak of the Grover iterate.
 TABLE_V_COLUMNS = ('M', 'b_t', 'ANDs', 'T', 'rotations', 'T per rotation', 'Cliffords',
                    'measurements', 'T per block', 'qubits')
 TABLE_V = {
@@ -178,7 +178,7 @@ CLIFFORDS = ('X', 'Y', 'Z', 'H', 'S', 'SDG', 'CNOT', 'CZ', 'CZ_IF', 'Z_IF')
 
 
 def test_block_counts_equal_table_v():
-    """Every column of Table V equals the streamed counts of one block W (conditioned CZ gates
+    """Every column of the gate table equals the streamed counts of one block W (conditioned CZ gates
     count as Cliffords; measurements are the AND uncomputes and the X-basis measurements of the
     lookup uncomputes)."""
     rec = json.load(open(os.path.join(DATA, 'stream_counts.json')))

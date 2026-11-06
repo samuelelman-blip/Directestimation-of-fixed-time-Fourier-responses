@@ -1,5 +1,5 @@
-"""Stream the nine costed cells at n = 2^20 (the eight of Tables IV and V and PS-F) and count their
-gates exactly.
+"""Stream the nine costed cells of the resource estimate at n = 2^20 and count their gates
+exactly.
 
 For each cell: P, P^dagger, C-X, one block W, the reflection, the phase-gradient state and one
 Grover iterate, streamed gate by gate; T counts with the cell's T per rotation; the peak number of

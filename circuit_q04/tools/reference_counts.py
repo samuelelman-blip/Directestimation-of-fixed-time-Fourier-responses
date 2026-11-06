@@ -1,4 +1,5 @@
-"""Gate counts of the reference implementation (../circuit), which this package must reproduce.
+"""Gate counts of the reference implementation (Qualtran 0.7; not part of this repository), which
+this package must reproduce.
 
 The reference implementation was written for Qualtran 0.7, so this script, alone in this package,
 runs in that environment (not the Qualtran 0.4 venv):  python3 tools/reference_counts.py
@@ -90,7 +91,7 @@ def counts07(bloq):
 
 
 def cells():
-    """data/reference_cells.json: for each n = 2^20 cell (Tables IV and V, and PS-F), its
+    """data/reference_cells.json: for each of the nine n = 2^20 cells, its
     parameters and the reference stream's counts and peaks of P, P^dagger, C-X, W, the reflection,
     the phase-gradient state and the Grover iterate (from ../circuit/data/cells.json and
     stream_counts.json, written by ../circuit/tools/count_cells.py), with ALLOC, FREE and global

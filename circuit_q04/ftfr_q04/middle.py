@@ -1,5 +1,5 @@
 """The middle block X: folded controls, U_0, root and vertex phases, the contractions (Qualtran 0.4;
-the same bloqs as ../circuit/ftfr/middle.py)."""
+the same bloqs as the reference implementation, which is not included)."""
 from __future__ import annotations
 
 from functools import cached_property

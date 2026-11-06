@@ -1,3 +1,5 @@
 qualtran==0.4.0
-pyLIQTR==1.4.2      # pins qualtran==0.4.0; brings cirq-core 1.4.0 and numpy 1.26
+# pyLIQTR 1.4.2 is not on PyPI (which stops at 1.0.1); it is installed from its GitHub tag and pins
+# qualtran==0.4.0, cirq-core 1.4.0 and numpy 1.26.
+pyLIQTR @ git+https://github.com/isi-usc-edu/pyLIQTR.git@v1.4.2
 pytest>=7

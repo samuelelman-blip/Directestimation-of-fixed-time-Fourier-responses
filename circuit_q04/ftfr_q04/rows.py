@@ -1,5 +1,5 @@
 """The row gadget R of Lemma 2 for the dense skeleton, its controlled inverse, and the sparse
-skeleton's shift (Qualtran 0.4; the same bloqs as ../circuit/ftfr/rows.py)."""
+skeleton's shift (Qualtran 0.4; the same bloqs as the reference implementation, which is not included)."""
 from __future__ import annotations
 
 import math

@@ -1,6 +1,8 @@
-"""Reference values for the streamed blocks, from the paper's reference simulator
-(../../implementation_guide/reference/reference_block.py, numpy and scipy only).  When this package
-is used outside the repository the simulator is missing and the tests that need it are skipped."""
+"""Reference values for the streamed blocks, from the paper's reference simulator (a numpy/scipy
+state-vector simulation of one block that sums the histories directly).  The simulator is not part
+of this repository: it is loaded if a copy is placed at
+../../implementation_guide/reference/reference_block.py, and otherwise the tests that need it are
+skipped (the amplitudes it produced are recorded in data/error_checks.json)."""
 import math
 import os
 import sys

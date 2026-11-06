@@ -1,0 +1,51 @@
+{
+ "family": "dense",
+ "access": "flat",
+ "b": 40,
+ "n": 1099511627776,
+ "eps": 1e-08,
+ "M": 6,
+ "b_t": 28,
+ "w_phi": 69,
+ "sel_precision": 3.637978807091713e-12,
+ "selector_bits": 36,
+ "ts_per_rot": 130,
+ "eps_rot": 9.094947017729282e-13,
+ "Xi_M": 0.39944131771927005,
+ "budget": {
+  "truncation": 6.622785027738836e-10,
+  "time": 4.010695611839226e-10,
+  "selector": 1.0172113339776444e-11,
+  "rotations": 1.34417211989903e-10,
+  "readout": 8.792062610712515e-09
+ },
+ "amplitude_constant": {
+  "mean": 26.649899826360535,
+  "min": 26.648463527159205,
+  "max": 26.651134071142884
+ },
+ "iterate": {
+  "T": 300912,
+  "qubits": 1169,
+  "rotations": 740,
+  "counts": {
+   "AND": 50138,
+   "ANDDG": 50138,
+   "CNOT": 164780,
+   "CZ": 486,
+   "H": 4516,
+   "RY": 672,
+   "RZ": 68,
+   "S": 2080,
+   "SDG": 2080,
+   "T": 2080,
+   "TDG": 2080,
+   "X": 13576,
+   "Z": 20
+  }
+ },
+ "phase_gradient_T": 4811,
+ "nq": 1210759247,
+ "T_total": 364331986538075,
+ "note": "T counts include the rotations at ts_per_rot T each; qubits is the peak of the iterate in the greedy order, as data/cells.json"
+}

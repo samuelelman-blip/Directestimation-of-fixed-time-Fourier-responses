@@ -1,5 +1,5 @@
 """The block W = P^dagger (C-X) P, the Hadamard test A, the reflection S_0, the Grover iterate Q, and
-the run (Qualtran 0.4; the same bloqs as the reference implementation, ../circuit/ftfr/block.py).
+the run (Qualtran 0.4; the same bloqs as the reference implementation, which is not included).
 
 A run at one cell is the phase-gradient state prepared once, then the Grover iterate repeated `nq`
 times.  `run_plan(cell)` gives the two bloqs and that repeat count, so a compiler walks the iterate
@@ -72,7 +72,7 @@ class Cell:
 
 
 def load_cells(path: Optional[str] = None) -> List[Cell]:
-    """The eight cells of Tables IV and V and PS-F, with the best reading's parameters, from
+    """The nine costed cells of the resource estimate, with the best reading's parameters, from
     data/cells.json."""
     path = path or os.path.join(DATA, 'cells.json')
     out = []
