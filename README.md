@@ -83,4 +83,7 @@ iterates.
   against them.
 - The classical sampler of the same histories, whose running time the paper quotes for comparison.
 
-If you use this code, please cite the paper.
+## Licence
+
+Copyright (C) 2026 Samuel J. Elman. This code is free software, released under the GNU Lesser
+General Public License, version 2.1 (see `LICENSE`). If you use it, please cite the paper.

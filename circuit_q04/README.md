@@ -535,3 +535,7 @@ that is still in use ("Duplicate qids"). This already happens for Qualtran 0.4's
 | `data/reference_counts.json` | leaf counts and peaks of 43 small cases in the reference implementation |
 | `data/reference_cells.json` | the nine n = 2^20 cells: parameters, and the reference implementation's counts and peaks of P, P-dagger, C-X, W, the reflection, the phase-gradient state and the Grover iterate |
 | `data/probe.json` | the probe's report for the catalog |
+
+## Licence
+
+GNU Lesser General Public License, version 2.1: see `LICENSE` at the top of the repository.
