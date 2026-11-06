@@ -1,0 +1,2507 @@
+[
+ {
+  "name": "CHadamardExact",
+  "bloq": "CH",
+  "registers": "ctrl: QBit(), target: QBit()",
+  "tree": [
+   "CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 7,
+   "bloq": "CH"
+  },
+  "leaves": {
+   "CNOT": 1,
+   "H": 2,
+   "S": 1,
+   "SDG": 1,
+   "T": 1,
+   "TDG": 1
+  },
+  "T": 2,
+  "rotations": 0,
+  "peak_qubits": 2,
+  "peak_qubits_q04_order": 2,
+  "pyliqtr_estimate": {
+   "T": 2,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "FanHadamard(3)",
+  "bloq": "C-H^3",
+  "registers": "ctrl: QBit(), target: QUInt(3)",
+  "tree": [
+   "C-H^3: CH x3",
+   "  CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 7,
+   "bloq": "CH"
+  },
+  "leaves": {
+   "CNOT": 3,
+   "H": 6,
+   "S": 3,
+   "SDG": 3,
+   "T": 3,
+   "TDG": 3
+  },
+  "T": 6,
+  "rotations": 0,
+  "peak_qubits": 4,
+  "peak_qubits_q04_order": 4,
+  "pyliqtr_estimate": {
+   "T": 6,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "BasisPhase(4, 0.3, |0110>)",
+  "bloq": "Phase(|0110>, 0.3pi)",
+  "registers": "x: QAny(4)",
+  "tree": [
+   "Phase(|0110>, 0.3pi): And x3, And\u2020 x3, ZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 9,
+   "bloq": "Phase(|0110>, 0.3pi)"
+  },
+  "leaves": {
+   "AND": 1,
+   "AND/cv=01": 1,
+   "AND/cv=10": 1,
+   "ANDDG": 1,
+   "ANDDG/cv=01": 1,
+   "ANDDG/cv=10": 1,
+   "ZPOW": 1
+  },
+  "T": 12,
+  "rotations": 1,
+  "peak_qubits": 7,
+  "peak_qubits_q04_order": 7,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 1
+  }
+ },
+ {
+  "name": "ZeroReflection(5)",
+  "bloq": "R0(5)",
+  "registers": "x: QAny(5)",
+  "tree": [
+   "R0(5): And x3, And\u2020 x3, CZPowGate x1, XGate x2"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 11,
+   "bloq": "R0(5)"
+  },
+  "leaves": {
+   "AND/cv=00": 1,
+   "AND/cv=10": 2,
+   "ANDDG/cv=00": 1,
+   "ANDDG/cv=10": 2,
+   "CZPOW": 1,
+   "X": 2
+  },
+  "T": 12,
+  "rotations": 0,
+  "peak_qubits": 8,
+  "peak_qubits_q04_order": 8,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "RegisterCSwap(3)",
+  "bloq": "CSwap(3)",
+  "registers": "ctrl: QBit(), x: QAny(3), y: QAny(3)",
+  "tree": [
+   "CSwap(3): And x3, And\u2020 x3, CNOT x9"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 19,
+   "bloq": "CSwap(3)"
+  },
+  "leaves": {
+   "AND": 3,
+   "ANDDG": 3,
+   "CNOT": 9
+  },
+  "T": 12,
+  "rotations": 0,
+  "peak_qubits": 8,
+  "peak_qubits_q04_order": 8,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "RouteToZero(sel 2 bits, width 2, r 3)",
+  "bloq": "Route",
+  "registers": "sel: BoundedQUInt(2, 3), targets[3]: QAny(2)",
+  "tree": [
+   "Route: CSwap(2) x2",
+   "  CSwap(2): And x2, And\u2020 x2, CNOT x6"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 14,
+   "bloq": "CSwap(2)"
+  },
+  "leaves": {
+   "AND": 4,
+   "ANDDG": 4,
+   "CNOT": 12
+  },
+  "T": 16,
+  "rotations": 0,
+  "peak_qubits": 9,
+  "peak_qubits_q04_order": 9,
+  "pyliqtr_estimate": {
+   "T": 16,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "WindowAdd(6, positions 1,3,5, minus_top)",
+  "bloq": "+= (3 bits into 6)",
+  "registers": "x: QAny(3), window: QAny(6)",
+  "tree": [
+   "+= (3 bits into 6): And x3, And\u2020 x3, CNOT x9, CZPowGate x1, ZGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 21,
+   "bloq": "+= (3 bits into 6)"
+  },
+  "leaves": {
+   "AND": 3,
+   "ANDDG": 3,
+   "CNOT": 9,
+   "CZPOW": 1,
+   "Z": 1
+  },
+  "T": 12,
+  "rotations": 0,
+  "peak_qubits": 12,
+  "peak_qubits_q04_order": 12,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "PhaseGradAdd(4 into 6, controlled)",
+  "bloq": "C-PhaseGradAdd(4,6)",
+  "registers": "ctrl: QBit(), x: QUInt(4), phase_grad: QFxp(6, 6)",
+  "tree": [
+   "C-PhaseGradAdd(4,6): += (4 bits into 6) x1, And x4, And\u2020 x4",
+   "  += (4 bits into 6): And x3, And\u2020 x3, CNOT x17, CZPowGate x1, ZGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 29,
+   "bloq": "+= (4 bits into 6)"
+  },
+  "leaves": {
+   "AND": 7,
+   "ANDDG": 7,
+   "CNOT": 17,
+   "CZPOW": 1,
+   "Z": 1
+  },
+  "T": 28,
+  "rotations": 0,
+  "peak_qubits": 18,
+  "peak_qubits_q04_order": 18,
+  "pyliqtr_estimate": {
+   "T": 28,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "Adjoint(PhaseGradAdd(5, 5))",
+  "bloq": "Adjoint(subbloq=PhaseGradAdd(5,5))",
+  "registers": "x: QUInt(5), phase_grad: QFxp(5, 5)",
+  "tree": [
+   "Adjoint(subbloq=PhaseGradAdd(5,5)): Adjoint(subbloq=+= (5 bits into 5)) x1",
+   "  Adjoint(subbloq=+= (5 bits into 5)): And x3, And\u2020 x3, CNOT x17, CZPowGate x1, ZGate x2"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 30,
+   "bloq": "Adjoint(subbloq=+= (5 bits into 5))"
+  },
+  "leaves": {
+   "AND": 3,
+   "ANDDG": 3,
+   "CNOT": 17,
+   "CZPOW": 1,
+   "Z": 2
+  },
+  "T": 12,
+  "rotations": 0,
+  "peak_qubits": 13,
+  "peak_qubits_q04_order": 13,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "Square(4)",
+  "bloq": "Square(4)",
+  "registers": "a: QUInt(4), result: QUInt(8) (RIGHT)",
+  "tree": [
+   "Square(4): += (1 bits into 2) x1, += (2 bits into 3) x1, += (3 bits into 4) x1, And x6, And\u2020 x6, CNOT x1",
+   "  += (1 bits into 2): And x1, And\u2020 x1, CNOT x7",
+   "  += (2 bits into 3): And x2, And\u2020 x2, CNOT x13",
+   "  += (3 bits into 4): And x3, And\u2020 x3, CNOT x19"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 31,
+   "bloq": "Square(4)"
+  },
+  "leaves": {
+   "AND": 12,
+   "ANDDG": 12,
+   "CNOT": 40
+  },
+  "T": 48,
+  "rotations": 0,
+  "peak_qubits": 18,
+  "peak_qubits_q04_order": 18,
+  "pyliqtr_estimate": {
+   "T": 48,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "Adjoint(Square(3))",
+  "bloq": "Adjoint(subbloq=Square(3))",
+  "registers": "a: QUInt(3), result: QUInt(6) (LEFT)",
+  "tree": [
+   "Adjoint(subbloq=Square(3)): Adjoint(subbloq=+= (1 bits into 2)) x1, Adjoint(subbloq=+= (2 bits into 3)) x1, And x3, And\u2020 x3, CNOT x1",
+   "  Adjoint(subbloq=+= (1 bits into 2)): And x1, And\u2020 x1, CNOT x7",
+   "  Adjoint(subbloq=+= (2 bits into 3)): And x2, And\u2020 x2, CNOT x13"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 21,
+   "bloq": "Adjoint(subbloq=+= (2 bits into 3))"
+  },
+  "leaves": {
+   "AND": 6,
+   "ANDDG": 6,
+   "CNOT": 21
+  },
+  "T": 24,
+  "rotations": 0,
+  "peak_qubits": 13,
+  "peak_qubits_q04_order": 13,
+  "pyliqtr_estimate": {
+   "T": 24,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "CAdd(4)",
+  "bloq": "CAdd(4)",
+  "registers": "ctrl: QBit(), a: QUInt(4), b: QUInt(4)",
+  "tree": [
+   "CAdd(4): Add x1, And x4, And\u2020 x4",
+   "  Add: And x3, And\u2020 x3, CNOT x15"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 25,
+   "bloq": "Add"
+  },
+  "leaves": {
+   "AND": 7,
+   "ANDDG": 7,
+   "CNOT": 15
+  },
+  "T": 28,
+  "rotations": 0,
+  "peak_qubits": 16,
+  "peak_qubits_q04_order": 16,
+  "pyliqtr_estimate": {
+   "T": 28,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "Adjoint(CAdd(4))",
+  "bloq": "Adjoint(subbloq=CAdd(4))",
+  "registers": "ctrl: QBit(), a: QUInt(4), b: QUInt(4)",
+  "tree": [
+   "Adjoint(subbloq=CAdd(4)): Adjoint(subbloq=Add) x1, And x4, And\u2020 x4",
+   "  Adjoint(subbloq=Add): And x3, And\u2020 x3, CNOT x15"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 25,
+   "bloq": "Adjoint(subbloq=Add)"
+  },
+  "leaves": {
+   "AND": 7,
+   "ANDDG": 7,
+   "CNOT": 15
+  },
+  "T": 28,
+  "rotations": 0,
+  "peak_qubits": 16,
+  "peak_qubits_q04_order": 16,
+  "pyliqtr_estimate": {
+   "T": 28,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "HalfLessThan(4)",
+  "bloq": "HalfLessThan(4)",
+  "registers": "a: QUInt(4), b: QUInt(4), c: QUInt(5) (RIGHT), target: QBit() (RIGHT)",
+  "tree": [
+   "HalfLessThan(4): BitwiseNot x3, CNOT x1, OutOfPlaceAdder x1",
+   "  BitwiseNot: XGate x5",
+   "  OutOfPlaceAdder: And x4, CNOT x22"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 32,
+   "bloq": "OutOfPlaceAdder"
+  },
+  "leaves": {
+   "AND": 4,
+   "CNOT": 23,
+   "X": 15
+  },
+  "T": 16,
+  "rotations": 0,
+  "peak_qubits": 15,
+  "peak_qubits_q04_order": 16,
+  "pyliqtr_estimate": {
+   "T": 16,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "HalfLessThan(4) uncompute",
+  "bloq": "HalfLessThan(4)^-1",
+  "registers": "a: QUInt(4), b: QUInt(4), c: QUInt(5) (LEFT), target: QBit() (LEFT)",
+  "tree": [
+   "HalfLessThan(4)^-1: BitwiseNot x3, CNOT x1, OutOfPlaceAdder x1",
+   "  BitwiseNot: XGate x5",
+   "  OutOfPlaceAdder: And\u2020 x4, CNOT x22"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 32,
+   "bloq": "OutOfPlaceAdder"
+  },
+  "leaves": {
+   "ANDDG": 4,
+   "CNOT": 23,
+   "X": 15
+  },
+  "T": 0,
+  "rotations": 0,
+  "peak_qubits": 15,
+  "peak_qubits_q04_order": 16,
+  "pyliqtr_estimate": {
+   "T": 0,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "GreaterThan(3, 3)",
+  "bloq": "GreaterThan",
+  "registers": "a: QUInt(3), b: QUInt(3), target: QBit()",
+  "tree": [
+   "GreaterThan: LessThanEqual x1, XGate x1",
+   "  LessThanEqual: BiQubitsMixer(is_adjoint=False) x2, BiQubitsMixer(is_adjoint=True) x2, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "    BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "    BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "    SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "    SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 28,
+   "bloq": "LessThanEqual"
+  },
+  "leaves": {
+   "AND": 4,
+   "AND/cv=01": 1,
+   "ANDDG": 4,
+   "ANDDG/cv=01": 1,
+   "CNOT": 45,
+   "X": 8
+  },
+  "T": 20,
+  "rotations": 0,
+  "peak_qubits": 15,
+  "peak_qubits_q04_order": 15,
+  "pyliqtr_estimate": {
+   "T": 20,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "Comparator(3)",
+  "bloq": "Comparator",
+  "registers": "a: QUInt(3), b: QUInt(3), out: QBit() (RIGHT)",
+  "tree": [
+   "Comparator: CSwap(3) x1, GreaterThan x1",
+   "  GreaterThan: LessThanEqual x1, XGate x1",
+   "    LessThanEqual: BiQubitsMixer(is_adjoint=False) x2, BiQubitsMixer(is_adjoint=True) x2, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "      BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "      BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "      SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "      SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "  CSwap(3): And x3, And\u2020 x3, CNOT x9"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 28,
+   "bloq": "LessThanEqual"
+  },
+  "leaves": {
+   "AND": 7,
+   "AND/cv=01": 1,
+   "ANDDG": 7,
+   "ANDDG/cv=01": 1,
+   "CNOT": 54,
+   "X": 8
+  },
+  "T": 32,
+  "rotations": 0,
+  "peak_qubits": 15,
+  "peak_qubits_q04_order": 15,
+  "pyliqtr_estimate": {
+   "T": 32,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "BitonicSort(4 keys, 3 bits)",
+  "bloq": "BitonicSort",
+  "registers": "xs[4]: QUInt(3), junk[6]: QBit() (RIGHT)",
+  "tree": [
+   "BitonicSort(k=4, bitsize=3): BitonicMerge x1, BitonicSort(k=2, bitsize=3) x2",
+   "  BitonicMerge: Comparator x2, ParallelComparators x1",
+   "    Comparator: CSwap(3) x1, GreaterThan x1",
+   "      GreaterThan: LessThanEqual x1, XGate x1",
+   "        LessThanEqual: BiQubitsMixer(is_adjoint=False) x2, BiQubitsMixer(is_adjoint=True) x2, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "          BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "          BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "          SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "          SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "      CSwap(3): And x3, And\u2020 x3, CNOT x9",
+   "    ParallelComparators: Comparator x2",
+   "  BitonicSort(k=2, bitsize=3): Comparator x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 28,
+   "bloq": "LessThanEqual"
+  },
+  "leaves": {
+   "AND": 42,
+   "AND/cv=01": 6,
+   "ANDDG": 42,
+   "ANDDG/cv=01": 6,
+   "CNOT": 324,
+   "X": 48
+  },
+  "T": 192,
+  "rotations": 0,
+  "peak_qubits": 26,
+  "peak_qubits_q04_order": 26,
+  "pyliqtr_estimate": {
+   "T": 192,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "qualtran Add(QUInt(4))",
+  "bloq": "Add",
+  "registers": "a: QUInt(4), b: QUInt(4)",
+  "tree": [
+   "Add: And x3, And\u2020 x3, CNOT x15"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 25,
+   "bloq": "Add"
+  },
+  "leaves": {
+   "AND": 3,
+   "ANDDG": 3,
+   "CNOT": 15
+  },
+  "T": 12,
+  "rotations": 0,
+  "peak_qubits": 11,
+  "peak_qubits_q04_order": 11,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "qualtran AddK(5, 1)",
+  "bloq": "AddK",
+  "registers": "x: QUInt(5)",
+  "tree": [
+   "AddK: Add x1, XGate x2",
+   "  Add: And x4, And\u2020 x4, CNOT x21"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 33,
+   "bloq": "Add"
+  },
+  "leaves": {
+   "AND": 4,
+   "ANDDG": 4,
+   "CNOT": 21,
+   "X": 2
+  },
+  "T": 16,
+  "rotations": 0,
+  "peak_qubits": 14,
+  "peak_qubits_q04_order": 14,
+  "pyliqtr_estimate": {
+   "T": 16,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "qualtran AddK(4, 1, controlled)",
+  "bloq": "AddK",
+  "registers": "ctrls[1]: QBit(), x: QUInt(4)",
+  "tree": [
+   "AddK: Add x1, MultiControlX x2",
+   "  Add: And x3, And\u2020 x3, CNOT x15",
+   "  MultiControlX: CNOT x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 25,
+   "bloq": "Add"
+  },
+  "leaves": {
+   "AND": 3,
+   "ANDDG": 3,
+   "CNOT": 17
+  },
+  "T": 12,
+  "rotations": 0,
+  "peak_qubits": 12,
+  "peak_qubits_q04_order": 12,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "qualtran LessThanConstant(3, 2)",
+  "bloq": "LessThanConstant",
+  "registers": "x: QUInt(3), target: QBit()",
+  "tree": [
+   "LessThanConstant: And x3, And\u2020 x3, CNOT x7, XGate x4"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 21,
+   "bloq": "LessThanConstant"
+  },
+  "leaves": {
+   "AND": 3,
+   "ANDDG": 3,
+   "CNOT": 7,
+   "X": 4
+  },
+  "T": 12,
+  "rotations": 0,
+  "peak_qubits": 8,
+  "peak_qubits_q04_order": 8,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "qualtran LessThanEqual(3, 3)",
+  "bloq": "LessThanEqual",
+  "registers": "x: QUInt(3), y: QUInt(3), target: QBit()",
+  "tree": [
+   "LessThanEqual: BiQubitsMixer(is_adjoint=False) x2, BiQubitsMixer(is_adjoint=True) x2, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "  BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "  BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "  SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "  SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 28,
+   "bloq": "LessThanEqual"
+  },
+  "leaves": {
+   "AND": 4,
+   "AND/cv=01": 1,
+   "ANDDG": 4,
+   "ANDDG/cv=01": 1,
+   "CNOT": 45,
+   "X": 7
+  },
+  "T": 20,
+  "rotations": 0,
+  "peak_qubits": 15,
+  "peak_qubits_q04_order": 15,
+  "pyliqtr_estimate": {
+   "T": 20,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "qualtran PrepareUniformSuperposition(3)",
+  "bloq": "PrepareUniformSuperposition",
+  "registers": "target: QAny(2)",
+  "tree": [
+   "PrepareUniformSuperposition: And x1, And\u2020 x1, Hadamard x6, LessThanConstant x2, Rz x2",
+   "  LessThanConstant: And x2, And\u2020 x2, CNOT x6, XGate x6"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 20,
+   "bloq": "LessThanConstant"
+  },
+  "leaves": {
+   "AND": 4,
+   "AND/cv=00": 1,
+   "ANDDG": 4,
+   "ANDDG/cv=00": 1,
+   "CNOT": 12,
+   "H": 6,
+   "RZ": 2,
+   "X": 12
+  },
+  "T": 20,
+  "rotations": 2,
+  "peak_qubits": 6,
+  "peak_qubits_q04_order": 6,
+  "pyliqtr_estimate": {
+   "T": 20,
+   "rotations": 2
+  }
+ },
+ {
+  "name": "qualtran PhaseGradientState(5)",
+  "bloq": "PhaseGradientState",
+  "registers": "phase_grad: QFxp(5, 5) (RIGHT)",
+  "tree": [
+   "PhaseGradientState: H\u2a025 x1, PhaseGradientUnitary x1",
+   "  H\u2a025: Hadamard x5",
+   "  PhaseGradientUnitary: ZPowGate x5"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 7,
+   "bloq": "H\u2a025"
+  },
+  "leaves": {
+   "H": 5,
+   "ZPOW": 5
+  },
+  "T": 1,
+  "rotations": 2,
+  "peak_qubits": 5,
+  "peak_qubits_q04_order": 5,
+  "pyliqtr_estimate": {
+   "T": 1,
+   "rotations": 2
+  }
+ },
+ {
+  "name": "AliasSampler(selector M=3)",
+  "bloq": "AliasSampler(N=4, mu=5)",
+  "registers": "selection: BoundedQUInt(2, 4), sigma_mu: QAny(5), alt: QAny(2), keep: QAny(5), less_than_equal: QBit()",
+  "tree": [
+   "AliasSampler(N=4, mu=5): CSwap(2) x1, H\u2a025 x1, LessThanEqual x1, PrepareUniformSuperposition x1, QROM x1",
+   "  LessThanEqual: BiQubitsMixer(is_adjoint=False) x4, BiQubitsMixer(is_adjoint=True) x4, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "    BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "    BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "    SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "    SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "  H\u2a025: Hadamard x5",
+   "  PrepareUniformSuperposition: Hadamard x2",
+   "  QROM: And x2, And\u2020 x2, CNOT x5, XGate x2",
+   "  CSwap(2): And x2, And\u2020 x2, CNOT x6"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 48,
+   "bloq": "LessThanEqual"
+  },
+  "leaves": {
+   "AND": 10,
+   "AND/cv=01": 1,
+   "AND/cv=10": 2,
+   "ANDDG": 12,
+   "ANDDG/cv=01": 1,
+   "CNOT": 92,
+   "H": 7,
+   "X": 13
+  },
+  "T": 52,
+  "rotations": 0,
+  "peak_qubits": 29,
+  "peak_qubits_q04_order": 29,
+  "pyliqtr_estimate": {
+   "T": 52,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "AliasSampler(5 outcomes, alternates)",
+  "bloq": "AliasSampler(N=5, mu=9)",
+  "registers": "selection: BoundedQUInt(3, 5), sigma_mu: QAny(9), alt: QAny(3), keep: QAny(9), less_than_equal: QBit()",
+  "tree": [
+   "AliasSampler(N=5, mu=9): CSwap(3) x1, H\u2a029 x1, LessThanEqual x1, PrepareUniformSuperposition x1, QROM x1",
+   "  LessThanEqual: BiQubitsMixer(is_adjoint=False) x8, BiQubitsMixer(is_adjoint=True) x8, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "    BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "    BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "    SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "    SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "  H\u2a029: Hadamard x9",
+   "  PrepareUniformSuperposition: Adjoint(subbloq=MultiAnd(n=3)) x1, Hadamard x9, LessThanConstant x2, MultiAnd(n=3) x1, Rz x2",
+   "    Adjoint(subbloq=MultiAnd(n=3)): And\u2020 x2",
+   "    LessThanConstant: And x3, And\u2020 x3, CNOT x8, XGate x6",
+   "    MultiAnd(n=3): And x2",
+   "  QROM: And x3, And\u2020 x3, CNOT x20, XGate x2",
+   "  CSwap(3): And x3, And\u2020 x3, CNOT x9"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 88,
+   "bloq": "LessThanEqual"
+  },
+  "leaves": {
+   "AND": 25,
+   "AND/cv=00": 1,
+   "AND/cv=01": 1,
+   "AND/cv=10": 4,
+   "ANDDG": 28,
+   "ANDDG/cv=00": 1,
+   "ANDDG/cv=01": 1,
+   "ANDDG/cv=10": 1,
+   "CNOT": 198,
+   "H": 18,
+   "RZ": 2,
+   "X": 33
+  },
+  "T": 124,
+  "rotations": 2,
+  "peak_qubits": 51,
+  "peak_qubits_q04_order": 51,
+  "pyliqtr_estimate": {
+   "T": 124,
+   "rotations": 2
+  }
+ },
+ {
+  "name": "qualtran QROM(selector M=3)",
+  "bloq": "QROM",
+  "registers": "selection: BoundedQUInt(2, 4), target0_: QAny(2), target1_: QAny(5)",
+  "tree": [
+   "QROM: And x2, And\u2020 x2, CNOT x5, XGate x2"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 15,
+   "bloq": "QROM"
+  },
+  "leaves": {
+   "AND/cv=10": 2,
+   "ANDDG": 2,
+   "CNOT": 5,
+   "X": 2
+  },
+  "T": 8,
+  "rotations": 0,
+  "peak_qubits": 10,
+  "peak_qubits_q04_order": 10,
+  "pyliqtr_estimate": {
+   "T": 8,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "StepFlags(2 bits, M=3)",
+  "bloq": "Flags",
+  "registers": "sel: QUInt(2), f[3]: QBit()",
+  "tree": [
+   "Flags: LessThanConstant(bitsize=2, less_than_val=1) x1, LessThanConstant(bitsize=2, less_than_val=2) x1, LessThanConstant(bitsize=2, less_than_val=3) x1, XGate x3",
+   "  LessThanConstant(bitsize=2, less_than_val=1): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "  LessThanConstant(bitsize=2, less_than_val=2): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "  LessThanConstant(bitsize=2, less_than_val=3): And x2, And\u2020 x2, CNOT x6, XGate x6"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 20,
+   "bloq": "LessThanConstant(bitsize=2, less_than_val=3)"
+  },
+  "leaves": {
+   "AND": 6,
+   "ANDDG": 6,
+   "CNOT": 16,
+   "X": 17
+  },
+  "T": 24,
+  "rotations": 0,
+  "peak_qubits": 8,
+  "peak_qubits_q04_order": 8,
+  "pyliqtr_estimate": {
+   "T": 24,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "TimeRegister(4)",
+  "bloq": "Time(4)",
+  "registers": "t: QUInt(4)",
+  "tree": [
+   "Time(4): Ry x4"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 6,
+   "bloq": "Time(4)"
+  },
+  "leaves": {
+   "RY": 4
+  },
+  "T": 0,
+  "rotations": 4,
+  "peak_qubits": 4,
+  "peak_qubits_q04_order": 4,
+  "pyliqtr_estimate": {
+   "T": 0,
+   "rotations": 4
+  }
+ },
+ {
+  "name": "KeySort(M=3, b_t=2)",
+  "bloq": "Sort",
+  "registers": "f[3]: QBit(), t[3]: QUInt(2), record[6]: QBit() (RIGHT)",
+  "tree": [
+   "Sort: BitonicSort(k=4, bitsize=3) x1",
+   "  BitonicSort(k=4, bitsize=3): BitonicMerge x1, BitonicSort(k=2, bitsize=3) x2",
+   "    BitonicMerge: Comparator x2, ParallelComparators x1",
+   "      Comparator: CSwap(3) x1, GreaterThan x1",
+   "        GreaterThan: LessThanEqual x1, XGate x1",
+   "          LessThanEqual: BiQubitsMixer(is_adjoint=False) x2, BiQubitsMixer(is_adjoint=True) x2, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "            BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "            BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "            SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "            SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "        CSwap(3): And x3, And\u2020 x3, CNOT x9",
+   "      ParallelComparators: Comparator x2",
+   "    BitonicSort(k=2, bitsize=3): Comparator x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 28,
+   "bloq": "LessThanEqual"
+  },
+  "leaves": {
+   "AND": 42,
+   "AND/cv=01": 6,
+   "ANDDG": 42,
+   "ANDDG/cv=01": 6,
+   "CNOT": 324,
+   "X": 48
+  },
+  "T": 192,
+  "rotations": 0,
+  "peak_qubits": 26,
+  "peak_qubits_q04_order": 26,
+  "pyliqtr_estimate": {
+   "T": 192,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "HistoryPrep(M=3, b_t=2)",
+  "bloq": "P",
+  "registers": "sel: QUInt(2), sigma: QAny(3), alt: QAny(2), keep: QAny(3), lte: QBit(), f[3]: QBit(), t[3]: QUInt(2), p2: QBit(), p3: QAny(2), record[6]: QBit() (RIGHT)",
+  "tree": [
+   "P: AliasSampler(N=4, mu=3) x1, Flags x1, PrepareUniformSuperposition(n=2, cvs=()) x1, PrepareUniformSuperposition(n=3, cvs=()) x1, Sort x1, Time(2) x3",
+   "  AliasSampler(N=4, mu=3): CSwap(2) x1, H\u2a023 x1, LessThanEqual x1, PrepareUniformSuperposition(n=4, cvs=()) x1, QROM x1",
+   "    LessThanEqual: BiQubitsMixer(is_adjoint=False) x2, BiQubitsMixer(is_adjoint=True) x2, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "      BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "      BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "      SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "      SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "    H\u2a023: Hadamard x3",
+   "    PrepareUniformSuperposition(n=4, cvs=()): Hadamard x2",
+   "    QROM: And x1, And\u2020 x1, CNOT x3, XGate x2",
+   "    CSwap(2): And x2, And\u2020 x2, CNOT x6",
+   "  Sort: BitonicSort(k=4, bitsize=3) x1",
+   "    BitonicSort(k=4, bitsize=3): BitonicMerge x1, BitonicSort(k=2, bitsize=3) x2",
+   "      BitonicMerge: Comparator x2, ParallelComparators x1",
+   "        Comparator: CSwap(3) x1, GreaterThan x1",
+   "          GreaterThan: LessThanEqual x1, XGate x1",
+   "          CSwap(3): And x3, And\u2020 x3, CNOT x9",
+   "        ParallelComparators: Comparator x2",
+   "      BitonicSort(k=2, bitsize=3): Comparator x1",
+   "  PrepareUniformSuperposition(n=2, cvs=()): Hadamard x1",
+   "  PrepareUniformSuperposition(n=3, cvs=()): And x1, And\u2020 x1, Hadamard x6, LessThanConstant(bitsize=2, less_than_val=3) x2, Rz x2",
+   "    LessThanConstant(bitsize=2, less_than_val=3): And x2, And\u2020 x2, CNOT x6, XGate x6",
+   "  Flags: LessThanConstant(bitsize=2, less_than_val=1) x1, LessThanConstant(bitsize=2, less_than_val=2) x1, LessThanConstant(bitsize=2, less_than_val=3) x1, XGate x3",
+   "    LessThanConstant(bitsize=2, less_than_val=1): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "    LessThanConstant(bitsize=2, less_than_val=2): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "  Time(2): Ry x2"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 31,
+   "bloq": "AliasSampler(N=4, mu=3)"
+  },
+  "leaves": {
+   "AND": 58,
+   "AND/cv=00": 1,
+   "AND/cv=01": 7,
+   "AND/cv=10": 1,
+   "ANDDG": 59,
+   "ANDDG/cv=00": 1,
+   "ANDDG/cv=01": 7,
+   "CNOT": 406,
+   "H": 12,
+   "RY": 6,
+   "RZ": 2,
+   "X": 86
+  },
+  "T": 268,
+  "rotations": 8,
+  "peak_qubits": 40,
+  "peak_qubits_q04_order": 40,
+  "pyliqtr_estimate": {
+   "T": 268,
+   "rotations": 8
+  }
+ },
+ {
+  "name": "Adjoint(HistoryPrep(M=3, b_t=2))",
+  "bloq": "Adjoint(subbloq=P)",
+  "registers": "sel: QUInt(2), sigma: QAny(3), alt: QAny(2), keep: QAny(3), lte: QBit(), f[3]: QBit(), t[3]: QUInt(2), p2: QBit(), p3: QAny(2), record[6]: QBit() (LEFT)",
+  "tree": [
+   "Adjoint(subbloq=P): Adjoint(subbloq=AliasSampler(N=4, mu=3)) x1, Adjoint(subbloq=Flags) x1, Adjoint(subbloq=PrepareUniformSuperposition(n=2, cvs=())) x1, Adjoint(subbloq=PrepareUniformSuperposition(n=3, cvs=())) x1, Adjoint(subbloq=Sort) x1, Adjoint(subbloq=Time(2)) x3",
+   "  Adjoint(subbloq=AliasSampler(N=4, mu=3)): Adjoint(subbloq=H\u2a023) x1, Adjoint(subbloq=LessThanEqual) x1, Adjoint(subbloq=PrepareUniformSuperposition(n=4, cvs=())) x1, Adjoint(subbloq=QROM) x1, CSwap(2) x1",
+   "    Adjoint(subbloq=LessThanEqual): BiQubitsMixer(is_adjoint=False) x2, BiQubitsMixer(is_adjoint=True) x2, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "      BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "      BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "      SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "      SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "    Adjoint(subbloq=H\u2a023): Hadamard x3",
+   "    Adjoint(subbloq=PrepareUniformSuperposition(n=4, cvs=())): Hadamard x2",
+   "    Adjoint(subbloq=QROM): And x1, And\u2020 x1, CNOT x3, XGate x2",
+   "    CSwap(2): And x2, And\u2020 x2, CNOT x6",
+   "  Adjoint(subbloq=Sort): Adjoint(subbloq=BitonicSort(k=4, bitsize=3)) x1",
+   "    Adjoint(subbloq=BitonicSort(k=4, bitsize=3)): Adjoint(subbloq=BitonicMerge) x1, Adjoint(subbloq=BitonicSort(k=2, bitsize=3)) x2",
+   "      Adjoint(subbloq=BitonicMerge): Adjoint(subbloq=Comparator) x2, Adjoint(subbloq=ParallelComparators) x1",
+   "        Adjoint(subbloq=Comparator): Adjoint(subbloq=GreaterThan) x1, CSwap(3) x1",
+   "          Adjoint(subbloq=GreaterThan): Adjoint(subbloq=LessThanEqual) x1, XGate x1",
+   "          CSwap(3): And x3, And\u2020 x3, CNOT x9",
+   "        Adjoint(subbloq=ParallelComparators): Adjoint(subbloq=Comparator) x2",
+   "      Adjoint(subbloq=BitonicSort(k=2, bitsize=3)): Adjoint(subbloq=Comparator) x1",
+   "  Adjoint(subbloq=PrepareUniformSuperposition(n=2, cvs=())): Hadamard x1",
+   "  Adjoint(subbloq=PrepareUniformSuperposition(n=3, cvs=())): Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=3)) x2, And x1, And\u2020 x1, Hadamard x6, Rz x2",
+   "    Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=3)): And x2, And\u2020 x2, CNOT x6, XGate x6",
+   "  Adjoint(subbloq=Flags): Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=1)) x1, Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=2)) x1, Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=3)) x1, XGate x3",
+   "    Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=1)): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "    Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=2)): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "  Adjoint(subbloq=Time(2)): Ry x2"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 31,
+   "bloq": "Adjoint(subbloq=AliasSampler(N=4, mu=3))"
+  },
+  "leaves": {
+   "AND": 59,
+   "AND/cv=00": 1,
+   "AND/cv=01": 7,
+   "ANDDG": 58,
+   "ANDDG/cv=00": 1,
+   "ANDDG/cv=01": 7,
+   "ANDDG/cv=10": 1,
+   "CNOT": 406,
+   "H": 12,
+   "RY": 6,
+   "RZ": 2,
+   "X": 86
+  },
+  "T": 268,
+  "rotations": 8,
+  "peak_qubits": 40,
+  "peak_qubits_q04_order": 40,
+  "pyliqtr_estimate": {
+   "T": 268,
+   "rotations": 8
+  }
+ },
+ {
+  "name": "FanOut(4, 0b1011)",
+  "bloq": "FanOut(4, 0xb)",
+  "registers": "ctrl: QBit(), target: QAny(4)",
+  "tree": [
+   "FanOut(4, 0xb): CNOT x3"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 5,
+   "bloq": "FanOut(4, 0xb)"
+  },
+  "leaves": {
+   "CNOT": 3
+  },
+  "T": 0,
+  "rotations": 0,
+  "peak_qubits": 5,
+  "peak_qubits_q04_order": 5,
+  "pyliqtr_estimate": {
+   "T": 0,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "UnaryLoad(8 entries, 2 slots)",
+  "bloq": "UnaryLoad(4 blocks)",
+  "registers": "sel: QUInt(2), slots[2]: QAny(3)",
+  "tree": [
+   "UnaryLoad(4 blocks): LoadNode(level 0, prefix 0) x1, LoadNode(level 0, prefix 1) x1",
+   "  LoadNode(level 0, prefix 0): And x1, And\u2020 x1, CNOT x1, Load[0] x1, Load[1] x1, XGate x2",
+   "    Load[0]: FanOut(3, 0x2) x1, FanOut(3, 0x7) x1",
+   "      FanOut(3, 0x2): CNOT x1",
+   "      FanOut(3, 0x7): CNOT x3",
+   "    Load[1]: FanOut(3, 0x1) x1, FanOut(3, 0x5) x1",
+   "      FanOut(3, 0x1): CNOT x1",
+   "      FanOut(3, 0x5): CNOT x2",
+   "  LoadNode(level 0, prefix 1): And x1, And\u2020 x1, CNOT x1, Load[2] x1, Load[3] x1",
+   "    Load[2]: FanOut(3, 0x2) x1, FanOut(3, 0x6) x1",
+   "      FanOut(3, 0x6): CNOT x2",
+   "    Load[3]: FanOut(3, 0x0) x1, FanOut(3, 0x5) x1",
+   "      FanOut(3, 0x0): (no gates)"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 7,
+   "bloq": "LoadNode(level 0, prefix 0)"
+  },
+  "leaves": {
+   "AND/cv=00": 1,
+   "AND/cv=10": 1,
+   "ANDDG": 1,
+   "ANDDG/cv=01": 1,
+   "CNOT": 14,
+   "X": 2
+  },
+  "T": 8,
+  "rotations": 0,
+  "peak_qubits": 9,
+  "peak_qubits_q04_order": 9,
+  "pyliqtr_estimate": {
+   "T": 8,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "SelectSwapLookup(8 entries, 2 slots)",
+  "bloq": "Lookup",
+  "registers": "selection: QUInt(3), target0: QAny(2) (RIGHT), target1: QBit() (RIGHT), junk0[1]: QAny(2) (RIGHT), junk1[1]: QBit() (RIGHT)",
+  "tree": [
+   "Lookup: Route x1, UnaryLoad(4 blocks) x1",
+   "  Route: CSwap(3) x1",
+   "    CSwap(3): And x3, And\u2020 x3, CNOT x9",
+   "  UnaryLoad(4 blocks): LoadNode(level 0, prefix 0) x1, LoadNode(level 0, prefix 1) x1",
+   "    LoadNode(level 0, prefix 0): And x1, And\u2020 x1, CNOT x1, Load[0] x1, Load[1] x1, XGate x2",
+   "      Load[0]: FanOut(3, 0x2) x1, FanOut(3, 0x7) x1",
+   "        FanOut(3, 0x2): CNOT x1",
+   "        FanOut(3, 0x7): CNOT x3",
+   "      Load[1]: FanOut(3, 0x1) x1, FanOut(3, 0x5) x1",
+   "        FanOut(3, 0x1): CNOT x1",
+   "        FanOut(3, 0x5): CNOT x2",
+   "    LoadNode(level 0, prefix 1): And x1, And\u2020 x1, CNOT x1, Load[2] x1, Load[3] x1",
+   "      Load[2]: FanOut(3, 0x2) x1, FanOut(3, 0x6) x1",
+   "        FanOut(3, 0x6): CNOT x2",
+   "      Load[3]: FanOut(3, 0x0) x1, FanOut(3, 0x5) x1",
+   "        FanOut(3, 0x0): (no gates)"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 19,
+   "bloq": "CSwap(3)"
+  },
+  "leaves": {
+   "AND": 3,
+   "AND/cv=00": 1,
+   "AND/cv=10": 1,
+   "ANDDG": 4,
+   "ANDDG/cv=01": 1,
+   "CNOT": 23,
+   "X": 2
+  },
+  "T": 20,
+  "rotations": 0,
+  "peak_qubits": 10,
+  "peak_qubits_q04_order": 10,
+  "pyliqtr_estimate": {
+   "T": 20,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "OneHotEncode(2)",
+  "bloq": "OneHot(2)",
+  "registers": "low: QUInt(2), oh: QAny(4) (RIGHT)",
+  "tree": [
+   "OneHot(2): And x2, CNOT x4, XGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 12,
+   "bloq": "OneHot(2)"
+  },
+  "leaves": {
+   "AND": 2,
+   "CNOT": 4,
+   "X": 1
+  },
+  "T": 8,
+  "rotations": 0,
+  "peak_qubits": 6,
+  "peak_qubits_q04_order": 6,
+  "pyliqtr_estimate": {
+   "T": 8,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "LookupUncompute(8 entries)",
+  "bloq": "Unlookup",
+  "registers": "selection: QUInt(3), target0: QAny(2) (LEFT), target1: QBit() (LEFT), junk0[1]: QAny(2) (LEFT), junk1[1]: QBit() (LEFT)",
+  "tree": [
+   "Unlookup: Adjoint(subbloq=OneHot(2)) x1, MeasureX(slot 0) x1, MeasureX(slot 1) x1, OneHot(2) x1, PhaseFixup x1",
+   "  MeasureX(slot 0): measured (cirq): H x3, measure x3, reset x3",
+   "  MeasureX(slot 1): measured (cirq): H x3, measure x3, reset x3",
+   "  Adjoint(subbloq=OneHot(2)): And\u2020 x2, CNOT x4, XGate x1",
+   "  OneHot(2): And x2, CNOT x4, XGate x1",
+   "  PhaseFixup: Phases[0] x1, Phases[1] x1",
+   "    Phases[0]: measured (cirq): CZ if parity x4, X x8; conditions on up to 4 outcomes",
+   "    Phases[1]: measured (cirq): CZ if parity x4; conditions on up to 3 outcomes"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 13,
+   "bloq": "Unlookup"
+  },
+  "leaves": {
+   "AND": 2,
+   "ANDDG": 2,
+   "CNOT": 8,
+   "CZ_IF": 8,
+   "MX": 6,
+   "X": 10
+  },
+  "T": 8,
+  "rotations": 0,
+  "peak_qubits": 9,
+  "peak_qubits_q04_order": 9,
+  "pyliqtr_estimate": {
+   "T": 8,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "Lookup then LookupUncompute",
+  "bloq": "CompositeBloq",
+  "registers": "selection: QUInt(3)",
+  "tree": [
+   "CompositeBloq: Lookup x1, Unlookup x1",
+   "  Unlookup: Adjoint(subbloq=OneHot(2)) x1, MeasureX(slot 0) x1, MeasureX(slot 1) x1, OneHot(2) x1, PhaseFixup x1",
+   "    MeasureX(slot 0): measured (cirq): H x3, measure x3, reset x3",
+   "    MeasureX(slot 1): measured (cirq): H x3, measure x3, reset x3",
+   "    Adjoint(subbloq=OneHot(2)): And\u2020 x2, CNOT x4, XGate x1",
+   "    OneHot(2): And x2, CNOT x4, XGate x1",
+   "    PhaseFixup: Phases[0] x1, Phases[1] x1",
+   "      Phases[0]: measured (cirq): CZ if parity x4, X x8; conditions on up to 4 outcomes",
+   "      Phases[1]: measured (cirq): CZ if parity x4; conditions on up to 3 outcomes",
+   "  Lookup: Route x1, UnaryLoad(4 blocks) x1",
+   "    Route: CSwap(3) x1",
+   "      CSwap(3): And x3, And\u2020 x3, CNOT x9",
+   "    UnaryLoad(4 blocks): LoadNode(level 0, prefix 0) x1, LoadNode(level 0, prefix 1) x1",
+   "      LoadNode(level 0, prefix 0): And x1, And\u2020 x1, CNOT x1, Load[0] x1, Load[1] x1, XGate x2",
+   "        Load[0]: FanOut(3, 0x2) x1, FanOut(3, 0x7) x1",
+   "          FanOut(3, 0x2): CNOT x1",
+   "          FanOut(3, 0x7): CNOT x3",
+   "        Load[1]: FanOut(3, 0x1) x1, FanOut(3, 0x5) x1",
+   "          FanOut(3, 0x1): CNOT x1",
+   "          FanOut(3, 0x5): CNOT x2",
+   "      LoadNode(level 0, prefix 1): And x1, And\u2020 x1, CNOT x1, Load[2] x1, Load[3] x1",
+   "        Load[2]: FanOut(3, 0x2) x1, FanOut(3, 0x6) x1",
+   "          FanOut(3, 0x6): CNOT x2",
+   "        Load[3]: FanOut(3, 0x0) x1, FanOut(3, 0x5) x1",
+   "          FanOut(3, 0x0): (no gates)"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 19,
+   "bloq": "CSwap(3)"
+  },
+  "leaves": {
+   "AND": 5,
+   "AND/cv=00": 1,
+   "AND/cv=10": 1,
+   "ANDDG": 6,
+   "ANDDG/cv=01": 1,
+   "CNOT": 31,
+   "CZ_IF": 8,
+   "MX": 6,
+   "X": 12
+  },
+  "T": 28,
+  "rotations": 0,
+  "peak_qubits": 10,
+  "peak_qubits_q04_order": 10,
+  "pyliqtr_estimate": {
+   "T": 28,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "AChi(2, controlled)",
+  "bloq": "A_chi^c",
+  "registers": "ctrl: QBit(), a: QBit(), l: QUInt(2)",
+  "tree": [
+   "A_chi^c: And x1, And\u2020 x1, C-H^2 x1, Hadamard x2",
+   "  C-H^2: CH x2",
+   "    CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 9,
+   "bloq": "A_chi^c"
+  },
+  "leaves": {
+   "AND/cv=10": 1,
+   "ANDDG/cv=10": 1,
+   "CNOT": 2,
+   "H": 6,
+   "S": 2,
+   "SDG": 2,
+   "T": 2,
+   "TDG": 2
+  },
+  "T": 8,
+  "rotations": 0,
+  "peak_qubits": 5,
+  "peak_qubits_q04_order": 5,
+  "pyliqtr_estimate": {
+   "T": 8,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "RowPrepDense(2)",
+  "bloq": "R",
+  "registers": "j: QUInt(2), a: QBit(), l: QUInt(2)",
+  "tree": [
+   "R: A_chi x3, Add x1, Phase(|000>, 0.3918pi) x1, Phase(|0>, 0.3918pi) x1, XGate x2",
+   "  A_chi: C-H^2 x1, Hadamard x2, XGate x2",
+   "    C-H^2: CH x2",
+   "      CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "  Add: And x1, And\u2020 x1, CNOT x3",
+   "  Phase(|0>, 0.3918pi): XGate x2, ZPowGate x1",
+   "  Phase(|000>, 0.3918pi): And x2, And\u2020 x2, ZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 18,
+   "bloq": "R"
+  },
+  "leaves": {
+   "AND": 1,
+   "AND/cv=00": 1,
+   "AND/cv=10": 1,
+   "ANDDG": 1,
+   "ANDDG/cv=00": 1,
+   "ANDDG/cv=10": 1,
+   "CNOT": 9,
+   "H": 18,
+   "S": 6,
+   "SDG": 6,
+   "T": 6,
+   "TDG": 6,
+   "X": 10,
+   "ZPOW": 2
+  },
+  "T": 24,
+  "rotations": 2,
+  "peak_qubits": 7,
+  "peak_qubits_q04_order": 7,
+  "pyliqtr_estimate": {
+   "T": 24,
+   "rotations": 2
+  }
+ },
+ {
+  "name": "ControlledRowInverse(2, dense)",
+  "bloq": "C-R^dag",
+  "registers": "ctrl: QBit(), j: QUInt(2), a: QBit(), l: QUInt(2)",
+  "tree": [
+   "C-R^dag: A_chi^c x3, Adjoint(subbloq=CAdd(2)) x1, CNOT x2, Phase(|1000>, -0.3918pi) x1, Phase(|10>, -0.3918pi) x1",
+   "  A_chi^c: And x1, And\u2020 x1, C-H^2 x1, Hadamard x2",
+   "    C-H^2: CH x2",
+   "      CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "  Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "    Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "  Phase(|10>, -0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "  Phase(|1000>, -0.3918pi): And x3, And\u2020 x3, ZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 20,
+   "bloq": "C-R^dag"
+  },
+  "leaves": {
+   "AND": 3,
+   "AND/cv=10": 7,
+   "ANDDG": 3,
+   "ANDDG/cv=10": 7,
+   "CNOT": 11,
+   "H": 18,
+   "S": 6,
+   "SDG": 6,
+   "T": 6,
+   "TDG": 6,
+   "ZPOW": 2
+  },
+  "T": 52,
+  "rotations": 2,
+  "peak_qubits": 9,
+  "peak_qubits_q04_order": 9,
+  "pyliqtr_estimate": {
+   "T": 52,
+   "rotations": 2
+  }
+ },
+ {
+  "name": "ControlledRowInverse(2, sparse)",
+  "bloq": "C-R^dag(shift)",
+  "registers": "ctrl: QBit(), j: QUInt(2), l: QUInt(2)",
+  "tree": [
+   "C-R^dag(shift): Adjoint(subbloq=CAdd(2)) x1, CNOT x2",
+   "  Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "    Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 9,
+   "bloq": "Adjoint(subbloq=CAdd(2))"
+  },
+  "leaves": {
+   "AND": 3,
+   "ANDDG": 3,
+   "CNOT": 5
+  },
+  "T": 12,
+  "rotations": 0,
+  "peak_qubits": 8,
+  "peak_qubits_q04_order": 8,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "ContractionPhase(2, dense)",
+  "bloq": "Z^1.19591",
+  "registers": "ctrl: QBit()",
+  "tree": [
+   "Z^1.19591: ZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 1,
+   "bloq": "Z^1.19591"
+  },
+  "leaves": {
+   "ZPOW": 1
+  },
+  "T": 0,
+  "rotations": 1,
+  "peak_qubits": 1,
+  "peak_qubits_q04_order": 1,
+  "pyliqtr_estimate": {
+   "T": 0,
+   "rotations": 1
+  }
+ },
+ {
+  "name": "ValueOracleF(2)",
+  "bloq": "W_j=2n-j",
+  "registers": "j: QUInt(2), val: QUInt(4) (RIGHT)",
+  "tree": [
+   "W_j=2n-j: AddK x1, CNOT x2, XGate x5",
+   "  AddK: Add x1, XGate x2",
+   "    Add: And x3, And\u2020 x3, CNOT x15"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 25,
+   "bloq": "Add"
+  },
+  "leaves": {
+   "AND": 3,
+   "ANDDG": 3,
+   "CNOT": 17,
+   "X": 7
+  },
+  "T": 12,
+  "rotations": 0,
+  "peak_qubits": 13,
+  "peak_qubits_q04_order": 13,
+  "pyliqtr_estimate": {
+   "T": 12,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "InequalityTest(3)",
+  "bloq": "[m<W]",
+  "registers": "ctrl: QBit(), val: QUInt(4), m: QUInt(3), g: QBit()",
+  "tree": [
+   "[m<W]: And x1, And\u2020 x1, CNOT x1, Hadamard x6, HalfLessThan(4) x1, HalfLessThan(4)^-1 x1",
+   "  HalfLessThan(4): BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=5, is_adjoint=False) x1",
+   "    BitwiseNot: XGate x5",
+   "    OutOfPlaceAdder(bitsize=5, is_adjoint=False): And x4, CNOT x22",
+   "  HalfLessThan(4)^-1: BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=5, is_adjoint=True) x1",
+   "    OutOfPlaceAdder(bitsize=5, is_adjoint=True): And\u2020 x4, CNOT x22"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 32,
+   "bloq": "OutOfPlaceAdder(bitsize=5, is_adjoint=False)"
+  },
+  "leaves": {
+   "AND": 4,
+   "AND/cv=10": 1,
+   "ANDDG": 4,
+   "ANDDG/cv=10": 1,
+   "CNOT": 47,
+   "H": 6,
+   "X": 30
+  },
+  "T": 20,
+  "rotations": 0,
+  "peak_qubits": 17,
+  "peak_qubits_q04_order": 18,
+  "pyliqtr_estimate": {
+   "T": 20,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "RowPhaseF(2)",
+  "bloq": "e^{i psi_j}",
+  "registers": "ctrl: QBit(), j: QUInt(2), phase_grad: QFxp(5, 5)",
+  "tree": [
+   "e^{i psi_j}: AddK x1, Adjoint(subbloq=AddK) x1, Adjoint(subbloq=Square(2)) x1, C-PhaseGradAdd(4,5) x1, CNOT x6, Square(2) x1, XGate x2",
+   "  AddK: Add x1, MultiControlX x2",
+   "    Add: And x1, And\u2020 x1, CNOT x3",
+   "    MultiControlX: CNOT x1",
+   "  Adjoint(subbloq=AddK): Adjoint(subbloq=Add) x1, Adjoint(subbloq=MultiControlX) x2",
+   "    Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "    Adjoint(subbloq=MultiControlX): CNOT x1",
+   "  Adjoint(subbloq=Square(2)): Adjoint(subbloq=+= (1 bits into 2)) x1, And x1, And\u2020 x1, CNOT x1",
+   "    Adjoint(subbloq=+= (1 bits into 2)): And x1, And\u2020 x1, CNOT x7",
+   "  C-PhaseGradAdd(4,5): += (3 bits into 5) x1, And x3, And\u2020 x3",
+   "    += (3 bits into 5): And x3, And\u2020 x3, CNOT x12, CZPowGate x1, ZGate x1",
+   "  Square(2): += (1 bits into 2) x1, And x1, And\u2020 x1, CNOT x1",
+   "    += (1 bits into 2): And x1, And\u2020 x1, CNOT x7"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 33,
+   "bloq": "e^{i psi_j}"
+  },
+  "leaves": {
+   "AND": 12,
+   "ANDDG": 12,
+   "CNOT": 44,
+   "CZPOW": 1,
+   "X": 2,
+   "Z": 1
+  },
+  "T": 48,
+  "rotations": 0,
+  "peak_qubits": 19,
+  "peak_qubits_q04_order": 19,
+  "pyliqtr_estimate": {
+   "T": 48,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "RowAccess(PD, closed form, b=2)",
+  "bloq": "Access(PD-F)",
+  "registers": "ctrl: QBit(), j: QUInt(2), m: QUInt(3), g: QBit(), phase_grad: QFxp(5, 5)",
+  "tree": [
+   "Access(PD-F): Adjoint(subbloq=W_j=2n-j) x1, W_j=2n-j x1, [m<W] x1, e^{i psi_j} x1",
+   "  Adjoint(subbloq=W_j=2n-j): Adjoint(subbloq=AddK(bitsize=4, k=1, cvs=(), signed=False)) x1, CNOT x2, XGate x5",
+   "    Adjoint(subbloq=AddK(bitsize=4, k=1, cvs=(), signed=False)): Adjoint(subbloq=Add(a_dtype=QUInt(bitsize=4), b_dtype=QUInt(bitsize=4))) x1, XGate x2",
+   "      Adjoint(subbloq=Add(a_dtype=QUInt(bitsize=4), b_dtype=QUInt(bitsize=4))): And x3, And\u2020 x3, CNOT x15",
+   "  [m<W]: And x1, And\u2020 x1, CNOT x1, Hadamard x6, HalfLessThan(4) x1, HalfLessThan(4)^-1 x1",
+   "    HalfLessThan(4): BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=5, is_adjoint=False) x1",
+   "      BitwiseNot: XGate x5",
+   "      OutOfPlaceAdder(bitsize=5, is_adjoint=False): And x4, CNOT x22",
+   "    HalfLessThan(4)^-1: BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=5, is_adjoint=True) x1",
+   "      OutOfPlaceAdder(bitsize=5, is_adjoint=True): And\u2020 x4, CNOT x22",
+   "  e^{i psi_j}: AddK(bitsize=2, k=1, cvs=(1,), signed=False) x1, Adjoint(subbloq=AddK(bitsize=2, k=1, cvs=(1,), signed=False)) x1, Adjoint(subbloq=Square(2)) x1, C-PhaseGradAdd(4,5) x1, CNOT x6, Square(2) x1, XGate x2",
+   "    AddK(bitsize=2, k=1, cvs=(1,), signed=False): Add(a_dtype=QUInt(bitsize=2), b_dtype=QUInt(bitsize=2)) x1, MultiControlX x2",
+   "      Add(a_dtype=QUInt(bitsize=2), b_dtype=QUInt(bitsize=2)): And x1, And\u2020 x1, CNOT x3",
+   "      MultiControlX: CNOT x1",
+   "    Adjoint(subbloq=AddK(bitsize=2, k=1, cvs=(1,), signed=False)): Adjoint(subbloq=Add(a_dtype=QUInt(bitsize=2), b_dtype=QUInt(bitsize=2))) x1, Adjoint(subbloq=MultiControlX) x2",
+   "      Adjoint(subbloq=Add(a_dtype=QUInt(bitsize=2), b_dtype=QUInt(bitsize=2))): And x1, And\u2020 x1, CNOT x3",
+   "      Adjoint(subbloq=MultiControlX): CNOT x1",
+   "    Adjoint(subbloq=Square(2)): Adjoint(subbloq=+= (1 bits into 2)) x1, And x1, And\u2020 x1, CNOT x1",
+   "      Adjoint(subbloq=+= (1 bits into 2)): And x1, And\u2020 x1, CNOT x7",
+   "    C-PhaseGradAdd(4,5): += (3 bits into 5) x1, And x3, And\u2020 x3",
+   "      += (3 bits into 5): And x3, And\u2020 x3, CNOT x12, CZPowGate x1, ZGate x1",
+   "    Square(2): += (1 bits into 2) x1, And x1, And\u2020 x1, CNOT x1",
+   "      += (1 bits into 2): And x1, And\u2020 x1, CNOT x7",
+   "  W_j=2n-j: AddK(bitsize=4, k=1, cvs=(), signed=False) x1, CNOT x2, XGate x5",
+   "    AddK(bitsize=4, k=1, cvs=(), signed=False): Add(a_dtype=QUInt(bitsize=4), b_dtype=QUInt(bitsize=4)) x1, XGate x2",
+   "      Add(a_dtype=QUInt(bitsize=4), b_dtype=QUInt(bitsize=4)): And x3, And\u2020 x3, CNOT x15"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 33,
+   "bloq": "e^{i psi_j}"
+  },
+  "leaves": {
+   "AND": 22,
+   "AND/cv=10": 1,
+   "ANDDG": 22,
+   "ANDDG/cv=10": 1,
+   "CNOT": 125,
+   "CZPOW": 1,
+   "H": 6,
+   "X": 46,
+   "Z": 1
+  },
+  "T": 92,
+  "rotations": 0,
+  "peak_qubits": 24,
+  "peak_qubits_q04_order": 25,
+  "pyliqtr_estimate": {
+   "T": 92,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "RowAccess(PD, tables, b=2)",
+  "bloq": "Access(PD-T)",
+  "registers": "ctrl: QBit(), j: QUInt(2), m: QUInt(4), g: QBit(), phase_grad: QFxp(6, 6)",
+  "tree": [
+   "Access(PD-T): C-PhaseGradAdd(6,6) x1, Lookup x1, Unlookup x1, [m<W] x1",
+   "  [m<W]: And x1, And\u2020 x1, CNOT x1, Hadamard x8, HalfLessThan(5) x1, HalfLessThan(5)^-1 x1",
+   "    HalfLessThan(5): BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=6, is_adjoint=False) x1",
+   "      BitwiseNot: XGate x6",
+   "      OutOfPlaceAdder(bitsize=6, is_adjoint=False): And x5, CNOT x27",
+   "    HalfLessThan(5)^-1: BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=6, is_adjoint=True) x1",
+   "      OutOfPlaceAdder(bitsize=6, is_adjoint=True): And\u2020 x5, CNOT x27",
+   "  Unlookup: Adjoint(subbloq=OneHot(1)) x1, MeasureX(slot 0) x1, OneHot(1) x1, PhaseFixup x1",
+   "    MeasureX(slot 0): measured (cirq): H x11, measure x11, reset x11",
+   "    Adjoint(subbloq=OneHot(1)): CNOT x2, XGate x1",
+   "    OneHot(1): CNOT x2, XGate x1",
+   "    PhaseFixup: Phases[0] x1, Phases[1] x1",
+   "      Phases[0]: measured (cirq): CZ if parity x2, X x4; conditions on up to 4 outcomes",
+   "      Phases[1]: measured (cirq): CZ if parity x2; conditions on up to 3 outcomes",
+   "  C-PhaseGradAdd(6,6): += (5 bits into 6) x1, And x5, And\u2020 x5, CZPowGate x1",
+   "    += (5 bits into 6): And x4, And\u2020 x4, CNOT x23, CZPowGate x1, ZGate x1",
+   "  Lookup: UnaryLoad(4 blocks) x1",
+   "    UnaryLoad(4 blocks): LoadNode(level 0, prefix 0) x1, LoadNode(level 0, prefix 1) x1",
+   "      LoadNode(level 0, prefix 0): And x1, And\u2020 x1, CNOT x1, Load[0] x1, Load[1] x1, XGate x2",
+   "        Load[0]: FanOut(11, 0x408) x1",
+   "          FanOut(11, 0x408): CNOT x2",
+   "        Load[1]: FanOut(11, 0x382) x1",
+   "          FanOut(11, 0x382): CNOT x4",
+   "      LoadNode(level 0, prefix 1): And x1, And\u2020 x1, CNOT x1, Load[2] x1, Load[3] x1",
+   "        Load[2]: FanOut(11, 0x300) x1",
+   "          FanOut(11, 0x300): CNOT x2",
+   "        Load[3]: FanOut(11, 0x282) x1",
+   "          FanOut(11, 0x282): CNOT x3"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 38,
+   "bloq": "OutOfPlaceAdder(bitsize=6, is_adjoint=False)"
+  },
+  "leaves": {
+   "AND": 14,
+   "AND/cv=00": 1,
+   "AND/cv=10": 2,
+   "ANDDG": 15,
+   "ANDDG/cv=01": 1,
+   "ANDDG/cv=10": 1,
+   "CNOT": 97,
+   "CZPOW": 2,
+   "CZ_IF": 4,
+   "H": 8,
+   "MX": 11,
+   "X": 44,
+   "Z": 1
+  },
+  "T": 68,
+  "rotations": 0,
+  "peak_qubits": 34,
+  "peak_qubits_q04_order": 35,
+  "pyliqtr_estimate": {
+   "T": 68,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "RowAccess(PS, tables, b=2)",
+  "bloq": "Access(PS-T)",
+  "registers": "ctrl: QBit(), j: QUInt(2), m: QUInt(4), g: QBit()",
+  "tree": [
+   "Access(PS-T): Lookup x1, Unlookup x1, [m<W] x1",
+   "  [m<W]: And x1, And\u2020 x1, CNOT x1, Hadamard x8, HalfLessThan(5) x1, HalfLessThan(5)^-1 x1",
+   "    HalfLessThan(5): BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=6, is_adjoint=False) x1",
+   "      BitwiseNot: XGate x6",
+   "      OutOfPlaceAdder(bitsize=6, is_adjoint=False): And x5, CNOT x27",
+   "    HalfLessThan(5)^-1: BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=6, is_adjoint=True) x1",
+   "      OutOfPlaceAdder(bitsize=6, is_adjoint=True): And\u2020 x5, CNOT x27",
+   "  Unlookup: Adjoint(subbloq=OneHot(1)) x1, MeasureX(slot 0) x1, OneHot(1) x1, PhaseFixup x1",
+   "    MeasureX(slot 0): measured (cirq): H x5, measure x5, reset x5",
+   "    Adjoint(subbloq=OneHot(1)): CNOT x2, XGate x1",
+   "    OneHot(1): CNOT x2, XGate x1",
+   "    PhaseFixup: Phases[0] x1, Phases[1] x1",
+   "      Phases[0]: measured (cirq): CZ if parity x2, X x4; conditions on up to 3 outcomes",
+   "      Phases[1]: measured (cirq): CZ if parity x2; conditions on up to 2 outcomes",
+   "  Lookup: UnaryLoad(4 blocks) x1",
+   "    UnaryLoad(4 blocks): LoadNode(level 0, prefix 0) x1, LoadNode(level 0, prefix 1) x1",
+   "      LoadNode(level 0, prefix 0): And x1, And\u2020 x1, CNOT x1, Load[0] x1, Load[1] x1, XGate x2",
+   "        Load[0]: FanOut(5, 0x10) x1",
+   "          FanOut(5, 0x10): CNOT x1",
+   "        Load[1]: FanOut(5, 0xe) x1",
+   "          FanOut(5, 0xe): CNOT x3",
+   "      LoadNode(level 0, prefix 1): And x1, And\u2020 x1, CNOT x1, Load[2] x1, Load[3] x1",
+   "        Load[2]: FanOut(5, 0xc) x1",
+   "          FanOut(5, 0xc): CNOT x2",
+   "        Load[3]: FanOut(5, 0xa) x1",
+   "          FanOut(5, 0xa): CNOT x2"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 38,
+   "bloq": "OutOfPlaceAdder(bitsize=6, is_adjoint=False)"
+  },
+  "leaves": {
+   "AND": 5,
+   "AND/cv=00": 1,
+   "AND/cv=10": 2,
+   "ANDDG": 6,
+   "ANDDG/cv=01": 1,
+   "ANDDG/cv=10": 1,
+   "CNOT": 71,
+   "CZ_IF": 4,
+   "H": 8,
+   "MX": 5,
+   "X": 44
+  },
+  "T": 32,
+  "rotations": 0,
+  "peak_qubits": 22,
+  "peak_qubits_q04_order": 23,
+  "pyliqtr_estimate": {
+   "T": 32,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "VertexPhase(2, 2)",
+  "bloq": "D(t)",
+  "registers": "j: QUInt(2), t: QUInt(2), phase_grad: QFxp(5, 5)",
+  "tree": [
+   "D(t): And x4, And\u2020 x4, PhaseGradAdd(3,4) x1, PhaseGradAdd(3,5) x1",
+   "  PhaseGradAdd(3,4): += (3 bits into 4) x1",
+   "    += (3 bits into 4): And x2, And\u2020 x2, CNOT x11, CZPowGate x1, ZGate x1",
+   "  PhaseGradAdd(3,5): += (3 bits into 5) x1",
+   "    += (3 bits into 5): And x3, And\u2020 x3, CNOT x14, CZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 25,
+   "bloq": "+= (3 bits into 5)"
+  },
+  "leaves": {
+   "AND": 9,
+   "ANDDG": 9,
+   "CNOT": 25,
+   "CZPOW": 2,
+   "Z": 1
+  },
+  "T": 36,
+  "rotations": 0,
+  "peak_qubits": 14,
+  "peak_qubits_q04_order": 14,
+  "pyliqtr_estimate": {
+   "T": 36,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "Contraction(r=2, dense, b=2)",
+  "bloq": "C_2",
+  "registers": "ctrl: QBit(), sel: QBit(), labels[2]: QUInt(2), child: QUInt(2), a: QBit()",
+  "tree": [
+   "C_2: C-R^dag x1, Route x1, Route^-1 x1, Z^1.19591 x1",
+   "  Z^1.19591: ZPowGate x1",
+   "  C-R^dag: A_chi^c x3, Adjoint(subbloq=CAdd(2)) x1, CNOT x2, Phase(|1000>, -0.3918pi) x1, Phase(|10>, -0.3918pi) x1",
+   "    A_chi^c: And x1, And\u2020 x1, C-H^2 x1, Hadamard x2",
+   "      C-H^2: CH x2",
+   "        CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "    Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "      Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "    Phase(|10>, -0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "    Phase(|1000>, -0.3918pi): And x3, And\u2020 x3, ZPowGate x1",
+   "  Route: CSwap(2) x1",
+   "    CSwap(2): And x2, And\u2020 x2, CNOT x6",
+   "  Route^-1: CSwap(2) x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 22,
+   "bloq": "C_2"
+  },
+  "leaves": {
+   "AND": 7,
+   "AND/cv=10": 7,
+   "ANDDG": 7,
+   "ANDDG/cv=10": 7,
+   "CNOT": 23,
+   "H": 18,
+   "S": 6,
+   "SDG": 6,
+   "T": 6,
+   "TDG": 6,
+   "ZPOW": 3
+  },
+  "T": 68,
+  "rotations": 3,
+  "peak_qubits": 12,
+  "peak_qubits_q04_order": 12,
+  "pyliqtr_estimate": {
+   "T": 68,
+   "rotations": 3
+  }
+ },
+ {
+  "name": "MiddleBlock(dense, M=2, b=2)",
+  "bloq": "C-X",
+  "registers": "anc: QBit(), f[2]: QBit(), t[2]: QUInt(1), p2: QBit(), j[3]: QUInt(2), a[2]: QBit(), phase_grad: QFxp(4, 4)",
+  "tree": [
+   "C-X: Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x2, And\u2020 x2, C-H^2 x4, C_1 x1, C_2 x1, D(t) x2, PhaseGradAdd(2,2) x1",
+   "  Adjoint(subbloq=PhaseGradAdd(2,2)): Adjoint(subbloq=+= (2 bits into 2)) x1",
+   "    Adjoint(subbloq=+= (2 bits into 2)): CNOT x1, CZPowGate x1, ZGate x1",
+   "  C_1: C-R^dag x1, Z^1.19591 x1",
+   "    Z^1.19591: ZPowGate x1",
+   "    C-R^dag: A_chi^c x3, Adjoint(subbloq=CAdd(2)) x1, CNOT x2, Phase(|1000>, -0.3918pi) x1, Phase(|10>, -0.3918pi) x1",
+   "      A_chi^c: And x1, And\u2020 x1, C-H^2 x1, Hadamard x2",
+   "        C-H^2: CH x2",
+   "          CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "      Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "        Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "      Phase(|10>, -0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "      Phase(|1000>, -0.3918pi): And x3, And\u2020 x3, ZPowGate x1",
+   "  C_2: C-R^dag x1, Route x1, Route^-1 x1, Z^1.19591 x1",
+   "    Route: CSwap(2) x1",
+   "      CSwap(2): And x2, And\u2020 x2, CNOT x6",
+   "    Route^-1: CSwap(2) x1",
+   "  PhaseGradAdd(2,2): += (2 bits into 2) x1",
+   "    += (2 bits into 2): CNOT x1, CZPowGate x1, ZGate x1",
+   "  D(t): And x2, And\u2020 x2, PhaseGradAdd(2,3) x1, PhaseGradAdd(2,4) x1",
+   "    PhaseGradAdd(2,3): += (2 bits into 3) x1",
+   "      += (2 bits into 3): And x1, And\u2020 x1, CNOT x5, CZPowGate x1, ZGate x1",
+   "    PhaseGradAdd(2,4): += (2 bits into 4) x1",
+   "      += (2 bits into 4): And x2, And\u2020 x2, CNOT x8, CZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 58,
+   "bloq": "C-X"
+  },
+  "leaves": {
+   "AND": 22,
+   "AND/cv=10": 14,
+   "ANDDG": 22,
+   "ANDDG/cv=10": 14,
+   "CNOT": 70,
+   "CZPOW": 6,
+   "H": 52,
+   "S": 20,
+   "SDG": 20,
+   "T": 20,
+   "TDG": 20,
+   "Z": 4,
+   "ZPOW": 6
+  },
+  "T": 184,
+  "rotations": 6,
+  "peak_qubits": 23,
+  "peak_qubits_q04_order": 23,
+  "pyliqtr_estimate": {
+   "T": 184,
+   "rotations": 6
+  }
+ },
+ {
+  "name": "MiddleBlock(sparse, M=2, b=2)",
+  "bloq": "C-X",
+  "registers": "anc: QBit(), f[2]: QBit(), t[2]: QUInt(1), p2: QBit(), j[3]: QUInt(2), phase_grad: QFxp(4, 4)",
+  "tree": [
+   "C-X: Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x2, And\u2020 x2, C-H^2 x4, C_1 x1, C_2 x1, D(t) x2, PhaseGradAdd(2,2) x1",
+   "  Adjoint(subbloq=PhaseGradAdd(2,2)): Adjoint(subbloq=+= (2 bits into 2)) x1",
+   "    Adjoint(subbloq=+= (2 bits into 2)): CNOT x1, CZPowGate x1, ZGate x1",
+   "  C_1: C-R^dag(shift) x1, Z^0.5 x1",
+   "    Z^0.5: SGate x1",
+   "    C-R^dag(shift): Adjoint(subbloq=CAdd(2)) x1, CNOT x2",
+   "      Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "        Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "  C_2: C-R^dag(shift) x1, Route x1, Route^-1 x1, Z^0.5 x1",
+   "    Route: CSwap(2) x1",
+   "      CSwap(2): And x2, And\u2020 x2, CNOT x6",
+   "    Route^-1: CSwap(2) x1",
+   "  C-H^2: CH x2",
+   "    CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "  PhaseGradAdd(2,2): += (2 bits into 2) x1",
+   "    += (2 bits into 2): CNOT x1, CZPowGate x1, ZGate x1",
+   "  D(t): And x2, And\u2020 x2, PhaseGradAdd(2,3) x1, PhaseGradAdd(2,4) x1",
+   "    PhaseGradAdd(2,3): += (2 bits into 3) x1",
+   "      += (2 bits into 3): And x1, And\u2020 x1, CNOT x5, CZPowGate x1, ZGate x1",
+   "    PhaseGradAdd(2,4): += (2 bits into 4) x1",
+   "      += (2 bits into 4): And x2, And\u2020 x2, CNOT x8, CZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 58,
+   "bloq": "C-X"
+  },
+  "leaves": {
+   "AND": 22,
+   "ANDDG": 22,
+   "CNOT": 58,
+   "CZPOW": 6,
+   "H": 16,
+   "S": 10,
+   "SDG": 8,
+   "T": 8,
+   "TDG": 8,
+   "Z": 4
+  },
+  "T": 104,
+  "rotations": 0,
+  "peak_qubits": 21,
+  "peak_qubits_q04_order": 21,
+  "pyliqtr_estimate": {
+   "T": 104,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "MiddleBlock(PD tables, M=2, b=2)",
+  "bloq": "C-X",
+  "registers": "anc: QBit(), f[2]: QBit(), t[2]: QUInt(1), p2: QBit(), j[3]: QUInt(2), a[2]: QBit(), m[2]: QUInt(4), g[2]: QBit(), phase_grad: QFxp(6, 6)",
+  "tree": [
+   "C-X: Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x2, And\u2020 x2, C-H^2 x4, C_1 x1, C_2 x1, D(t) x2, PhaseGradAdd(2,2) x1",
+   "  Adjoint(subbloq=PhaseGradAdd(2,2)): Adjoint(subbloq=+= (2 bits into 2)) x1",
+   "    Adjoint(subbloq=+= (2 bits into 2)): CNOT x1, CZPowGate x1, ZGate x1",
+   "  C_1: Access(PD-T) x1, C-R^dag x1, Z^1.19591 x1",
+   "    Z^1.19591: ZPowGate x1",
+   "    C-R^dag: A_chi^c x3, Adjoint(subbloq=CAdd(2)) x1, CNOT x2, Phase(|1000>, -0.3918pi) x1, Phase(|10>, -0.3918pi) x1",
+   "      A_chi^c: And x1, And\u2020 x1, C-H^2 x1, Hadamard x2",
+   "        C-H^2: CH x2",
+   "          CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "      Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "        Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "      Phase(|10>, -0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "      Phase(|1000>, -0.3918pi): And x3, And\u2020 x3, ZPowGate x1",
+   "    Access(PD-T): C-PhaseGradAdd(6,6) x1, Lookup x1, Unlookup x1, [m<W] x1",
+   "      [m<W]: And x1, And\u2020 x1, CNOT x1, Hadamard x8, HalfLessThan(5) x1, HalfLessThan(5)^-1 x1",
+   "        HalfLessThan(5): BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=6, is_adjoint=False) x1",
+   "          BitwiseNot: XGate x6",
+   "          OutOfPlaceAdder(bitsize=6, is_adjoint=False): And x5, CNOT x27",
+   "        HalfLessThan(5)^-1: BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=6, is_adjoint=True) x1",
+   "          OutOfPlaceAdder(bitsize=6, is_adjoint=True): And\u2020 x5, CNOT x27",
+   "      Unlookup: Adjoint(subbloq=OneHot(1)) x1, MeasureX(slot 0) x1, OneHot(1) x1, PhaseFixup x1",
+   "        MeasureX(slot 0): measured (cirq): H x11, measure x11, reset x11",
+   "        Adjoint(subbloq=OneHot(1)): CNOT x2, XGate x1",
+   "        OneHot(1): CNOT x2, XGate x1",
+   "        PhaseFixup: Phases[0] x1, Phases[1] x1",
+   "          Phases[0]: measured (cirq): CZ if parity x2, X x4; conditions on up to 4 outcomes",
+   "          Phases[1]: measured (cirq): CZ if parity x2; conditions on up to 3 outcomes",
+   "      C-PhaseGradAdd(6,6): += (5 bits into 6) x1, And x5, And\u2020 x5, CZPowGate x1",
+   "        += (5 bits into 6): And x4, And\u2020 x4, CNOT x23, CZPowGate x1, ZGate x1",
+   "      Lookup: UnaryLoad(4 blocks) x1",
+   "        UnaryLoad(4 blocks): LoadNode(level 0, prefix 0) x1, LoadNode(level 0, prefix 1) x1",
+   "          LoadNode(level 0, prefix 0): And x1, And\u2020 x1, CNOT x1, Load[0] x1, Load[1] x1, XGate x2",
+   "            Load[0]: FanOut(11, 0x408) x1",
+   "              FanOut(11, 0x408): CNOT x2",
+   "            Load[1]: FanOut(11, 0x382) x1",
+   "              FanOut(11, 0x382): CNOT x4",
+   "          LoadNode(level 0, prefix 1): And x1, And\u2020 x1, CNOT x1, Load[2] x1, Load[3] x1",
+   "            Load[2]: FanOut(11, 0x300) x1",
+   "              FanOut(11, 0x300): CNOT x2",
+   "            Load[3]: FanOut(11, 0x282) x1",
+   "              FanOut(11, 0x282): CNOT x3",
+   "  C_2: Access(PD-T) x1, C-R^dag x1, Route x1, Route^-1 x1, Z^1.19591 x1",
+   "    Route: CSwap(2) x1",
+   "      CSwap(2): And x2, And\u2020 x2, CNOT x6",
+   "    Route^-1: CSwap(2) x1",
+   "  PhaseGradAdd(2,2): += (2 bits into 2) x1",
+   "    += (2 bits into 2): CNOT x1, CZPowGate x1, ZGate x1",
+   "  D(t): And x2, And\u2020 x2, PhaseGradAdd(2,3) x1, PhaseGradAdd(2,4) x1",
+   "    PhaseGradAdd(2,3): += (2 bits into 3) x1",
+   "      += (2 bits into 3): And x1, And\u2020 x1, CNOT x5, CZPowGate x1, ZGate x1",
+   "    PhaseGradAdd(2,4): += (2 bits into 4) x1",
+   "      += (2 bits into 4): And x2, And\u2020 x2, CNOT x8, CZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 70,
+   "bloq": "C-X"
+  },
+  "leaves": {
+   "AND": 50,
+   "AND/cv=00": 2,
+   "AND/cv=10": 18,
+   "ANDDG": 52,
+   "ANDDG/cv=01": 2,
+   "ANDDG/cv=10": 16,
+   "CNOT": 264,
+   "CZPOW": 10,
+   "CZ_IF": 8,
+   "H": 68,
+   "MX": 22,
+   "S": 20,
+   "SDG": 20,
+   "T": 20,
+   "TDG": 20,
+   "X": 88,
+   "Z": 6,
+   "ZPOW": 6
+  },
+  "T": 320,
+  "rotations": 6,
+  "peak_qubits": 52,
+  "peak_qubits_q04_order": 53,
+  "pyliqtr_estimate": {
+   "T": 320,
+   "rotations": 6
+  }
+ },
+ {
+  "name": "MiddleBlock(PS closed form, M=1, b=2)",
+  "bloq": "C-X",
+  "registers": "anc: QBit(), f[1]: QBit(), t[1]: QUInt(1), j[2]: QUInt(2), m[1]: QUInt(3), g[1]: QBit(), phase_grad: QFxp(4, 4)",
+  "tree": [
+   "C-X: Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x1, And\u2020 x1, C-H^2 x3, C_1 x1, D(t) x1, PhaseGradAdd(2,2) x1",
+   "  Adjoint(subbloq=PhaseGradAdd(2,2)): Adjoint(subbloq=+= (2 bits into 2)) x1",
+   "    Adjoint(subbloq=+= (2 bits into 2)): CNOT x1, CZPowGate x1, ZGate x1",
+   "  C_1: Access(PS-F) x1, C-R^dag(shift) x1, Z^0.5 x1",
+   "    Z^0.5: SGate x1",
+   "    C-R^dag(shift): Adjoint(subbloq=CAdd(2)) x1, CNOT x2",
+   "      Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add(a_dtype=QUInt(bitsize=2), b_dtype=QUInt(bitsize=2))) x1, And x2, And\u2020 x2",
+   "        Adjoint(subbloq=Add(a_dtype=QUInt(bitsize=2), b_dtype=QUInt(bitsize=2))): And x1, And\u2020 x1, CNOT x3",
+   "    Access(PS-F): Adjoint(subbloq=W_j=2n-j) x1, W_j=2n-j x1, [m<W] x1",
+   "      Adjoint(subbloq=W_j=2n-j): Adjoint(subbloq=AddK) x1, CNOT x2, XGate x5",
+   "        Adjoint(subbloq=AddK): Adjoint(subbloq=Add(a_dtype=QUInt(bitsize=4), b_dtype=QUInt(bitsize=4))) x1, XGate x2",
+   "          Adjoint(subbloq=Add(a_dtype=QUInt(bitsize=4), b_dtype=QUInt(bitsize=4))): And x3, And\u2020 x3, CNOT x15",
+   "      [m<W]: And x1, And\u2020 x1, CNOT x1, Hadamard x6, HalfLessThan(4) x1, HalfLessThan(4)^-1 x1",
+   "        HalfLessThan(4): BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=5, is_adjoint=False) x1",
+   "          BitwiseNot: XGate x5",
+   "          OutOfPlaceAdder(bitsize=5, is_adjoint=False): And x4, CNOT x22",
+   "        HalfLessThan(4)^-1: BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=5, is_adjoint=True) x1",
+   "          OutOfPlaceAdder(bitsize=5, is_adjoint=True): And\u2020 x4, CNOT x22",
+   "      W_j=2n-j: AddK x1, CNOT x2, XGate x5",
+   "        AddK: Add x1, XGate x2",
+   "          Add: And x3, And\u2020 x3, CNOT x15",
+   "  C-H^2: CH x2",
+   "    CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "  PhaseGradAdd(2,2): += (2 bits into 2) x1",
+   "    += (2 bits into 2): CNOT x1, CZPowGate x1, ZGate x1",
+   "  D(t): And x2, And\u2020 x2, PhaseGradAdd(2,3) x1, PhaseGradAdd(2,4) x1",
+   "    PhaseGradAdd(2,3): += (2 bits into 3) x1",
+   "      += (2 bits into 3): And x1, And\u2020 x1, CNOT x5, CZPowGate x1, ZGate x1",
+   "    PhaseGradAdd(2,4): += (2 bits into 4) x1",
+   "      += (2 bits into 4): And x2, And\u2020 x2, CNOT x8, CZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 42,
+   "bloq": "C-X"
+  },
+  "leaves": {
+   "AND": 19,
+   "AND/cv=10": 1,
+   "ANDDG": 19,
+   "ANDDG/cv=10": 1,
+   "CNOT": 107,
+   "CZPOW": 4,
+   "H": 18,
+   "S": 7,
+   "SDG": 6,
+   "T": 6,
+   "TDG": 6,
+   "X": 44,
+   "Z": 3
+  },
+  "T": 92,
+  "rotations": 0,
+  "peak_qubits": 28,
+  "peak_qubits_q04_order": 29,
+  "pyliqtr_estimate": {
+   "T": 92,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "Block(dense, b=2, M=1)",
+  "bloq": "W",
+  "registers": "anc: QBit(), sel: QUInt(1), sigma: QAny(4), alt: QBit(), keep: QAny(4), lte: QBit(), f[1]: QBit(), t[1]: QUInt(2), j[2]: QUInt(2), a[1]: QBit(), phase_grad: QFxp(5, 5)",
+  "tree": [
+   "W: Adjoint(subbloq=P) x1, C-X x1, P x1",
+   "  Adjoint(subbloq=P): Adjoint(subbloq=AliasSampler(N=2, mu=4)) x1, Adjoint(subbloq=Flags) x1, Adjoint(subbloq=Time(2)) x1",
+   "    Adjoint(subbloq=AliasSampler(N=2, mu=4)): Adjoint(subbloq=H\u2a024) x1, Adjoint(subbloq=LessThanEqual) x1, Adjoint(subbloq=PrepareUniformSuperposition) x1, Adjoint(subbloq=QROM) x1, CSwap(1) x1",
+   "      Adjoint(subbloq=LessThanEqual): BiQubitsMixer(is_adjoint=False) x3, BiQubitsMixer(is_adjoint=True) x3, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "        BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "        BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "        SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "        SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "      Adjoint(subbloq=H\u2a024): Hadamard x4",
+   "      Adjoint(subbloq=PrepareUniformSuperposition): Hadamard x1",
+   "      Adjoint(subbloq=QROM): CNOT x1, XGate x2",
+   "      CSwap(1): And x1, And\u2020 x1, CNOT x3",
+   "    Adjoint(subbloq=Flags): Adjoint(subbloq=LessThanConstant) x1, XGate x1",
+   "      Adjoint(subbloq=LessThanConstant): And x1, And\u2020 x1, CNOT x3, XGate x4",
+   "    Adjoint(subbloq=Time(2)): Ry x2",
+   "  P: AliasSampler(N=2, mu=4) x1, Flags x1, Time(2) x1",
+   "    AliasSampler(N=2, mu=4): CSwap(1) x1, H\u2a024 x1, LessThanEqual x1, PrepareUniformSuperposition x1, QROM x1",
+   "      LessThanEqual: BiQubitsMixer(is_adjoint=False) x3, BiQubitsMixer(is_adjoint=True) x3, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "      H\u2a024: Hadamard x4",
+   "      PrepareUniformSuperposition: Hadamard x1",
+   "      QROM: CNOT x1, XGate x2",
+   "    Flags: LessThanConstant x1, XGate x1",
+   "      LessThanConstant: And x1, And\u2020 x1, CNOT x3, XGate x4",
+   "    Time(2): Ry x2",
+   "  C-X: Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x1, And\u2020 x1, C-H^2 x3, C_1 x1, D(t) x1, PhaseGradAdd(2,2) x1",
+   "    Adjoint(subbloq=PhaseGradAdd(2,2)): Adjoint(subbloq=+= (2 bits into 2)) x1",
+   "      Adjoint(subbloq=+= (2 bits into 2)): CNOT x1, CZPowGate x1, ZGate x1",
+   "    C_1: C-R^dag x1, Z^1.19591 x1",
+   "      Z^1.19591: ZPowGate x1",
+   "      C-R^dag: A_chi^c x3, Adjoint(subbloq=CAdd(2)) x1, CNOT x2, Phase(|1000>, -0.3918pi) x1, Phase(|10>, -0.3918pi) x1",
+   "        A_chi^c: And x1, And\u2020 x1, C-H^2 x1, Hadamard x2",
+   "          C-H^2: CH x2",
+   "            CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "        Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "          Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "        Phase(|10>, -0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "        Phase(|1000>, -0.3918pi): And x3, And\u2020 x3, ZPowGate x1",
+   "    PhaseGradAdd(2,2): += (2 bits into 2) x1",
+   "      += (2 bits into 2): CNOT x1, CZPowGate x1, ZGate x1",
+   "    D(t): And x4, And\u2020 x4, PhaseGradAdd(3,4) x1, PhaseGradAdd(3,5) x1",
+   "      PhaseGradAdd(3,4): += (3 bits into 4) x1",
+   "        += (3 bits into 4): And x2, And\u2020 x2, CNOT x11, CZPowGate x1, ZGate x1",
+   "      PhaseGradAdd(3,5): += (3 bits into 5) x1",
+   "        += (3 bits into 5): And x3, And\u2020 x3, CNOT x14, CZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 41,
+   "bloq": "C-X"
+  },
+  "leaves": {
+   "AND": 29,
+   "AND/cv=01": 2,
+   "AND/cv=10": 7,
+   "ANDDG": 29,
+   "ANDDG/cv=01": 2,
+   "ANDDG/cv=10": 7,
+   "CNOT": 184,
+   "CZPOW": 4,
+   "H": 40,
+   "RY": 4,
+   "S": 12,
+   "SDG": 12,
+   "T": 12,
+   "TDG": 12,
+   "X": 32,
+   "Z": 3,
+   "ZPOW": 3
+  },
+  "T": 176,
+  "rotations": 7,
+  "peak_qubits": 36,
+  "peak_qubits_q04_order": 36,
+  "pyliqtr_estimate": {
+   "T": 172,
+   "rotations": 7,
+   "counted_directly": {
+    "LessThanConstant(bitsize=1, less_than_val=1)": 1
+   }
+  }
+ },
+ {
+  "name": "HadamardTest(dense, b=2, M=1)",
+  "bloq": "A_Re",
+  "registers": "anc: QBit(), sel: QUInt(1), sigma: QAny(4), alt: QBit(), keep: QAny(4), lte: QBit(), f[1]: QBit(), t[1]: QUInt(2), j[2]: QUInt(2), a[1]: QBit(), phase_grad: QFxp(5, 5)",
+  "tree": [
+   "A_Re: Hadamard x2, W x1",
+   "  W: Adjoint(subbloq=P) x1, C-X x1, P x1",
+   "    Adjoint(subbloq=P): Adjoint(subbloq=AliasSampler(N=2, mu=4)) x1, Adjoint(subbloq=Flags) x1, Adjoint(subbloq=Time(2)) x1",
+   "      Adjoint(subbloq=AliasSampler(N=2, mu=4)): Adjoint(subbloq=H\u2a024) x1, Adjoint(subbloq=LessThanEqual) x1, Adjoint(subbloq=PrepareUniformSuperposition) x1, Adjoint(subbloq=QROM) x1, CSwap(1) x1",
+   "        Adjoint(subbloq=LessThanEqual): BiQubitsMixer(is_adjoint=False) x3, BiQubitsMixer(is_adjoint=True) x3, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "          BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "          BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "          SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "          SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "        Adjoint(subbloq=H\u2a024): Hadamard x4",
+   "        Adjoint(subbloq=PrepareUniformSuperposition): Hadamard x1",
+   "        Adjoint(subbloq=QROM): CNOT x1, XGate x2",
+   "        CSwap(1): And x1, And\u2020 x1, CNOT x3",
+   "      Adjoint(subbloq=Flags): Adjoint(subbloq=LessThanConstant) x1, XGate x1",
+   "        Adjoint(subbloq=LessThanConstant): And x1, And\u2020 x1, CNOT x3, XGate x4",
+   "      Adjoint(subbloq=Time(2)): Ry x2",
+   "    P: AliasSampler(N=2, mu=4) x1, Flags x1, Time(2) x1",
+   "      AliasSampler(N=2, mu=4): CSwap(1) x1, H\u2a024 x1, LessThanEqual x1, PrepareUniformSuperposition x1, QROM x1",
+   "        LessThanEqual: BiQubitsMixer(is_adjoint=False) x3, BiQubitsMixer(is_adjoint=True) x3, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "        H\u2a024: Hadamard x4",
+   "        PrepareUniformSuperposition: Hadamard x1",
+   "        QROM: CNOT x1, XGate x2",
+   "      Flags: LessThanConstant x1, XGate x1",
+   "        LessThanConstant: And x1, And\u2020 x1, CNOT x3, XGate x4",
+   "      Time(2): Ry x2",
+   "    C-X: Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x1, And\u2020 x1, C-H^2 x3, C_1 x1, D(t) x1, PhaseGradAdd(2,2) x1",
+   "      Adjoint(subbloq=PhaseGradAdd(2,2)): Adjoint(subbloq=+= (2 bits into 2)) x1",
+   "        Adjoint(subbloq=+= (2 bits into 2)): CNOT x1, CZPowGate x1, ZGate x1",
+   "      C_1: C-R^dag x1, Z^1.19591 x1",
+   "        Z^1.19591: ZPowGate x1",
+   "        C-R^dag: A_chi^c x3, Adjoint(subbloq=CAdd(2)) x1, CNOT x2, Phase(|1000>, -0.3918pi) x1, Phase(|10>, -0.3918pi) x1",
+   "          A_chi^c: And x1, And\u2020 x1, C-H^2 x1, Hadamard x2",
+   "            C-H^2: CH x2",
+   "              CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "          Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "            Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "          Phase(|10>, -0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "          Phase(|1000>, -0.3918pi): And x3, And\u2020 x3, ZPowGate x1",
+   "      PhaseGradAdd(2,2): += (2 bits into 2) x1",
+   "        += (2 bits into 2): CNOT x1, CZPowGate x1, ZGate x1",
+   "      D(t): And x4, And\u2020 x4, PhaseGradAdd(3,4) x1, PhaseGradAdd(3,5) x1",
+   "        PhaseGradAdd(3,4): += (3 bits into 4) x1",
+   "          += (3 bits into 4): And x2, And\u2020 x2, CNOT x11, CZPowGate x1, ZGate x1",
+   "        PhaseGradAdd(3,5): += (3 bits into 5) x1",
+   "          += (3 bits into 5): And x3, And\u2020 x3, CNOT x14, CZPowGate x1"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 41,
+   "bloq": "C-X"
+  },
+  "leaves": {
+   "AND": 29,
+   "AND/cv=01": 2,
+   "AND/cv=10": 7,
+   "ANDDG": 29,
+   "ANDDG/cv=01": 2,
+   "ANDDG/cv=10": 7,
+   "CNOT": 184,
+   "CZPOW": 4,
+   "H": 42,
+   "RY": 4,
+   "S": 12,
+   "SDG": 12,
+   "T": 12,
+   "TDG": 12,
+   "X": 32,
+   "Z": 3,
+   "ZPOW": 3
+  },
+  "T": 176,
+  "rotations": 7,
+  "peak_qubits": 36,
+  "peak_qubits_q04_order": 36,
+  "pyliqtr_estimate": {
+   "T": 172,
+   "rotations": 7,
+   "counted_directly": {
+    "LessThanConstant(bitsize=1, less_than_val=1)": 1
+   }
+  }
+ },
+ {
+  "name": "ReflectZero(dense, b=2, M=1)",
+  "bloq": "R0(20)",
+  "registers": "anc: QBit(), sel: QUInt(1), sigma: QAny(4), alt: QBit(), keep: QAny(4), lte: QBit(), f[1]: QBit(), t[1]: QUInt(2), j[2]: QUInt(2), a[1]: QBit()",
+  "tree": [
+   "ReflectZero(cell=Cell(family='dense', access='flat', b=2, M=1, b_t=2, w_phi=5, sel_precision=0.05, bv=0, bpsi=0, mu_T=1.: ZeroReflection(n=20) x1",
+   "  ZeroReflection(n=20): And x18, And\u2020 x18, CZPowGate x1, XGate x2"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 41,
+   "bloq": "ZeroReflection(n=20)"
+  },
+  "leaves": {
+   "AND/cv=00": 1,
+   "AND/cv=10": 17,
+   "ANDDG/cv=00": 1,
+   "ANDDG/cv=10": 17,
+   "CZPOW": 1,
+   "X": 2
+  },
+  "T": 72,
+  "rotations": 0,
+  "peak_qubits": 38,
+  "peak_qubits_q04_order": 38,
+  "pyliqtr_estimate": {
+   "T": 72,
+   "rotations": 0
+  }
+ },
+ {
+  "name": "GroverIterate(dense, b=2, M=1)",
+  "bloq": "Q",
+  "registers": "anc: QBit(), sel: QUInt(1), sigma: QAny(4), alt: QBit(), keep: QAny(4), lte: QBit(), f[1]: QBit(), t[1]: QUInt(2), j[2]: QUInt(2), a[1]: QBit(), phase_grad: QFxp(5, 5)",
+  "tree": [
+   "Q: A_Re x1, Adjoint(subbloq=A_Re) x1, ReflectZero(cell=Cell(family='dense', access='flat', b=2, M=1, b_t=2, w_phi=5, sel_precision=0.05, bv=0, bpsi=0, mu_T=1. x2",
+   "  Adjoint(subbloq=A_Re): Adjoint(subbloq=W) x1, Hadamard x2",
+   "    Adjoint(subbloq=W): Adjoint(subbloq=C-X) x1, Adjoint(subbloq=P) x1, P x1",
+   "      Adjoint(subbloq=P): Adjoint(subbloq=AliasSampler(N=2, mu=4)) x1, Adjoint(subbloq=Flags) x1, Adjoint(subbloq=Time(2)) x1",
+   "        Adjoint(subbloq=AliasSampler(N=2, mu=4)): Adjoint(subbloq=H\u2a024) x1, Adjoint(subbloq=LessThanEqual) x1, Adjoint(subbloq=PrepareUniformSuperposition) x1, Adjoint(subbloq=QROM) x1, CSwap(1) x1",
+   "          Adjoint(subbloq=LessThanEqual): BiQubitsMixer(is_adjoint=False) x3, BiQubitsMixer(is_adjoint=True) x3, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "            BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "            BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "            SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "            SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "          Adjoint(subbloq=H\u2a024): Hadamard x4",
+   "          Adjoint(subbloq=PrepareUniformSuperposition): Hadamard x1",
+   "          Adjoint(subbloq=QROM): CNOT x1, XGate x2",
+   "          CSwap(1): And x1, And\u2020 x1, CNOT x3",
+   "        Adjoint(subbloq=Flags): Adjoint(subbloq=LessThanConstant) x1, XGate x1",
+   "          Adjoint(subbloq=LessThanConstant): And x1, And\u2020 x1, CNOT x3, XGate x4",
+   "        Adjoint(subbloq=Time(2)): Ry x2",
+   "      Adjoint(subbloq=C-X): Adjoint(subbloq=C_1) x1, Adjoint(subbloq=D(t)) x1, Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x1, And\u2020 x1, C-H^2 x3, PhaseGradAdd(2,2) x1",
+   "        Adjoint(subbloq=C_1): Adjoint(subbloq=C-R^dag) x1, Adjoint(subbloq=Z^1.19591) x1",
+   "          Adjoint(subbloq=Z^1.19591): ZPowGate x1",
+   "          Adjoint(subbloq=C-R^dag): A_chi^c x3, CAdd(2) x1, CNOT x2, Phase(|1000>, 0.3918pi) x1, Phase(|10>, 0.3918pi) x1",
+   "            A_chi^c: And x1, And\u2020 x1, C-H^2 x1, Hadamard x2",
+   "              C-H^2: CH x2",
+   "                CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "            Phase(|10>, 0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "            Phase(|1000>, 0.3918pi): And x3, And\u2020 x3, ZPowGate x1",
+   "            CAdd(2): Add x1, And x2, And\u2020 x2",
+   "              Add: And x1, And\u2020 x1, CNOT x3",
+   "        Adjoint(subbloq=PhaseGradAdd(2,2)): Adjoint(subbloq=+= (2 bits into 2)) x1",
+   "          Adjoint(subbloq=+= (2 bits into 2)): CNOT x1, CZPowGate x1, ZGate x1",
+   "        Adjoint(subbloq=D(t)): Adjoint(subbloq=PhaseGradAdd(3,4)) x1, Adjoint(subbloq=PhaseGradAdd(3,5)) x1, And x4, And\u2020 x4",
+   "          Adjoint(subbloq=PhaseGradAdd(3,4)): Adjoint(subbloq=+= (3 bits into 4)) x1",
+   "            Adjoint(subbloq=+= (3 bits into 4)): And x2, And\u2020 x2, CNOT x11, CZPowGate x1, ZGate x1",
+   "          Adjoint(subbloq=PhaseGradAdd(3,5)): Adjoint(subbloq=+= (3 bits into 5)) x1",
+   "            Adjoint(subbloq=+= (3 bits into 5)): And x3, And\u2020 x3, CNOT x14, CZPowGate x1",
+   "        PhaseGradAdd(2,2): += (2 bits into 2) x1",
+   "          += (2 bits into 2): CNOT x1, CZPowGate x1, ZGate x1",
+   "      P: AliasSampler(N=2, mu=4) x1, Flags x1, Time(2) x1",
+   "        AliasSampler(N=2, mu=4): CSwap(1) x1, H\u2a024 x1, LessThanEqual x1, PrepareUniformSuperposition x1, QROM x1",
+   "          LessThanEqual: BiQubitsMixer(is_adjoint=False) x3, BiQubitsMixer(is_adjoint=True) x3, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "          H\u2a024: Hadamard x4",
+   "          PrepareUniformSuperposition: Hadamard x1",
+   "          QROM: CNOT x1, XGate x2",
+   "        Flags: LessThanConstant x1, XGate x1",
+   "          LessThanConstant: And x1, And\u2020 x1, CNOT x3, XGate x4",
+   "        Time(2): Ry x2",
+   "  A_Re: Hadamard x2, W x1",
+   "    W: Adjoint(subbloq=P) x1, C-X x1, P x1",
+   "      C-X: Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x1, And\u2020 x1, C-H^2 x3, C_1 x1, D(t) x1, PhaseGradAdd(2,2) x1",
+   "        C_1: C-R^dag x1, Z^1.19591 x1",
+   "          Z^1.19591: ZPowGate x1",
+   "          C-R^dag: A_chi^c x3, Adjoint(subbloq=CAdd(2)) x1, CNOT x2, Phase(|1000>, -0.3918pi) x1, Phase(|10>, -0.3918pi) x1",
+   "            Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "              Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "            Phase(|10>, -0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "            Phase(|1000>, -0.3918pi): And x3, And\u2020 x3, ZPowGate x1",
+   "        D(t): And x4, And\u2020 x4, PhaseGradAdd(3,4) x1, PhaseGradAdd(3,5) x1",
+   "          PhaseGradAdd(3,4): += (3 bits into 4) x1",
+   "            += (3 bits into 4): And x2, And\u2020 x2, CNOT x11, CZPowGate x1, ZGate x1",
+   "          PhaseGradAdd(3,5): += (3 bits into 5) x1",
+   "            += (3 bits into 5): And x3, And\u2020 x3, CNOT x14, CZPowGate x1",
+   "  ReflectZero(cell=Cell(family='dense', access='flat', b=2, M=1, b_t=2, w_phi=5, sel_precision=0.05, bv=0, bpsi=0, mu_T=1.: ZeroReflection(n=20) x1",
+   "    ZeroReflection(n=20): And x18, And\u2020 x18, CZPowGate x1, XGate x2"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 41,
+   "bloq": "Adjoint(subbloq=C-X)"
+  },
+  "leaves": {
+   "AND": 58,
+   "AND/cv=00": 2,
+   "AND/cv=01": 4,
+   "AND/cv=10": 48,
+   "ANDDG": 58,
+   "ANDDG/cv=00": 2,
+   "ANDDG/cv=01": 4,
+   "ANDDG/cv=10": 48,
+   "CNOT": 368,
+   "CZPOW": 10,
+   "H": 84,
+   "RY": 8,
+   "S": 24,
+   "SDG": 24,
+   "T": 24,
+   "TDG": 24,
+   "X": 68,
+   "Z": 6,
+   "ZPOW": 6
+  },
+  "T": 496,
+  "rotations": 14,
+  "peak_qubits": 43,
+  "peak_qubits_q04_order": 43,
+  "pyliqtr_estimate": {
+   "T": 488,
+   "rotations": 14,
+   "counted_directly": {
+    "LessThanConstant(bitsize=1, less_than_val=1)": 2
+   }
+  }
+ },
+ {
+  "name": "GroverIterate(PD tables, b=2, M=2)",
+  "bloq": "Q",
+  "registers": "anc: QBit(), sel: QUInt(2), sigma: QAny(3), alt: QAny(2), keep: QAny(3), lte: QBit(), f[2]: QBit(), t[2]: QUInt(1), p2: QBit(), j[3]: QUInt(2), a[2]: QBit(), m[2]: QUInt(4), g[2]: QBit(), phase_grad: QFxp(6, 6)",
+  "tree": [
+   "Q: A_Re x1, Adjoint(subbloq=A_Re) x1, ReflectZero(cell=Cell(family='PD', access='T', b=2, M=2, b_t=1, w_phi=6, sel_precision=0.05, bv=4, bpsi=6, mu_T=1.0, r_c x2",
+   "  Adjoint(subbloq=A_Re): Adjoint(subbloq=W) x1, Hadamard x2",
+   "    Adjoint(subbloq=W): Adjoint(subbloq=C-X) x1, Adjoint(subbloq=P) x1, P x1",
+   "      Adjoint(subbloq=P): Adjoint(subbloq=AliasSampler(N=3, mu=3)) x1, Adjoint(subbloq=Flags) x1, Adjoint(subbloq=PrepareUniformSuperposition(n=2, cvs=())) x1, Adjoint(subbloq=Sort) x1, Adjoint(subbloq=Time(1)) x2",
+   "        Adjoint(subbloq=AliasSampler(N=3, mu=3)): Adjoint(subbloq=H\u2a023) x1, Adjoint(subbloq=LessThanEqual(x_bitsize=3, y_bitsize=3)) x1, Adjoint(subbloq=PrepareUniformSuperposition(n=3, cvs=())) x1, Adjoint(subbloq=QROM) x1, CSwap(2) x1",
+   "          Adjoint(subbloq=LessThanEqual(x_bitsize=3, y_bitsize=3)): BiQubitsMixer(is_adjoint=False) x2, BiQubitsMixer(is_adjoint=True) x2, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "            BiQubitsMixer(is_adjoint=False): And x2, CNOT x9, XGate x1",
+   "            BiQubitsMixer(is_adjoint=True): And\u2020 x2, CNOT x9, XGate x1",
+   "            SingleQubitCompare(is_adjoint=False): And x1, CNOT x4, XGate x1",
+   "            SingleQubitCompare(is_adjoint=True): And\u2020 x1, CNOT x4, XGate x1",
+   "          Adjoint(subbloq=H\u2a023): Hadamard x3",
+   "          Adjoint(subbloq=PrepareUniformSuperposition(n=3, cvs=())): Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=3)) x2, And x1, And\u2020 x1, Hadamard x6, Rz x2",
+   "            Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=3)): And x2, And\u2020 x2, CNOT x6, XGate x6",
+   "          Adjoint(subbloq=QROM): And x1, And\u2020 x1, CNOT x2, XGate x2",
+   "          CSwap(2): And x2, And\u2020 x2, CNOT x6",
+   "        Adjoint(subbloq=Sort): Adjoint(subbloq=BitonicSort) x1",
+   "          Adjoint(subbloq=BitonicSort): Adjoint(subbloq=Comparator) x1",
+   "            Adjoint(subbloq=Comparator): Adjoint(subbloq=GreaterThan) x1, CSwap(2) x1",
+   "              Adjoint(subbloq=GreaterThan): Adjoint(subbloq=LessThanEqual(x_bitsize=2, y_bitsize=2)) x1, XGate x1",
+   "                Adjoint(subbloq=LessThanEqual(x_bitsize=2, y_bitsize=2)): BiQubitsMixer(is_adjoint=False) x1, BiQubitsMixer(is_adjoint=True) x1, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "        Adjoint(subbloq=PrepareUniformSuperposition(n=2, cvs=())): Hadamard x1",
+   "        Adjoint(subbloq=Flags): Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=1)) x1, Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=2)) x1, XGate x2",
+   "          Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=1)): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "          Adjoint(subbloq=LessThanConstant(bitsize=2, less_than_val=2)): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "        Adjoint(subbloq=Time(1)): Ry x1",
+   "      Adjoint(subbloq=C-X): Adjoint(subbloq=C_1) x1, Adjoint(subbloq=C_2) x1, Adjoint(subbloq=D(t)) x2, Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x2, And\u2020 x2, C-H^2 x4, PhaseGradAdd(2,2) x1",
+   "        Adjoint(subbloq=C_1): Adjoint(subbloq=Access(PD-T)) x1, Adjoint(subbloq=C-R^dag) x1, Adjoint(subbloq=Z^1.19591) x1",
+   "          Adjoint(subbloq=Z^1.19591): ZPowGate x1",
+   "          Adjoint(subbloq=C-R^dag): A_chi^c x3, CAdd(2) x1, CNOT x2, Phase(|1000>, 0.3918pi) x1, Phase(|10>, 0.3918pi) x1",
+   "            A_chi^c: And x1, And\u2020 x1, C-H^2 x1, Hadamard x2",
+   "              C-H^2: CH x2",
+   "                CH: CNOT x1, Hadamard x2, SGate x1, SGate\u2020 x1, TGate x1, TGate\u2020 x1",
+   "            Phase(|10>, 0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "            Phase(|1000>, 0.3918pi): And x3, And\u2020 x3, ZPowGate x1",
+   "            CAdd(2): Add x1, And x2, And\u2020 x2",
+   "              Add: And x1, And\u2020 x1, CNOT x3",
+   "          Adjoint(subbloq=Access(PD-T)): Adjoint(subbloq=C-PhaseGradAdd(6,6)) x1, Adjoint(subbloq=[m<W]) x1, Lookup x1, LookupUncompute(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='look x1",
+   "            Adjoint(subbloq=[m<W]): And x1, And\u2020 x1, CNOT x1, Hadamard x8, HalfLessThan(5) x1, HalfLessThan(5)^-1 x1",
+   "              HalfLessThan(5): BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=6, is_adjoint=False) x1",
+   "                BitwiseNot: XGate x6",
+   "                OutOfPlaceAdder(bitsize=6, is_adjoint=False): And x5, CNOT x27",
+   "              HalfLessThan(5)^-1: BitwiseNot x3, CNOT x1, OutOfPlaceAdder(bitsize=6, is_adjoint=True) x1",
+   "                OutOfPlaceAdder(bitsize=6, is_adjoint=True): And\u2020 x5, CNOT x27",
+   "            Adjoint(subbloq=C-PhaseGradAdd(6,6)): Adjoint(subbloq=+= (5 bits into 6)) x1, And x5, And\u2020 x5, CZPowGate x1",
+   "              Adjoint(subbloq=+= (5 bits into 6)): And x4, And\u2020 x4, CNOT x23, CZPowGate x1, ZGate x1",
+   "            LookupUncompute(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='look: Adjoint(subbloq=OneHot(1)) x1, MeasureX(width=11, key='lookup', slot=0) x1, OneHot(1) x1, PhaseFixup(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='lookup') x1",
+   "              MeasureX(width=11, key='lookup', slot=0): measured (cirq): H x11, measure x11, reset x11",
+   "              Adjoint(subbloq=OneHot(1)): CNOT x2, XGate x1",
+   "              OneHot(1): CNOT x2, XGate x1",
+   "              PhaseFixup(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='lookup'): PhaseLeaf(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='lookup', h x2",
+   "                PhaseLeaf(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='lookup', h: measured (cirq): CZ if parity x2, X x4; conditions on up to 4 outcomes",
+   "                PhaseLeaf(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='lookup', h: measured (cirq): CZ if parity x2; conditions on up to 3 outcomes",
+   "            Lookup: UnaryLoad(4 blocks) x1",
+   "              UnaryLoad(4 blocks): LoadNode(level 0, prefix 0) x1, LoadNode(level 0, prefix 1) x1",
+   "                LoadNode(level 0, prefix 0): And x1, And\u2020 x1, CNOT x1, Load[0] x1, Load[1] x1, XGate x2",
+   "                  Load[0]: FanOut(11, 0x408) x1",
+   "                    FanOut(11, 0x408): CNOT x2",
+   "                  Load[1]: FanOut(11, 0x382) x1",
+   "                    FanOut(11, 0x382): CNOT x4",
+   "                LoadNode(level 0, prefix 1): And x1, And\u2020 x1, CNOT x1, Load[2] x1, Load[3] x1",
+   "                  Load[2]: FanOut(11, 0x300) x1",
+   "                    FanOut(11, 0x300): CNOT x2",
+   "                  Load[3]: FanOut(11, 0x282) x1",
+   "                    FanOut(11, 0x282): CNOT x3",
+   "        Adjoint(subbloq=C_2): Adjoint(subbloq=Access(PD-T)) x1, Adjoint(subbloq=C-R^dag) x1, Adjoint(subbloq=Z^1.19591) x1, Route x1, Route^-1 x1",
+   "          Route: CSwap(2) x1",
+   "          Route^-1: CSwap(2) x1",
+   "        Adjoint(subbloq=PhaseGradAdd(2,2)): Adjoint(subbloq=+= (2 bits into 2)) x1",
+   "          Adjoint(subbloq=+= (2 bits into 2)): CNOT x1, CZPowGate x1, ZGate x1",
+   "        Adjoint(subbloq=D(t)): Adjoint(subbloq=PhaseGradAdd(2,3)) x1, Adjoint(subbloq=PhaseGradAdd(2,4)) x1, And x2, And\u2020 x2",
+   "          Adjoint(subbloq=PhaseGradAdd(2,3)): Adjoint(subbloq=+= (2 bits into 3)) x1",
+   "            Adjoint(subbloq=+= (2 bits into 3)): And x1, And\u2020 x1, CNOT x5, CZPowGate x1, ZGate x1",
+   "          Adjoint(subbloq=PhaseGradAdd(2,4)): Adjoint(subbloq=+= (2 bits into 4)) x1",
+   "            Adjoint(subbloq=+= (2 bits into 4)): And x2, And\u2020 x2, CNOT x8, CZPowGate x1",
+   "        PhaseGradAdd(2,2): += (2 bits into 2) x1",
+   "          += (2 bits into 2): CNOT x1, CZPowGate x1, ZGate x1",
+   "      P: AliasSampler(N=3, mu=3) x1, Flags x1, PrepareUniformSuperposition(n=2, cvs=()) x1, Sort x1, Time(1) x2",
+   "        AliasSampler(N=3, mu=3): CSwap(2) x1, H\u2a023 x1, LessThanEqual(x_bitsize=3, y_bitsize=3) x1, PrepareUniformSuperposition(n=3, cvs=()) x1, QROM x1",
+   "          LessThanEqual(x_bitsize=3, y_bitsize=3): BiQubitsMixer(is_adjoint=False) x2, BiQubitsMixer(is_adjoint=True) x2, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "          H\u2a023: Hadamard x3",
+   "          PrepareUniformSuperposition(n=3, cvs=()): And x1, And\u2020 x1, Hadamard x6, LessThanConstant(bitsize=2, less_than_val=3) x2, Rz x2",
+   "            LessThanConstant(bitsize=2, less_than_val=3): And x2, And\u2020 x2, CNOT x6, XGate x6",
+   "          QROM: And x1, And\u2020 x1, CNOT x2, XGate x2",
+   "        Sort: BitonicSort x1",
+   "          BitonicSort: Comparator x1",
+   "            Comparator: CSwap(2) x1, GreaterThan x1",
+   "              GreaterThan: LessThanEqual(x_bitsize=2, y_bitsize=2) x1, XGate x1",
+   "                LessThanEqual(x_bitsize=2, y_bitsize=2): BiQubitsMixer(is_adjoint=False) x1, BiQubitsMixer(is_adjoint=True) x1, CNOT x1, SingleQubitCompare(is_adjoint=False) x1, SingleQubitCompare(is_adjoint=True) x1, XGate x1",
+   "        PrepareUniformSuperposition(n=2, cvs=()): Hadamard x1",
+   "        Flags: LessThanConstant(bitsize=2, less_than_val=1) x1, LessThanConstant(bitsize=2, less_than_val=2) x1, XGate x2",
+   "          LessThanConstant(bitsize=2, less_than_val=1): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "          LessThanConstant(bitsize=2, less_than_val=2): And x2, And\u2020 x2, CNOT x5, XGate x4",
+   "        Time(1): Ry x1",
+   "  A_Re: Hadamard x2, W x1",
+   "    W: Adjoint(subbloq=P) x1, C-X x1, P x1",
+   "      C-X: Adjoint(subbloq=PhaseGradAdd(2,2)) x1, And x2, And\u2020 x2, C-H^2 x4, C_1 x1, C_2 x1, D(t) x2, PhaseGradAdd(2,2) x1",
+   "        C_1: Access(PD-T) x1, C-R^dag x1, Z^1.19591 x1",
+   "          Z^1.19591: ZPowGate x1",
+   "          C-R^dag: A_chi^c x3, Adjoint(subbloq=CAdd(2)) x1, CNOT x2, Phase(|1000>, -0.3918pi) x1, Phase(|10>, -0.3918pi) x1",
+   "            Adjoint(subbloq=CAdd(2)): Adjoint(subbloq=Add) x1, And x2, And\u2020 x2",
+   "              Adjoint(subbloq=Add): And x1, And\u2020 x1, CNOT x3",
+   "            Phase(|10>, -0.3918pi): And x1, And\u2020 x1, ZPowGate x1",
+   "            Phase(|1000>, -0.3918pi): And x3, And\u2020 x3, ZPowGate x1",
+   "          Access(PD-T): C-PhaseGradAdd(6,6) x1, Lookup x1, LookupUncompute(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='rowd x1, [m<W] x1",
+   "            [m<W]: And x1, And\u2020 x1, CNOT x1, Hadamard x8, HalfLessThan(5) x1, HalfLessThan(5)^-1 x1",
+   "            LookupUncompute(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='rowd: Adjoint(subbloq=OneHot(1)) x1, MeasureX(width=11, key='rowdata', slot=0) x1, OneHot(1) x1, PhaseFixup(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='rowdata') x1",
+   "              MeasureX(width=11, key='rowdata', slot=0): measured (cirq): H x11, measure x11, reset x11",
+   "              PhaseFixup(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='rowdata'): PhaseLeaf(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='rowdata',  x2",
+   "                PhaseLeaf(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='rowdata', : measured (cirq): CZ if parity x2, X x4; conditions on up to 4 outcomes",
+   "                PhaseLeaf(spec=LookupSpec(index_bits=2, widths=(5, 6), log_block=0, log_block_unc=1, digest=71f32a4021), key='rowdata', : measured (cirq): CZ if parity x2; conditions on up to 3 outcomes",
+   "            C-PhaseGradAdd(6,6): += (5 bits into 6) x1, And x5, And\u2020 x5, CZPowGate x1",
+   "              += (5 bits into 6): And x4, And\u2020 x4, CNOT x23, CZPowGate x1, ZGate x1",
+   "        C_2: Access(PD-T) x1, C-R^dag x1, Route x1, Route^-1 x1, Z^1.19591 x1",
+   "        D(t): And x2, And\u2020 x2, PhaseGradAdd(2,3) x1, PhaseGradAdd(2,4) x1",
+   "          PhaseGradAdd(2,3): += (2 bits into 3) x1",
+   "            += (2 bits into 3): And x1, And\u2020 x1, CNOT x5, CZPowGate x1, ZGate x1",
+   "          PhaseGradAdd(2,4): += (2 bits into 4) x1",
+   "            += (2 bits into 4): And x2, And\u2020 x2, CNOT x8, CZPowGate x1",
+   "  ReflectZero(cell=Cell(family='PD', access='T', b=2, M=2, b_t=1, w_phi=6, sel_precision=0.05, bv=4, bpsi=6, mu_T=1.0, r_c: ZeroReflection(n=35) x1",
+   "    ZeroReflection(n=35): And x33, And\u2020 x33, CZPowGate x1, XGate x2"
+  ],
+  "largest_decomposition": {
+   "bloq_instances": 71,
+   "bloq": "ZeroReflection(n=35)"
+  },
+  "leaves": {
+   "AND": 174,
+   "AND/cv=00": 10,
+   "AND/cv=01": 8,
+   "AND/cv=10": 102,
+   "ANDDG": 178,
+   "ANDDG/cv=00": 6,
+   "ANDDG/cv=01": 12,
+   "ANDDG/cv=10": 98,
+   "CNOT": 960,
+   "CZPOW": 22,
+   "CZ_IF": 16,
+   "H": 180,
+   "MX": 44,
+   "RY": 8,
+   "RZ": 8,
+   "S": 40,
+   "SDG": 40,
+   "T": 40,
+   "TDG": 40,
+   "X": 328,
+   "Z": 12,
+   "ZPOW": 12
+  },
+  "T": 1256,
+  "rotations": 28,
+  "peak_qubits": 74,
+  "peak_qubits_q04_order": 74,
+  "pyliqtr_estimate": {
+   "T": 1256,
+   "rotations": 28
+  }
+ }
+]

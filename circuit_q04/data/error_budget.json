@@ -1,0 +1,173 @@
+{
+ "dense eps=0.01": {
+  "eps": 0.01,
+  "M": 1,
+  "b_t": 7,
+  "certificate": "(inf,1)",
+  "truncation": 0.0012180000000000001,
+  "time": 0.000713,
+  "selector": 9.7e-05,
+  "rotations": 0.00013,
+  "readout": 0.007842,
+  "fractions": [
+   0.1218,
+   0.0713,
+   0.0097,
+   0.013,
+   0.7842
+  ],
+  "source": "rescost/A1_build/costs_access.csv, best reading (split_sym)"
+ },
+ "dense eps=1e-06": {
+  "eps": 1e-06,
+  "M": 4,
+  "b_t": 21,
+  "certificate": "(inf,1)",
+  "truncation": 2.127e-07,
+  "time": 5.1299999999999996e-08,
+  "selector": 3e-09,
+  "rotations": 1.3899999999999999e-08,
+  "readout": 7.190999999999999e-07,
+  "fractions": [
+   0.2127,
+   0.0513,
+   0.003,
+   0.0139,
+   0.7191
+  ],
+  "source": "rescost/A1_build/costs_access.csv, best reading (split_sym)"
+ },
+ "PD-F eps=0.01": {
+  "eps": 0.01,
+  "M": 1,
+  "b_t": 8,
+  "certificate": "(inf,1)",
+  "truncation": 0.0012180000000000001,
+  "time": 0.00035700000000000006,
+  "selector": 9.7e-05,
+  "rotations": 5.8e-05,
+  "readout": 0.008270999999999999,
+  "fractions": [
+   0.1218,
+   0.0357,
+   0.0097,
+   0.0058,
+   0.8271
+  ],
+  "source": "rescost/A1_build/costs_access.csv, best reading (split_sym)"
+ },
+ "PD-F eps=1e-06": {
+  "eps": 1e-06,
+  "M": 4,
+  "b_t": 22,
+  "certificate": "(inf,1)",
+  "truncation": 2.127e-07,
+  "time": 2.57e-08,
+  "selector": 3e-09,
+  "rotations": 1.1499999999999999e-08,
+  "readout": 7.471999999999999e-07,
+  "fractions": [
+   0.2127,
+   0.0257,
+   0.003,
+   0.0115,
+   0.7472
+  ],
+  "source": "rescost/A1_build/costs_access.csv, best reading (split_sym)"
+ },
+ "PD-T eps=0.01": {
+  "eps": 0.01,
+  "M": 1,
+  "b_t": 10,
+  "certificate": "(inf,1)",
+  "truncation": 0.0012180000000000001,
+  "time": 8.9e-05,
+  "selector": 4.7999999999999994e-05,
+  "rotations": 9e-06,
+  "readout": 0.008636000000000001,
+  "fractions": [
+   0.1218,
+   0.0089,
+   0.0048,
+   0.0009,
+   0.8636
+  ],
+  "source": "rescost/A1_build/costs_access.csv, best reading (split_sym)"
+ },
+ "PD-T eps=1e-06": {
+  "eps": 1e-06,
+  "M": 4,
+  "b_t": 23,
+  "certificate": "(inf,1)",
+  "truncation": 2.127e-07,
+  "time": 1.28e-08,
+  "selector": 1.5e-09,
+  "rotations": 1.9e-09,
+  "readout": 7.711e-07,
+  "fractions": [
+   0.2127,
+   0.0128,
+   0.0015,
+   0.0019,
+   0.7711
+  ],
+  "source": "rescost/A1_build/costs_access.csv, best reading (split_sym)"
+ },
+ "sparse eps=1e-06": {
+  "eps": 1e-06,
+  "M": 1,
+  "b_t": 21,
+  "certificate": "(inf,1)",
+  "truncation": 2.2e-09,
+  "time": 4.349999999999999e-08,
+  "selector": 1.18e-08,
+  "rotations": 1.9599999999999997e-08,
+  "readout": 9.229e-07,
+  "fractions": [
+   0.0022,
+   0.0435,
+   0.0118,
+   0.0196,
+   0.9229
+  ],
+  "source": "rescost/A1_build/costs_access.csv, best reading (split_sym)"
+ },
+ "PS-T eps=1e-06": {
+  "eps": 1e-06,
+  "M": 1,
+  "b_t": 23,
+  "certificate": "(inf,1)",
+  "truncation": 2.2e-09,
+  "time": 1.09e-08,
+  "selector": 5.9e-09,
+  "rotations": 2.7e-09,
+  "readout": 9.782999999999998e-07,
+  "fractions": [
+   0.0022,
+   0.0109,
+   0.0059,
+   0.0027,
+   0.9783
+  ],
+  "source": "rescost/A1_build/costs_access.csv, best reading (split_sym)"
+ },
+ "PS-F eps=1e-06": {
+  "eps": 1e-06,
+  "M": 1,
+  "b_t": 21,
+  "certificate": "(inf,1)",
+  "truncation": 2.2e-09,
+  "time": 4.349999999999999e-08,
+  "selector": 1.18e-08,
+  "rotations": 1.55e-08,
+  "readout": 9.268999999999999e-07,
+  "fractions": [
+   0.0022,
+   0.0435,
+   0.0118,
+   0.0155,
+   0.9269
+  ],
+  "source": "rescost/A1_build/costs_access.csv, best reading (split_sym)"
+ }
+}

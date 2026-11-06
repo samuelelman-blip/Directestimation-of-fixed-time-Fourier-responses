@@ -1,0 +1,3 @@
+qualtran==0.4.0
+pyLIQTR==1.4.2      # pins qualtran==0.4.0; brings cirq-core 1.4.0 and numpy 1.26
+pytest>=7
