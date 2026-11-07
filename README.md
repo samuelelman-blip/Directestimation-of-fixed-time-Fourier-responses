@@ -11,6 +11,13 @@ Everything is in one package, `circuit_q04/`. Its own [README](circuit_q04/READM
 circuit bloq by bloq; this page says what is here, how to run it, and where each number in the paper
 comes from.
 
+## The talk
+
+`talk/Direct_Fourier_Responses.html` is the slide deck for the talk on this work, as a single
+self-contained page: download it and open it in a browser. Press Play to run the talk with
+captions, use the arrow keys to step through by hand, N for the speaker notes and F for full
+screen.
+
 ## What is here
 
 | path | |
@@ -20,6 +27,7 @@ comes from.
 | `circuit_q04/tools/` | the scripts that produced the data and figures (gate counts, error checks, the n = 2^40 point, plots, a compiler probe) |
 | `circuit_q04/data/` | the costed configurations and their counts, the error budget, the error checks, and the recorded counts of the earlier Qualtran 0.7 version of the circuit |
 | `circuit_q04/figures/` | the comparison figures and the numbers plotted, as CSV |
+| `talk/` | the slide deck of the talk, as one HTML file |
 
 ## Running it
 
