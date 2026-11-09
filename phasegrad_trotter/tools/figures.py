@@ -15,8 +15,9 @@ FIG = os.path.join(HERE, '..', 'figures')
 
 # one colour per method, in a fixed order, with a marker and a line style as well
 STYLE = {
-    'gridsynth': dict(color='#2a78d6', ls='--', marker=None, label='gridsynth (synthesised)'),
-    'fallback': dict(color='#eb6834', ls='--', marker=None, label='mixed fallback (formula)'),
+    'gridsynth': dict(color='#2a78d6', ls='--', marker=None, label='gridsynth'),
+    'bothe': dict(color='#eb6834', ls='--', marker=None, label='Bothe et al., fallback'),
+    'bothe_af': dict(color='#008300', ls='-.', marker=None, label='Bothe et al., ancilla-free'),
     'det': dict(color='#1baf7a', ls='-', marker='o', label='gradient, nearest'),
     'rand': dict(color='#eda100', ls='-', marker='s', label='gradient, randomised'),
     'sparse': dict(color='#e87ba4', ls='-', marker='^', label='gradient, sparse pair'),
@@ -45,17 +46,20 @@ def fig_layer():
     epss = (1e-6, 1e-10, 1e-14)
     fig, axs = plt.subplots(1, 3, figsize=(7.0, 2.4), sharey=False)
     for ax, eps in zip(axs, epss):
+        rs = [r for r in d['rows'] if r['eps'] == eps and r['mode'] == 'rand']
+        x = np.array([r['theta'] for r in rs])
+        st = STYLE['gridsynth']
+        ax.axhline(d['gridsynth'][str(eps)], color=st['color'], ls=st['ls'], label=st['label'])
+        for m, key in (('bothe', 'bothe_fallback'), ('bothe_af', 'bothe_ancilla_free')):
+            st = STYLE[m]
+            ax.plot(x, [r[key] for r in rs], color=st['color'], ls=st['ls'], label=st['label'])
         for mode in ('det', 'rand', 'sparse'):
             rs = [r for r in d['rows'] if r['eps'] == eps and r['mode'] == mode]
-            x = np.array([r['theta'] for r in rs])
-            y = np.array([r['t_per_rot'] for r in rs])
             st = STYLE[mode]
-            ax.plot(x, y, color=st['color'], ls=st['ls'], marker=st['marker'], label=st['label'])
-        for m in ('gridsynth', 'fallback'):
-            st = STYLE[m]
-            ax.axhline(d[m][str(eps)], color=st['color'], ls=st['ls'], label=st['label'])
+            ax.plot([r['theta'] for r in rs], [r['t_per_rot'] for r in rs], color=st['color'],
+                    ls=st['ls'], marker=st['marker'], label=st['label'])
         ax.axvline(np.sqrt(eps), color=INK2, lw=0.6, ls=':')
-        ax.text(np.sqrt(eps) * 1.4, 0.93 * d['gridsynth'][str(eps)], r'$\theta=\sqrt{\epsilon}$',
+        ax.text(np.sqrt(eps) * 1.4, 0.97 * d['gridsynth'][str(eps)], r'$\theta=\sqrt{\epsilon}$',
                 color=INK2, fontsize=6.5, va='top')
         ax.set_xscale('log')
         ax.set_xlim(2e-9, 1.3)
@@ -64,7 +68,8 @@ def fig_layer():
         ax.set_xlabel(r'angle scale $\theta$')
     axs[0].set_ylabel('T gates per rotation')
     h, l = axs[0].get_legend_handles_labels()
-    fig.legend(h, l, loc='upper center', ncol=5, frameon=False, bbox_to_anchor=(0.5, 1.08))
+    fig.legend(h, l, loc='upper center', ncol=6, frameon=False, bbox_to_anchor=(0.5, 1.08),
+               fontsize=6.3)
     save(fig, 'fig_layer')
 
 
@@ -79,9 +84,11 @@ def fig_batch():
                     label=st['label'])
         axs[1].plot(B, [r['peak_ancilla'] for r in rs], color=st['color'], marker=st['marker'],
                     label=st['label'])
-    for m in ('gridsynth', 'fallback'):
-        st = STYLE[m]
-        axs[0].axhline(d[m]['1e-10'], color=st['color'], ls=st['ls'], label=st['label'])
+    st = STYLE['gridsynth']
+    axs[0].axhline(d['gridsynth']['1e-10'], color=st['color'], ls=st['ls'], label=st['label'])
+    st = STYLE['bothe']
+    bt = d['batches'][0]['bothe_fallback']
+    axs[0].axhline(bt, color=st['color'], ls=st['ls'], label=st['label'])
     for ax in axs:
         ax.set_xscale('log', base=2)
         ax.set_xlabel('batch size $B$')
@@ -96,21 +103,29 @@ def fig_batch():
 
 def fig_trotter():
     d = json.load(open(os.path.join(DATA, 'trotter.json')))
-    fig, axs = plt.subplots(1, 2, figsize=(7.0, 2.5), sharey=True)
-    for ax, chain in zip(axs, ('random bonds', 'uniform bonds')):
-        for m in ('gridsynth', 'fallback', 'det', 'rand', 'sparse'):
-            rs = [r for r in d['rows'] if r['chain'] == chain and r['method'] == m]
-            st = STYLE[m]
-            ax.plot([r['dt'] for r in rs], [r['t_step'] for r in rs], color=st['color'],
-                    ls=st['ls'], marker=st['marker'], label=st['label'])
-        ax.set_xscale('log')
-        ax.set_yscale('log')
-        ax.set_xlabel(r'Trotter step $\delta t$')
-        ax.set_title(f'{chain}, $n={d["n"]}$', fontsize=8, color=INK)
-        ax.invert_xaxis()
-    axs[0].set_ylabel('T gates per step')
-    h, l = axs[0].get_legend_handles_labels()
-    fig.legend(h, l, loc='upper center', ncol=5, frameon=False, bbox_to_anchor=(0.5, 1.07))
+    fig, axs = plt.subplots(2, 2, figsize=(7.0, 4.6), sharex=True)
+    for i, eps in enumerate(d['eps_totals']):
+        for j, chain in enumerate(('random bonds', 'uniform bonds')):
+            ax = axs[i, j]
+            for m in ('gridsynth', 'bothe', 'bothe_af', 'det', 'rand', 'sparse'):
+                rs = [r for r in d['rows'] if r['chain'] == chain and r['method'] == m
+                      and r['eps_total'] == eps]
+                st = STYLE[m]
+                ax.plot([r['dt'] for r in rs], [r['t_step'] for r in rs], color=st['color'],
+                        ls=st['ls'], marker=st['marker'], label=st['label'])
+            ax.set_xscale('log')
+            ax.set_yscale('log')
+            if i == 1:
+                ax.set_xlabel(r'Trotter step $\delta t$')
+            ax.set_title(rf'{chain}, $\epsilon_{{\rm tot}}=10^{{{int(np.log10(eps))}}}$',
+                         fontsize=8, color=INK)
+            if j == 0:
+                ax.set_ylabel('T gates per step')
+    axs[0, 0].invert_xaxis()
+    h, l = axs[0, 0].get_legend_handles_labels()
+    fig.legend(h, l, loc='upper center', ncol=6, frameon=False, bbox_to_anchor=(0.5, 1.03),
+               fontsize=6.3)
+    fig.tight_layout(rect=(0, 0, 1, 0.97))
     save(fig, 'fig_trotter')
 
 

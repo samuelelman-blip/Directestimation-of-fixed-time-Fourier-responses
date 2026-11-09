@@ -24,7 +24,9 @@ from typing import Dict, List, Optional, Sequence, Tuple
 import numpy as np
 
 from .circuit import Circ, _Compute, compile_layer
-from .digits import grid, mixing_probability, round_nearest, sparse_pair
+from .digits import digits_mod
+from . import bothe
+from .digits import grid, mixing_probability, naf_weight, round_nearest, sparse_pair, wrap
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, '..', 'data')
@@ -95,15 +97,43 @@ def choose_K(theta: float, eps: float, mode: str, rng: np.random.Generator) -> T
     return (K_hi if rng.random() < q else K_lo), b
 
 
-def layer_cost(classes: Sequence, b: int, batch: Optional[int] = None) -> Dict[str, int]:
-    """Counts of compile_layer over batches of at most `batch` classes (all in one if None).
-    Each batch is its own compute, gradient addition and uncompute."""
+def _digits(K, n_members: int, b: int) -> int:
+    """Signed digits a class contributes (an estimate for a shared-angle class: its digits times
+    the bits of its Hamming weight)."""
+    if isinstance(K, int):
+        return len(digits_mod(K, b)) * (n_members.bit_length() if n_members > 1 else 1)
+    return sum(len(digits_mod(k, b)) for k in K)
+
+
+def batches(classes: Sequence, b: int, batch: Optional[int] = None,
+            batch_digits: Optional[int] = None) -> List[list]:
+    """Split a layer into batches: at most `batch` classes each, or, with `batch_digits`, as many
+    classes as fit in that many signed digits (at least one), so that the ancillas, which grow
+    with the digits, stay bounded while rotations with no digits cost nothing."""
     classes = list(classes)
-    batch = batch or max(1, len(classes))
+    if batch_digits is None:
+        batch = batch or max(1, len(classes))
+        return [classes[i:i + batch] for i in range(0, len(classes), batch)]
+    out, cur, n = [], [], 0
+    for K, m in classes:
+        d = _digits(K, len(m), b)
+        if cur and n + d > batch_digits:
+            out.append(cur)
+            cur, n = [], 0
+        cur.append((K, m))
+        n += d
+    if cur:
+        out.append(cur)
+    return out
+
+
+def layer_cost(classes: Sequence, b: int, batch: Optional[int] = None,
+               batch_digits: Optional[int] = None) -> Dict[str, int]:
+    """Counts of compile_layer over the batches of `batches`.  Each batch is its own compute,
+    gradient addition and uncompute."""
     out = {'and_compute': 0, 'and_gradient': 0, 't_direct': 0, 'peak_ancilla': 0, 'digits': 0,
            'batches': 0}
-    for i in range(0, len(classes), batch):
-        chunk = classes[i:i + batch]
+    for chunk in batches(classes, b, batch, batch_digits):
         qubits = sorted({q for _, m in chunk for q in m})
         remap = {q: j for j, q in enumerate(qubits)}
         lay = compile_layer([(K, [remap[q] for q in m]) for K, m in chunk], b, len(qubits))
@@ -148,40 +178,97 @@ def heisenberg_layers(J: Sequence[float], h: Sequence[float], dt: float, classes
     return [bond_layer(1), bond_layer(0.5), bond_layer(1) + field, bond_layer(0.5)]
 
 
+def expected_digits(theta: float, eps: float) -> float:
+    """Expected NAF weight of the sparse-pair rounding of theta at error eps (b_rand grid)."""
+    b = b_rand(eps)
+    K_lo, K_hi, q, _ = sparse_pair(theta, b, eps / 2)
+    return (1 - q) * naf_weight(wrap(K_lo, b)) + q * naf_weight(wrap(K_hi, b))
+
+
+SYNTH = ('gridsynth', 'fallback', 'bothe', 'bothe_af')
+
+
+def synth_cost(theta: float, eps: float, method: str) -> float:
+    if method == 'gridsynth':
+        return t_gridsynth(eps)
+    if method == 'fallback':
+        return t_mixed_fallback(eps)
+    if method == 'bothe':
+        return bothe.t_fallback(theta, eps)
+    if method == 'bothe_af':
+        return bothe.t_ancilla_free(theta, eps)
+    raise ValueError(method)
+
+
 def heisenberg_step_cost(J: Sequence[float], h: Sequence[float], dt: float, eps_step: float,
                          method: str, rng: np.random.Generator, batch: Optional[int] = None,
-                         classes: bool = False):
+                         classes: bool = False, batch_digits: Optional[int] = None):
     """T gates of one step at total diamond error eps_step.
 
     The approximated rotations are the single rotations and, for an equal-angle class of n - 1
-    bonds, one rotation per bit of its Hamming weight (m = bit length of n - 1); R of them in all,
-    each given eps_step / R.  method 'gridsynth' or 'fallback': every one synthesised (and the
-    classes summed first by the same Hamming-weight tree); 'det', 'rand' or 'sparse': the
-    phase-gradient layers of circuit.py, batches of at most `batch` rotations or classes.
+    bonds, one rotation per bit of its Hamming weight (m = bit length of n - 1), the bit of
+    weight 2^k by 2^k theta; R of them in all, each given eps_step / R.
+
+    method  'gridsynth', 'fallback' (mixed fallback, angle-independent), 'bothe' (the
+            angle-dependent fallback formula of Bothe et al., Eq. 15) or 'bothe_af' (their
+            ancilla-free formula, Eq. 12): every rotation synthesised, the classes summed first
+            by the same Hamming-weight tree;
+            'det', 'rand' or 'sparse': the phase-gradient layers of circuit.py, batches of at
+            most `batch` rotations or classes;
+            'hybrid': each rotation goes to whichever of 'bothe' and 'sparse' has the lower
+            expected T count (decided before any rounding is drawn).
     """
     n = len(h)
     m = (n - 1).bit_length()
     layers = heisenberg_layers(J, h, dt, classes)
     R = sum(m if kind == 'class' else 1 for layer in layers for kind, _, _ in layer)
-    n_class = sum(1 for layer in layers for kind, _, _ in layer if kind == 'class')
     eps = eps_step / R
-    if method in ('gridsynth', 'fallback'):
-        per = t_gridsynth(eps) if method == 'gridsynth' else t_mixed_fallback(eps)
-        return {'t': 4 * n_class * hw_ands(n - 1) + R * per, 'rotations': R, 'eps_rot': eps}
-    total = {'t': 0, 'and_compute': 0, 'and_gradient': 0, 't_direct': 0, 'peak_ancilla': 0}
+    tree = 4 * hw_ands(n - 1)
+    if method in SYNTH:
+        t = 0.0
+        for layer in layers:
+            for kind, theta, bits in layer:
+                if kind == 'class':
+                    t += tree + sum(synth_cost((2 ** k) * theta, eps, method) for k in range(m))
+                else:
+                    t += synth_cost(theta, eps, method)
+        return {'t': t, 'rotations': R, 'eps_rot': eps, 't_synth': t, 'peak_ancilla': 0}
+    mode = 'sparse' if method == 'hybrid' else method
+    b = b_det(eps) if mode == 'det' else b_rand(eps)
+
+    def to_gradient(theta):
+        if method != 'hybrid':
+            return True
+        return 4 * expected_digits(theta, eps) <= bothe.t_fallback(theta, eps)
+
+    total = {'t': 0.0, 'and_compute': 0, 'and_gradient': 0, 't_direct': 0, 'peak_ancilla': 0,
+             't_synth': 0.0}
     for layer in layers:
         cl = []
-        b = b_det(eps) if method == 'det' else b_rand(eps)
         for kind, theta, bits in layer:
             if kind == 'class':
-                cl.append(([choose_K((2 ** k) * theta, eps, method, rng)[0] for k in range(m)],
-                           bits))
+                Ks = []
+                for k in range(m):
+                    a = (2 ** k) * theta
+                    if to_gradient(a):
+                        Ks.append(choose_K(a, eps, mode, rng)[0])
+                    else:
+                        Ks.append(0)
+                        total['t_synth'] += bothe.t_fallback(a, eps)
+                if any(Ks):
+                    cl.append((Ks, bits))
+                else:
+                    total['t_synth'] += tree
+            elif to_gradient(theta):
+                cl.append((choose_K(theta, eps, mode, rng)[0], bits))
             else:
-                cl.append((choose_K(theta, eps, method, rng)[0], bits))
-        c = layer_cost(cl, b, batch)
-        for key in ('t', 'and_compute', 'and_gradient', 't_direct'):
-            total[key] += c[key]
-        total['peak_ancilla'] = max(total['peak_ancilla'], c['peak_ancilla'])
+                total['t_synth'] += bothe.t_fallback(theta, eps)
+        if cl:
+            c = layer_cost(cl, b, batch, batch_digits)
+            for key in ('t', 'and_compute', 'and_gradient', 't_direct'):
+                total[key] += c[key]
+            total['peak_ancilla'] = max(total['peak_ancilla'], c['peak_ancilla'])
+    total['t'] += total['t_synth']
     total['rotations'] = R
     total['eps_rot'] = eps
     return total

@@ -34,26 +34,27 @@
 
 \begin{abstract}
 A Trotter step of a Hamiltonian with many distinct coefficients is a product of layers of
-commuting Pauli rotations, and a fault-tolerant compilation usually synthesises each rotation on
-its own: about $3\log_2(1/\epsilon)$ T gates for a unitary approximation to diamond error
-$\epsilon$, and about $0.53\log_2(1/\epsilon)$ for the best mixed approximations, whatever the
-angle. We ask whether a catalytic phase-gradient register can do better. For one rotation it
-cannot: adding the angle into a $b$-qubit gradient costs $b-2$ Toffoli gates, about
-$4\log_2(1/\epsilon)$ T gates. For a layer it can. We write every angle of the layer in signed
-binary digits, reduce the digits column by column with full adders, and add the one bit left in
-each column into the gradient register once. A layer of $L$ rotations with $N$ signed digits
-then costs at most $4N+4(b-2)$ T gates, plus one for each digit worth $\pi/4$, so a rotation by
-$\theta$ costs about $\tfrac43\log_2(\theta/\Delta)$ T gates on a grid of spacing $\Delta$: the
-cost falls with the angle, which the cost of synthesis does not. Rounding each angle at random
-between its two neighbours on the grid leaves only dephasing, so the grid can be coarser,
-$\Delta\approx\sqrt{2\epsilon}$, and rounding at random onto a sparse pair of grid points costs
+commuting Pauli rotations, and a fault-tolerant compilation synthesises each rotation on its
+own. The best Clifford+T synthesis is a probabilistic mixture: about $0.53\log_2(1/\epsilon)$ T
+gates for a channel within diamond error $\epsilon$, whatever the angle, and, as Bothe
+\textit{et al.} have recently shown, far fewer when $\theta^2\lesssim\epsilon$. We ask whether a
+catalytic phase-gradient register can do better. For one rotation it cannot: adding the angle
+into a $b$-qubit gradient costs $b-2$ Toffoli gates, about $4\log_2(1/\epsilon)$ T gates. For a
+layer it can. We write every angle of the layer in signed binary digits, reduce the digits
+column by column with full adders, and add the one bit left in each column into the gradient
+register once. A layer of $L$ rotations with $N$ signed digits then costs at most $4N+4(b-2)$ T
+gates, plus one for each digit worth $\pi/4$, so a rotation by $\theta$ costs about
+$\tfrac43\log_2(\theta/\Delta)$ T gates on a grid of spacing $\Delta$: the cost falls with the
+angle across the whole range $\sqrt\epsilon\lesssim\theta\lesssim1$, where synthesis does not.
+Rounding each angle at random between two grid points leaves only dephasing, so the grid can be
+coarse, $\Delta\approx\sqrt{2\epsilon}$, and rounding onto a sparse pair of grid points costs
 about $16\theta^2/\epsilon$ T gates in expectation when $\theta^2<\epsilon/2$. We prove the
-counts and the errors, and simulate every construction exactly, including the
-measurement-based uncomputation. For a Heisenberg chain of 64 spins with random bonds and fields,
-run to time 10 with a synthesis error of $10^{-3}$, the randomised gradient layers use $0.84$ to
-$0.28$ times the T gates of mixed-fallback synthesis as the Trotter step falls from $0.1$ to
-$10^{-5}$, and nearest rounding uses $0.40$ to $0.27$ times those of gridsynth, with at most
-1,145 ancillas.
+counts and the errors and simulate every construction exactly, including the measurement-based
+uncomputation. For Heisenberg chains of 64 spins in a random field, run to time 10 at total
+errors of $10^{-3}$ and $10^{-1}$ with Trotter steps from $0.3$ to $10^{-6}$, the gradient
+layers use $0.16$ to $0.88$ times the T gates of the angle-dependent synthesis of Bothe
+\textit{et al.}, and never more; nearest rounding, which gives a unitary, uses $0.24$ to $0.51$
+times the T gates of gridsynth. The price is ancillas: at most 589 for the randomised layers.
 \end{abstract}
 
 \maketitle
@@ -66,21 +67,24 @@ $H=\sum_j h_jP_j$, with $P_j$ Pauli strings, on a quantum
 computer~\cite{Lloyd1996,Suzuki1991,Childs2021}. One step of length $\delta t$ is a product of
 rotations $e^{-i\theta_jP_j}$ with $\theta_j=h_j\delta t$ (or a fixed fraction of it), arranged
 in layers of commuting terms. In a fault-tolerant computation built from Clifford gates and T
-gates, the rotations are the expensive part, and the standard treatment synthesises each one to
-its share of the error budget: Ross and Selinger's algorithm~\cite{RossSelinger2016} gives a
-unitary with about $3\log_2(1/\epsilon)$ T gates, and mixing several
-approximations~\cite{Hastings2017,Campbell2017} with fallback
-circuits~\cite{Bocharov2015,Kliuchnikov2023} brings the expected count to about
-$0.53\log_2(1/\epsilon)+4.86$ for a channel within diamond error $\epsilon$~\cite{Bothe2026}.
-Neither depends on the angle. That is odd for Trotter: as the step shrinks, every angle shrinks
-with it, and a rotation by $10^{-5}$ to precision $10^{-10}$ is charged the same as a rotation
-by one.
+gates the rotations are the expensive part, and the standard treatment synthesises each one to
+its share of the error budget. Ross and Selinger's algorithm~\cite{RossSelinger2016} gives a
+unitary with about $3\log_2(1/\epsilon)$ T gates. Kliuchnikov, Lauter, Minko, Paetznick and
+Petit~\cite{Kliuchnikov2023} improved and combined the two ways of doing better, fallback
+circuits with an ancilla and a measurement~\cite{Bocharov2015} and probabilistic mixtures of
+approximations~\cite{Hastings2017,Campbell2017}: their mixed fallback protocol uses on average
+$0.53\log_2(1/\epsilon)+4.86$ T gates for a channel within diamond error $\epsilon$, and their
+mixed diagonal protocol, with no ancilla, $1.52\log_2(1/\epsilon)-0.01$. These counts do not
+depend on the angle. That is odd for Trotter: as the step shrinks every angle shrinks with it,
+and a rotation by $10^{-5}$ to precision $10^{-10}$ is charged the same as a rotation by one.
 
-Bothe, S\"underhauf, Witham, Campbell and Blunt~\cite{Bothe2026} have recently shown that
-synthesis can exploit small angles: when $\theta^2\lesssim\epsilon$ the expected cost falls to
-$\tilde O(\theta^2/\epsilon)$, and the T count of a Trotter circuit can stay constant as the step
-goes to zero. When $\theta^2\gg\epsilon$, which is where most rotations of a practical Trotter
-step sit, their cost returns to the angle-independent one.
+Bothe, S\"underhauf, Witham, Campbell and Blunt~\cite{Bothe2026} have recently removed this
+oddity in part. In a mixture the cheap end can be the identity, so a small rotation is mostly
+not applied at all, and when $\theta^2\lesssim\epsilon$ the expected cost falls to
+$\tilde O(\theta^2/\epsilon)$; the T count of a Trotter circuit can then stay constant as the
+step goes to zero. When $\theta^2\gg\epsilon$ their cost returns to that of
+Ref.~\cite{Kliuchnikov2023}. Their cost formula, built on the protocols of
+Ref.~\cite{Kliuchnikov2023}, is the comparison in this paper.
 
 The question of this paper is whether a phase-gradient register helps. The register
 $\ket{\Psi_b}=2^{-b/2}\sum_{y}e^{-2\pi iy/2^b}\ket{y}$ is an eigenstate of every addition
@@ -97,7 +101,8 @@ Our answer has two halves.
 
 \emph{For one rotation, no.} Adding $\theta$ into a $b$-qubit gradient costs $b-2-p_0$
 Toffoli gates, $p_0$ the position of the lowest digit of the angle (Proposition~\ref{prop:one}),
-about $4\log_2(1/\epsilon)$ T gates against gridsynth's $3.03\log_2(1/\epsilon)+5.4$.
+about $4\log_2(1/\epsilon)$ T gates against gridsynth's $3.03\log_2(1/\epsilon)+5.4$, and, with
+randomised rounding, about $2\log_2(1/\epsilon)$ against $0.53\log_2(1/\epsilon)+4.86$.
 
 \emph{For a layer, yes.} The phase of a layer, $\sum_j\theta_jx_j$ on bits $x_j$, is a
 weighted sum of bits, and once the angles are written in signed binary digits it is a sum of
@@ -108,14 +113,19 @@ for $b-2$ Toffoli gates shared by the whole layer (Theorem~\ref{thm:layer}). A r
 costs about four T gates per signed digit of its angle. Its angle has about
 $\tfrac13\log_2(\theta/\Delta)$ nonzero digits on a grid of spacing $\Delta$, so the cost falls
 with the angle; and since rounding at random to the grid leaves only dephasing
-(Lemma~\ref{lem:mix}), $\Delta$ can be as coarse as $\sqrt{2\epsilon}$. For small angles,
-rounding at random onto a sparse pair of grid points gives the $\theta^2/\epsilon$ scaling of
-Ref.~\cite{Bothe2026} (Proposition~\ref{prop:tiny}).
+(Lemma~\ref{lem:mix}), $\Delta$ can be as coarse as $\sqrt{2\epsilon}$. So the gradient's cost
+falls with the angle over the whole range $\sqrt\epsilon\lesssim\theta\lesssim1$, the range in
+which the cost of Ref.~\cite{Bothe2026} does not. For $\theta\lesssim\sqrt\epsilon$, rounding at
+random onto a sparse pair of grid points gives the same $\theta^2/\epsilon$ scaling as
+Ref.~\cite{Bothe2026} (Proposition~\ref{prop:tiny}). With batches sized by their digits rather
+than by their rotations, the gradient stays the cheaper down to about $\sqrt\epsilon/10$; below
+that, synthesis is, and both cost a few hundredths of a T gate per rotation.
 
 Section~\ref{sec:setting} sets up the layer and the gradient. Section~\ref{sec:layer} gives the
 circuit and its cost, Sec.~\ref{sec:rounding} the rounding and its error, and
-Sec.~\ref{sec:numbers} the counts, against gridsynth run on the same angles and against the
-mixed-fallback formula, for single layers and for a Heisenberg chain run to a fixed time.
+Sec.~\ref{sec:numbers} the counts, against the angle-dependent formulas of
+Ref.~\cite{Bothe2026} evaluated on the same angles, and against gridsynth, for single layers and
+for Heisenberg chains run to a fixed time.
 Section~\ref{sec:discussion} says what the comparison leaves out. The code, which compiles each
 layer to Clifford gates, T gates and \AND{} gates and simulates it exactly, is
 available~\cite{code}.
@@ -410,10 +420,13 @@ to the compute part, or one T gate if it lands in column $b-3$.
 When $\theta<\epsilon/2$ the rotation can be dropped altogether, at error $2\sin\theta<
 \epsilon$. Proposition~\ref{prop:tiny} is the gradient's version of the small-angle regime of
 Ref.~\cite{Bothe2026}: in both, the cost of a rotation with $\theta^2\ll\epsilon$ is of order
-$\theta^2/\epsilon$, because a rotation that small is mostly identity. The constants differ, and
-we have not compared them. Between the two regimes, for $\theta^2\gg\epsilon$, the gradient's
-cost is about $\tfrac43\log_2(\theta/\Delta)\approx\tfrac23\log_2(\theta^2/2\epsilon)$ T gates
-with randomised rounding, and still falls with the angle.
+$\theta^2/\epsilon$, because a rotation that small is mostly not applied. The gradient's
+expected digit cost, $16\theta^2/\epsilon$, is below theirs, which at $\theta=\sqrt\epsilon/10$
+is between $30$ and $50$ times $\theta^2/\epsilon$; what decides the comparison there is the
+share of the addition, paid by a batch only if it draws a digit (Sec.~\ref{sec:numbers}). Between the two regimes, for $\epsilon\ll\theta^2$, the
+gradient's cost is about $\tfrac43\log_2(\theta/\Delta)\approx\tfrac23\log_2(\theta^2/2\epsilon)$
+T gates with randomised rounding, and still falls with the angle; theirs is
+$\min\{0.53\log_2(1/\epsilon)+4.86,\ \dots\}$ and in this regime equal to the first term.
 
 \paragraph*{Sparse nearest rounding.}
 The same search for nearest rounding (the lightest grid point within the error, on a grid finer
@@ -423,7 +436,7 @@ and we do not use it.
 % ----------------------------------------------------------------------------------------------
 \section{Counts}\label{sec:numbers}
 
-\paragraph*{What is compared.}
+\paragraph*{The gradient.}
 The gradient layers are compiled by our code to Clifford gates, T gates and \AND{}s, and every
 compiled circuit is checked by exact simulation: with the system in each basis state and the
 gradient register in $\ket{\Psi_b}$, the circuit maps basis states to phases times basis states,
@@ -434,70 +447,109 @@ per-bit roundings, and a full state-vector simulation with the \AND{}s uncompute
 measurements with random outcomes agrees to $10^{-16}$. The bound~\eqref{eq:tcount} is checked
 on every layer counted below.
 
-Synthesis is gridsynth~\cite{RossSelinger2016}, run (pygridsynth 2.0~\cite{pygridsynth}) to
-operator-norm error $\epsilon/2$, which is diamond error $\epsilon$, on 40 random angles at each
-$\epsilon=10^{-3},\dots,10^{-15}$: the mean T count is fitted by
-$3.03\log_2(1/\epsilon)+5.4$. Run on angles from $0.7$ down to $7\times10^{-7}$ at
-$\epsilon=10^{-10}$, it uses 106 to 107 T gates whatever the angle. For channels we use the
-formula $0.53\log_2(1/\epsilon)+4.86$ that Ref.~\cite{Bothe2026} quotes for mixed fallback
-synthesis~\cite{Kliuchnikov2023} in Clifford+T; we have not run it. The fair comparisons are
-nearest rounding against gridsynth (both unitary) and randomised rounding against mixed fallback
-(both channels with dephasing-type error).
+The layers are split into batches of at most $D=256$ signed digits, not of a fixed number of
+rotations. The ancillas grow with the digits of a batch (Theorem~\ref{thm:layer}), so this
+bounds them, to between 500 and 660 in every run below, whatever the angles; and rotations with few or no
+digits, the small ones, fill large batches, so the addition's $b-2$ Toffolis are shared widely
+where the digits are sparse.
+
+\paragraph*{Synthesis.}
+The comparison is the angle-dependent cost of Bothe \textit{et al.}~\cite{Bothe2026}, which we
+evaluate on the same angles as the gradient. We transcribe their costing script (their Appendix
+A): an exactly enumerated staircase of over-rotations up to 35 T gates, and beyond it their
+asymptotic formula, both with the identity as the under-rotation. Their two schemes are
+\begin{align}
+  \Tc_{\rm af}(\theta,\epsilon)&=\min\{T_{\rm sa}(\theta,\epsilon),\
+    1.52\log_2(1/\epsilon)-0.01\},\\
+  \Tc_{\rm fb}(\theta,\epsilon)&=\min\{T_{\rm sa}(\theta,2\epsilon),\
+    0.53\log_2(1/\epsilon)+4.86\},\label{eq:bothe}
+\end{align}
+ancilla-free and fallback, where $T_{\rm sa}$ is the small-angle cost and the second terms are
+the mixed diagonal and mixed fallback fits of Kliuchnikov \textit{et al.}~\cite{Kliuchnikov2023}
+(their Table 1, Clifford+T, mean T count). The fallback scheme is the cheaper of the two at every
+angle, and is the one we compare with; Eq.~\eqref{eq:bothe} is their Eq.~(15). Their costs are
+for probability mixtures with diamond error $\epsilon$, which is what the gradient's randomised
+rounding gives. They also show that the same counts hold for quasi-probability mixtures with
+$\lambda-1=\epsilon$, and their own Trotter estimates use those with a total $\lambda\approx
+e^2$, a sampling overhead rather than an error; we do not compare in that setting, since the
+gradient layers as built here are channels. The counts are their formulas, not runs of their
+method; their staircase is exact and their asymptotic formula derived, and they show it matches
+their data.
+
+For a unitary with no mixing, the reference is gridsynth~\cite{RossSelinger2016}, run
+(pygridsynth 2.0~\cite{pygridsynth}) to operator-norm error $\epsilon/2$, which is diamond error
+$\epsilon$, on 40 random angles at each $\epsilon=10^{-3},\dots,10^{-15}$: the mean T count is
+$3.03\log_2(1/\epsilon)+5.4$, the $3.02\log_2(1/\epsilon)+1.77$ of Ref.~\cite{Kliuchnikov2023}
+up to the offset. Run on angles from $0.7$ down to $7\times10^{-7}$ at $\epsilon=10^{-10}$ it uses
+106 to 107 T gates whatever the angle. Nearest rounding is compared with it. The unmixed fallback
+protocol of Ref.~\cite{Kliuchnikov2023}, $1.03\log_2(1/\epsilon)+5.75$, is cheaper than gridsynth
+and is the stronger reference for a coherent error; we quote it where it matters.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{../figures/fig_layer.pdf}
-\caption{T gates per rotation in a layer of $L=1024$ rotations, batches of $B=64$, against
+\caption{T gates per rotation in a layer of $L=1024$ rotations, in batches of at most 256
+signed digits, against
 the angle scale $\theta$ (angles log-uniform in $[\theta/2,\theta]$, random signs), at three
-per-rotation errors. Dashed: gridsynth (fit to runs) and the mixed fallback formula, both flat
-in $\theta$. The gradient's cost falls by about one T gate per halving of the angle until
-$\theta\approx\sqrt\epsilon$, below which randomised rounding uses almost nothing.}
+per-rotation errors. Dashed: gridsynth (fit to runs), flat in $\theta$, and the angle-dependent
+costs of Bothe \textit{et al.}~\cite{Bothe2026} on the same angles, flat down to
+$\theta\approx\sqrt\epsilon$ and falling steeply below. The gradient's cost falls by about one T
+gate per halving of the angle over the whole range above $\sqrt\epsilon$.}
 \label{fig:layer}
 \end{figure*}
 
 \paragraph*{One layer.}
-Figure~\ref{fig:layer} shows the cost per rotation in a layer of 1,024 rotations in batches of
-64. At $\epsilon=10^{-10}$, nearest rounding ($b=35$) uses 43.3 T gates per rotation for angles
-of order one, 39.4 at $10^{-2}$, 30.8 at $10^{-4}$ and 22.6 at $10^{-6}$, against 106 for
-gridsynth. Randomised rounding ($b=18$) uses 20.2, 16.4, 7.5 and 1.1, against 22.5 for mixed
-fallback. A straight-line fit gives 1.0 to 1.2 T gates per halving of the angle, a little below
-the $4/3$ of the digit count because the digits in the top three columns cost one T gate or
-none. The bound~\eqref{eq:tcount} is within ten per cent of the count wherever the count is more
-than a few T gates. For large angles the
-randomised layer and mixed fallback are close: within ten per cent at $\theta\approx0.1$, and at
-$\epsilon=10^{-14}$ the layer is slightly worse for $\theta\gtrsim0.1$. For angles below about
-$10^{-2}$ the layer wins at every $\epsilon$ we tried, by a factor that grows as the angle falls.
-Sparse pairs agree with adjacent ones down to $\theta\approx\sqrt\epsilon$ and are cheaper
-below: 0.4 against 1.1 T gates at $\theta=10^{-6}$, $\epsilon=10^{-10}$.
+Figure~\ref{fig:layer} shows the cost per rotation in a layer of 1,024 rotations. At
+$\epsilon=10^{-10}$, randomised rounding onto sparse pairs ($b=18$) uses 20.5 T gates per
+rotation for angles of order one, 16.2 at $10^{-2}$, 7.3 at $10^{-4}$ and 2.6 at $10^{-5}$.
+Bothe \textit{et al.}'s fallback scheme uses 22.5 at all of these but the last, where it is 18.9,
+and their ancilla-free scheme 50.5 and 30.6. Below $\theta\approx\sqrt\epsilon=10^{-5}$ both
+costs collapse: 0.65 against 2.84 at $3\times10^{-6}$, 0.09 against 0.28 at $10^{-6}$, and then
+0.05 against 0.02 at $3\times10^{-7}$, where theirs is the smaller. At $\epsilon=10^{-14}$ and
+$10^{-6}$ the picture is the same; the crossing, where there is one, lies below
+$\sqrt\epsilon/10$. So the gradient wins by a factor that grows as the angle falls from one
+towards $\sqrt\epsilon$, and synthesis wins well below it, at a few hundredths of a T gate. For
+angles of order one the two are close: 9 per cent apart at $\epsilon=10^{-10}$, and at
+$\epsilon=10^{-14}$ the gradient is 4 per cent worse (30.7 against 29.5). Plain randomised
+rounding, onto adjacent grid points, agrees with sparse pairs down to $\sqrt\epsilon$ and costs
+more below (0.31 against 0.09 at $10^{-6}$).
+
+Nearest rounding ($b=35$) uses 45.6 T gates per rotation at angles of order one, 41.0 at
+$10^{-2}$, 32.2 at $10^{-4}$ and 23.0 at $10^{-6}$, against 106 for gridsynth and 40.0 for the
+unmixed fallback protocol. Its cost falls by about one T gate per halving of the angle, a little
+below the $4/3$ of the digit count because the digits in the top three columns cost one T gate
+or none.
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\columnwidth]{../figures/fig_batch.pdf}
 \caption{The batch size. Left: T gates per rotation at $\epsilon=10^{-10}$, angles in
 $[0.05,0.1]$. A batch of one is a single rotation (Proposition~\ref{prop:one}) and is worse than
-synthesis; two rotations already beat gridsynth, and sixteen match mixed fallback. Right: peak
-ancillas, besides the gradient register, which grow linearly with $B$.}
+synthesis; two rotations already beat gridsynth, and sixteen match Bothe \textit{et al.}'s
+fallback scheme, which at these angles is the mixed fallback cost. Right: peak ancillas, besides
+the gradient register, which grow linearly with $B$.}
 \label{fig:batch}
 \end{figure}
 
 \paragraph*{Batches and qubits.}
 The addition's $b-2$ Toffolis are shared by a batch, and the ancillas grow with it
 (Fig.~\ref{fig:batch}). With $B=1$, nearest rounding costs 128 T gates against gridsynth's 106,
-and randomised rounding 59.7 against mixed fallback's 22.5: Proposition~\ref{prop:one} in
-numbers. With $B=2$ nearest rounding is already at 73; with $B=16$ the costs are 46.8 and 21.8
-with 389 and 187 ancillas, and with $B=64$, 43.2 and 20.2 with 1,402 and 662. Beyond $B=64$
-nothing is gained. The ancillas are the copies of the digit bits and the carries
+and randomised rounding 59.7 against 22.5 for synthesis: Proposition~\ref{prop:one} in numbers.
+With $B=2$ nearest rounding is already at 73; with $B=16$ the costs are 46.8 and 21.8 with 389
+and 187 ancillas, and with $B=64$, 43.2 and 20.2 with 1,402 and 662. Beyond $B=64$ nothing is
+gained. Batches of 256 digits, as in the other runs, cost 45.6 and 20.5 with 541 and 527
+ancillas. The ancillas are the copies of the digit bits and the carries
 (Theorem~\ref{thm:layer}); we have not tried to reduce them.
 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{../figures/fig_trotter.pdf}
 \caption{T gates per second-order Trotter step of a Heisenberg chain of 64 spins in a random
-field, run to $t=10$ with a total synthesis error of $10^{-3}$, against the step $\delta t$.
-Left: random bonds, every angle distinct. Right: uniform bonds, the bonds of a layer summed by
-Hamming-weight phasing on both sides. Synthesis gets dearer as the step shrinks, since each
-rotation's error budget shrinks; the gradient layers get cheaper, since the angles shrink faster
-than the budget. The total is the step cost times $10/\delta t$ steps.}
+field, run to $t=10$, against the step $\delta t$, at total synthesis errors of $10^{-3}$ (top)
+and $10^{-1}$ (bottom). Left: random bonds, every angle distinct. Right: uniform bonds, where
+each method uses Hamming-weight phasing if it is cheaper. The total is the step cost times
+$10/\delta t$ steps. Synthesis by Bothe \textit{et al.}'s formulas gets dearer as the step shrinks
+until the angles reach $\sqrt\epsilon$, then cheaper; the gradient layers get cheaper throughout.}
 \label{fig:trotter}
 \end{figure*}
 
@@ -510,37 +562,50 @@ with $h_i$ uniform in $[-1,1]$, and either random bonds $J_i$ uniform in $[0.5,1
 bonds $J_i=1$. The $XX$ terms commute with each other, as do the $YY$ terms and the $ZZ$ and
 field terms, so a second-order step is four layers, $XX(\delta t)\,YY(\delta t/2)\,[ZZ+Z]
 (\delta t)\,YY(\delta t/2)$, with the half steps of $XX$ merged across steps. We run to $t=10$,
-so $r=10/\delta t$ steps, with a total synthesis error of $10^{-3}$ split evenly over the
-$R$ approximated rotations of each step: $R=4(n-1)+n=316$ with random bonds, and with uniform
-bonds $R=4\cdot6+n=88$, since a class of 63 equal angles needs one rotation per bit of its
-Hamming weight. Both sides use the same Hamming-weight tree. The Trotter error itself, which
-sets $\delta t$, is outside the comparison; Fig.~\ref{fig:trotter} gives the cost of whatever
-step is chosen, with batches of $B=64$ and the randomised costs averaged over five draws.
+so $r=10/\delta t$ steps, at a total synthesis error $\epsilon_{\rm tot}$ of $10^{-3}$ or
+$10^{-1}$, split evenly over the $R$ approximated rotations of each step: $R=4(n-1)+n=316$ with
+random bonds. With uniform bonds a method may first sum each class of 63 equal angles into its
+Hamming weight, and then needs one rotation per bit of it, $R=4\cdot6+n=88$, at the cost of the
+Hamming-weight tree; each method, synthesis and gradient alike, takes whichever of the two is
+cheaper at each step. The Trotter error itself, which sets $\delta t$, is outside the comparison;
+Fig.~\ref{fig:trotter} gives the cost of whatever step is chosen, with batches of at most 256
+digits and the gradient's costs averaged over five draws of the roundings. The steps run from $0.3$ to
+$10^{-6}$, so the per-rotation errors run from $4\times10^{-5}$ to $3\times10^{-13}$ and the angles from about
+$0.5$ to $10^{-6}$: the small-angle regime $\theta^2\lesssim\epsilon$ is reached only at the
+smallest steps of the looser budget.
 
-With random bonds the randomised layers use $0.84$ times the T gates of mixed fallback at
-$\delta t=0.1$, $0.51$ at $10^{-3}$ and $0.28$ at $10^{-5}$; nearest rounding uses $0.40$,
-$0.34$ and $0.27$ times those of gridsynth. At $\delta t=10^{-3}$, the whole run costs
-$3.19\times10^8$ T gates with gridsynth, $6.82\times10^7$ with mixed fallback,
-$1.10\times10^8$ with nearest rounding and $3.45\times10^7$ with randomised rounding. With
-uniform bonds, where Hamming-weight phasing already takes most of the cost, the ratios are
-$0.86$ to $0.54$ and $0.48$ to $0.38$. The ancillas peak at 536 (randomised) and 1,145
-(nearest) with random bonds, 583 and 1,234 with uniform bonds. The per-rotation budgets here are
-$3\times10^{-8}$ to $3\times10^{-12}$ and the angles $\theta\approx10^{-1}$ to $10^{-5}$, so
-$\theta^2/\epsilon$ is between $30$ and $3\times10^5$: every rotation is in the regime where
-small-angle synthesis~\cite{Bothe2026} returns to the angle-independent cost, and where the
-gradient's cost still depends on the angle.
+At $\epsilon_{\rm tot}=10^{-3}$ with random bonds, the gradient layers (sparse pairs) use $0.76$
+times the T gates of Bothe \textit{et al.}'s fallback scheme at $\delta t=0.3$, $0.61$ at
+$3\times10^{-3}$, $0.34$ at $3\times10^{-5}$ and $0.16$ at $10^{-6}$. At $\delta t=10^{-3}$ the
+whole run costs $6.81\times10^7$ T gates by their fallback scheme, $1.51\times10^8$ by their
+ancilla-free scheme, $3.19\times10^8$ by gridsynth, and $3.41\times10^7$ with the gradient. With
+uniform bonds, where Hamming-weight phasing already takes much of the cost, the ratio runs from
+$0.83$ to $0.53$. At $\epsilon_{\rm tot}=10^{-1}$ the ratios fall to $0.20$ with random bonds and
+$0.39$ with uniform bonds; here the smallest steps reach the regime where synthesis falls as
+$\theta^2/\epsilon$, and the ratio climbs back to $0.74$ and $0.77$ at $\delta t=10^{-6}$. Over
+all four cases and all 23 steps the gradient never uses more T gates than Bothe
+\textit{et al.}'s fallback scheme; the ratio lies between $0.16$ and $0.88$. Randomised rounding
+onto adjacent grid points does lose at the smallest steps of the looser budget, by up to a
+factor of $1.19$: there the sparse pairs matter. Sending each rotation to whichever of the two
+methods has the lower expected cost, judged per rotation before the draw, changed the totals by
+$-7$ to $+12$ per cent: the per-rotation estimate misses the shared addition and the
+Hamming-weight tree. We do not show it; a better router would judge whole batches. Nearest
+rounding uses $0.24$ to $0.51$ times the T gates of gridsynth. The ancillas peak at 589 for the
+randomised layers and 656 for nearest rounding.
 
 % ----------------------------------------------------------------------------------------------
 \section{Discussion}\label{sec:discussion}
 
 So the answer to the question we started with is that a phase gradient does not make a
-rotation cheaper, but it makes a layer of rotations cheaper, because it turns the
-precision of each angle into a cost per nonzero digit and pays for the carry chain once per
-layer. The cost of a rotation is then about four T gates per signed digit, so it depends on
+rotation cheaper, but it makes a layer of rotations cheaper, because it turns the precision of
+each angle into a cost per nonzero digit and pays for the carry chain once per layer. The cost
+of a rotation is then about four T gates per signed digit, so it depends on
 $\log_2(\theta/\Delta)$ rather than on $\log_2(1/\epsilon)$, and randomised rounding halves the
-number of digits by halving $\log_2(1/\Delta)$. For the angles of a Trotter step this beats
-unitary synthesis by a factor of 2.5 to 3.7 and the best mixed synthesis by up to a factor of
-3.5 in our example with random bonds.
+number of digits by halving $\log_2(1/\Delta)$. Angle-dependent synthesis~\cite{Bothe2026} and
+the gradient exploit small angles in different ranges: synthesis below $\sqrt\epsilon$, where a
+rotation is mostly the identity, and the gradient everywhere above it, where synthesis still
+pays the full $0.53\log_2(1/\epsilon)$. Most rotations of a Trotter step at a useful precision
+are in the second range, and there the gradient wins by a factor of up to six in our examples.
 
 Several things are not in the comparison.
 \begin{itemize}
@@ -551,15 +616,19 @@ Several things are not in the comparison.
 \item \emph{Toffolis as four T gates.} With a catalysed CCZ factory a Toffoli costs about as
   much as two T gates~\cite{Gidney2019}, which would roughly halve the gradient's counts. We
   have not used this.
-\item \emph{Mixed fallback is a formula.} We quote its Clifford+T fit~\cite{Bothe2026}; we have
-  not run it, and the small-angle method of Ref.~\cite{Bothe2026} not at all. For
-  $\theta^2\ll\epsilon$ both it and Proposition~\ref{prop:tiny} cost of order $\theta^2/
-  \epsilon$, and we do not know which constant is smaller. A layer could also mix the two:
-  small rotations synthesised, the rest added.
-\item \emph{Ancillas.} A batch of 64 needs several hundred ancillas, most of them copies of
+\item \emph{Synthesis costs are formulas.} We evaluate the formulas of
+  Refs.~\cite{Bothe2026,Kliuchnikov2023} on our angles; we have not run their methods. The
+  fallback scheme's small-angle term is their substitution $\epsilon\to2\epsilon$ in the
+  ancilla-free one.
+\item \emph{Quasi-probabilities.} Bothe \textit{et al.}'s largest savings come from
+  quasi-probability mixtures with a total $\lambda$ of order one, which cost a constant factor
+  in samples instead of an error. Randomised rounding onto the gradient could be given negative
+  weights in the same way; we have not done it, and do not compare in that setting.
+\item \emph{Ancillas.} A batch of 256 digits needs 500 to 660 ancillas, most of them copies of
   digit bits and carries kept until the uncompute. Smaller batches trade them for the share of
   the addition (Fig.~\ref{fig:batch}). A layer whose bits were reduced in place, or whose
-  columns were streamed, would need fewer; we have not tried.
+  columns were streamed, would need fewer; we have not tried. Synthesis needs none (or one, for
+  fallback).
 \item \emph{Equal angles.} When a layer has many equal angles, Hamming-weight phasing does most
   of the work and the gradient adds less (the uniform chain). Angles that share digits but are
   not equal, as in a Fourier series of coefficients, could share partial sums across columns;
@@ -574,9 +643,9 @@ measured \AND{}~\cite{Jones2013,Gidney2018}, Hamming-weight
 phasing~\cite{Gidney2018,Kivlichan2020}, weighted sums of bits into a gradient~\cite{Sanders2020,
 Dutta2026}, and mixing~\cite{Hastings2017,Campbell2017}, are all known. What we have added is
 the observation that for fixed angles the reduction can run over signed digits, the count that
-follows from it, and the comparison with synthesis that shows when it pays: always against
-unitary synthesis once a batch holds two rotations, and against mixed synthesis once the angles
-are small, which in a Trotter step they are.
+follows from it, and the comparison with angle-dependent synthesis that shows where it pays:
+for angles between about $\sqrt\epsilon$ and one, once a batch holds a few rotations, which is
+where most of a Trotter step lies.
 
 \paragraph*{Code availability.}
 The code that compiles the layers, simulates them, counts them and makes the figures, with its

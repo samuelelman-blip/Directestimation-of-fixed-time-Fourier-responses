@@ -35,7 +35,8 @@ def test_heisenberg_runs():
     n = 9
     h = rng.uniform(-1, 1, n)
     J = rng.uniform(0.5, 1.5, n - 1)
-    for method in ('gridsynth', 'fallback', 'det', 'rand', 'sparse'):
+    for method in ('gridsynth', 'fallback', 'bothe', 'bothe_af', 'det', 'rand', 'sparse',
+                   'hybrid'):
         c = heisenberg_step_cost(J, h, 0.01, 1e-8, method, rng, batch=8)
         assert c['rotations'] == 4 * (n - 1) + n and c['t'] > 0
     c = heisenberg_step_cost([1.0] * (n - 1), h, 0.01, 1e-8, 'rand', rng, classes=True)
