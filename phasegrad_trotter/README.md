@@ -1,13 +1,16 @@
-# phasegrad_trotter: Trotter layers by addition into a phase gradient
+# phasegrad_trotter: randomised rounding onto a phase gradient
 
-Code, data and manuscript for the paper *Trotter layers by addition into a phase gradient*
-(S. J. Elman). The question is whether a catalytic phase-gradient register makes a Trotter step
-cheaper than synthesising each small rotation on its own. For one rotation it does not; for a
-layer it does. The angles of a layer are written in signed binary digits, the digits are reduced
-column by column with full adders (one Toffoli per bit removed), and the bit left in each column
-is added into the gradient register once. A rotation then costs about four T gates per nonzero
-digit of its angle, so its cost falls with the angle, and randomised rounding to the grid halves
-the number of digits.
+Code, data and manuscript for the paper *Randomised rounding onto a phase gradient*
+(S. J. Elman). A rotation can be applied by adding an integer into a catalytic phase-gradient
+register, and a layer of rotations can share one addition. The grid is usually fine enough that
+the nearest grid point is within the error. Choosing instead between the two neighbouring grid
+points at random, with the probability that cancels the coherent error, leaves the rotation
+followed by pure dephasing, exactly, so half the bits suffice; and since each rotation in a
+shared addition costs about four T gates per nonzero signed digit of its integer, that halves the
+cost of large rotations and makes the cost of every rotation depend on theta^2/eps. Rounding onto
+a sparse pair of grid points gives the theta^2/eps small-angle scaling of Bothe et al. The layer
+circuit itself (compute the weighted sum, add once, uncompute) assembles known parts: Sanders et
+al., Wu et al., Gidney's Hamming-weight tree.
 
 | path | |
 |---|---|

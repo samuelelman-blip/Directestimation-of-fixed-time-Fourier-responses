@@ -18,11 +18,12 @@ self-contained page: download it and open it in a browser. Press Play to run the
 captions, use the arrow keys to step through by hand, N for the speaker notes and F for full
 screen.
 
-## A second paper: Trotter layers by addition into a phase gradient
+## A second paper: randomised rounding onto a phase gradient
 
-`phasegrad_trotter/` holds the code, data and manuscript of *Trotter layers by addition into a
-phase gradient*, which asks whether a phase-gradient register makes a Trotter step cheaper than
-synthesising each small rotation. Its own [README](phasegrad_trotter/README.md) says how to run
+`phasegrad_trotter/` holds the code, data and manuscript of *Randomised rounding onto a phase
+gradient*, which shows that rounding rotation angles at random onto a phase-gradient grid halves
+the bits the grid needs, and compares Trotter layers built this way with angle-dependent
+synthesis. Its own [README](phasegrad_trotter/README.md) says how to run
 it.
 
 ## What is here

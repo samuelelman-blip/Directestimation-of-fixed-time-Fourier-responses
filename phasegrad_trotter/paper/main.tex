@@ -1,4 +1,4 @@
-% Trotter layers by addition into a phase gradient
+% Randomised rounding onto a phase gradient
 % REVTeX 4.2.  For submission to PRX Quantum use the class option prxquantum (REVTeX 4.2f or
 % later); the prx option below gives the same layout on older installations.
 \documentclass[aps,prx,twocolumn,superscriptaddress,nofootinbib,longbibliography]{revtex4-2}
@@ -25,7 +25,7 @@
 
 \begin{document}
 
-\title{Trotter layers by addition into a phase gradient}
+\title{Randomised rounding onto a phase gradient}
 
 \author{Samuel J. Elman}
 \affiliation{University of Technology Sydney, Sydney, Australia}
@@ -33,28 +33,28 @@
 \date{\today}
 
 \begin{abstract}
-A Trotter step of a Hamiltonian with many distinct coefficients is a product of layers of
-commuting Pauli rotations, and a fault-tolerant compilation synthesises each rotation on its
-own. The best Clifford+T synthesis is a probabilistic mixture: about $0.53\log_2(1/\epsilon)$ T
-gates for a channel within diamond error $\epsilon$, whatever the angle, and, as Bothe
-\textit{et al.} have recently shown, far fewer when $\theta^2\lesssim\epsilon$. We ask whether a
-catalytic phase-gradient register can do better. For one rotation it cannot: adding the angle
-into a $b$-qubit gradient costs $b-2$ Toffoli gates, about $4\log_2(1/\epsilon)$ T gates. For a
-layer it can. We write every angle of the layer in signed binary digits, reduce the digits
-column by column with full adders, and add the one bit left in each column into the gradient
-register once. A layer of $L$ rotations with $N$ signed digits then costs at most $4N+4(b-2)$ T
-gates, plus one for each digit worth $\pi/4$, so a rotation by $\theta$ costs about
-$\tfrac43\log_2(\theta/\Delta)$ T gates on a grid of spacing $\Delta$: the cost falls with the
-angle across the whole range $\sqrt\epsilon\lesssim\theta\lesssim1$, where synthesis does not.
-Rounding each angle at random between two grid points leaves only dephasing, so the grid can be
-coarse, $\Delta\approx\sqrt{2\epsilon}$, and rounding onto a sparse pair of grid points costs
-about $16\theta^2/\epsilon$ T gates in expectation when $\theta^2<\epsilon/2$. We prove the
-counts and the errors and simulate every construction exactly, including the measurement-based
-uncomputation. For Heisenberg chains of 64 spins in a random field, run to time 10 at total
-errors of $10^{-3}$ and $10^{-1}$ with Trotter steps from $0.3$ to $10^{-6}$, the gradient
-layers use $0.16$ to $0.88$ times the T gates of the angle-dependent synthesis of Bothe
-\textit{et al.}, and never more; nearest rounding, which gives a unitary, uses $0.24$ to $0.51$
-times the T gates of gridsynth. The price is ancillas: at most 589 for the randomised layers.
+A rotation by $\theta$ can be applied by adding an integer $K\approx\theta/\Delta$ into a
+catalytic phase-gradient register whose grid spacing is $\Delta=\pi/2^b$, and a layer of commuting
+rotations can share one such addition. The grid is usually chosen fine enough that the nearest
+grid point is within the error budget $\epsilon$, $\Delta\approx\epsilon$. We show that this is
+twice as many bits as needed. Choosing between the two neighbouring grid points at random, with
+the probability that cancels the coherent error, gives the rotation followed by pure $Z$
+dephasing of probability at most $\sin^2(\Delta/2)$, exactly; so a grid with
+$\Delta\approx\sqrt{2\epsilon}$ suffices for diamond error $\epsilon$. In a layer whose phase is
+added up over the signed binary digits of its angles, a rotation costs about four T gates per
+nonzero digit, so randomised rounding halves the cost of every rotation of order one and turns
+the cost of a rotation by $\theta$ into about $\tfrac23\log_2(\theta^2/2\epsilon)$ T gates: it
+falls with the angle wherever $\theta^2\gtrsim\epsilon$. Rounding at random onto a sparse pair of
+grid points, such as $0$ and a power of two, costs at most about $16\theta^2/\epsilon$ T gates in
+expectation when $\theta^2<\epsilon/2$, the small-angle scaling recently found for Clifford+T
+synthesis by Bothe \textit{et al.} We prove these statements, compile and simulate the circuits
+exactly, and compare with the angle-dependent synthesis costs of Bothe \textit{et al.}, built on
+the mixed fallback protocol of Kliuchnikov \textit{et al.}, evaluated on the same angles. In a
+layer of 1,024 rotations at $\epsilon=10^{-10}$ the randomised gradient uses 20.5 T gates per
+rotation at angles of order one against 22.5, and 7.3 against 22.5 at $10^{-4}$; the same
+circuit with nearest rounding uses 45.6 and 32.2. For Heisenberg chains of 64 spins in a random
+field, run to time 10 with Trotter steps from $0.3$ to $10^{-6}$, the randomised gradient layers
+use $0.16$ to $0.88$ times the T gates of that synthesis, never more, with at most 589 ancillas.
 \end{abstract}
 
 \maketitle
@@ -67,68 +67,69 @@ $H=\sum_j h_jP_j$, with $P_j$ Pauli strings, on a quantum
 computer~\cite{Lloyd1996,Suzuki1991,Childs2021}. One step of length $\delta t$ is a product of
 rotations $e^{-i\theta_jP_j}$ with $\theta_j=h_j\delta t$ (or a fixed fraction of it), arranged
 in layers of commuting terms. In a fault-tolerant computation built from Clifford gates and T
-gates the rotations are the expensive part, and the standard treatment synthesises each one to
-its share of the error budget. Ross and Selinger's algorithm~\cite{RossSelinger2016} gives a
-unitary with about $3\log_2(1/\epsilon)$ T gates. Kliuchnikov, Lauter, Minko, Paetznick and
-Petit~\cite{Kliuchnikov2023} improved and combined the two ways of doing better, fallback
-circuits with an ancilla and a measurement~\cite{Bocharov2015} and probabilistic mixtures of
-approximations~\cite{Hastings2017,Campbell2017}: their mixed fallback protocol uses on average
-$0.53\log_2(1/\epsilon)+4.86$ T gates for a channel within diamond error $\epsilon$, and their
-mixed diagonal protocol, with no ancilla, $1.52\log_2(1/\epsilon)-0.01$. These counts do not
-depend on the angle. That is odd for Trotter: as the step shrinks every angle shrinks with it,
-and a rotation by $10^{-5}$ to precision $10^{-10}$ is charged the same as a rotation by one.
+gates the rotations are the expensive part. There are two ways to pay for them.
 
-Bothe, S\"underhauf, Witham, Campbell and Blunt~\cite{Bothe2026} have recently removed this
-oddity in part. In a mixture the cheap end can be the identity, so a small rotation is mostly
-not applied at all, and when $\theta^2\lesssim\epsilon$ the expected cost falls to
-$\tilde O(\theta^2/\epsilon)$; the T count of a Trotter circuit can then stay constant as the
-step goes to zero. When $\theta^2\gg\epsilon$ their cost returns to that of
-Ref.~\cite{Kliuchnikov2023}. Their cost formula, built on the protocols of
-Ref.~\cite{Kliuchnikov2023}, is the comparison in this paper.
+The first is to synthesise each rotation to its share of the error budget. Ross and Selinger's
+algorithm~\cite{RossSelinger2016} gives a unitary with about $3\log_2(1/\epsilon)$ T gates.
+Probabilistic mixtures of approximations~\cite{Hastings2017,Campbell2017} turn the coherent
+error into an incoherent one of second order, and with fallback circuits~\cite{Bocharov2015}
+Kliuchnikov, Lauter, Minko, Paetznick and Petit~\cite{Kliuchnikov2023} bring the expected count
+to $0.53\log_2(1/\epsilon)+4.86$ for a channel within diamond error $\epsilon$. These counts do
+not depend on the angle. Bothe, S\"underhauf, Witham, Campbell and Blunt~\cite{Bothe2026} have
+shown that they need not: in a mixture the cheap end can be the identity, so a small rotation is
+mostly not applied, and when $\theta^2\lesssim\epsilon$ the expected cost falls to
+$\tilde O(\theta^2/\epsilon)$. When $\theta^2\gg\epsilon$ their cost returns to that of
+Ref.~\cite{Kliuchnikov2023}.
 
-The question of this paper is whether a phase-gradient register helps. The register
-$\ket{\Psi_b}=2^{-b/2}\sum_{y}e^{-2\pi iy/2^b}\ket{y}$ is an eigenstate of every addition
-modulo $2^b$, so adding an integer $K$ into it applies the phase
-$e^{2\pi iK/2^b}$ and leaves the register as it was~\cite{Kitaev2002,Gidney2018}. Additions
-cost Toffoli gates, not rotations, and the register is prepared once for the whole
-computation. Phase gradients are used this way for the quantum Fourier
-transform~\cite{Nam2020}, for rotations by computed angles~\cite{Sanders2020}, and for
-rotations by equal angles after Hamming-weight phasing~\cite{Gidney2018,Kivlichan2020}. For a
-layer of rotations by distinct, fixed angles, the usual view is that each needs its own
-controlled addition, about $b$ Toffoli gates, and so loses to synthesis.
+The second is to use a phase-gradient register,
+$\ket{\Psi_b}=2^{-b/2}\sum_ye^{-2\pi iy/2^b}\ket{y}$. It is an eigenstate of every addition
+modulo $2^b$, so adding an integer $K$ into it applies the phase $e^{2\pi iK/2^b}$ and returns
+the register unchanged~\cite{Kitaev2002,Gidney2018}. Additions cost Toffoli gates, not
+rotations. For one rotation this is no bargain, since a $b$-bit addition costs about $4b$ T
+gates; but many rotations can share one addition. Hamming-weight
+phasing~\cite{Gidney2018,Kivlichan2020} does this for equal angles. Sanders
+\textit{et al.}~\cite{Sanders2020} compute a weighted cost function into a register, add it
+into the gradient once and uncompute it, and multiply by a fixed angle with signed powers of
+two; Wu \textit{et al.}~\cite{Wu2026} state the general scheme for a layer of rotations,
+compute $\sum_jK_jx_j$, add once, uncompute, though without an efficient way to compute the sum
+for general angles; and Dutta and Sarkar~\cite{Dutta2026} use a weighted Hamming-weight tree
+with one subtraction from the gradient for angles that are powers of two.
 
-Our answer has two halves.
+In all of these the angle is rounded to the nearest grid point, so the grid spacing $\Delta=\pi/
+2^b$ is set by the error budget, $\Delta\approx\epsilon$. This paper is about the rounding. Our
+main observation is that the phase gradient is the one setting in which the mixing of
+Hastings and Campbell is exact and free: the two grid points on either side of $\theta$ differ
+only in their $Z$ angle, both are implemented exactly, and choosing between them at random with
+the right probability leaves the rotation by $\theta$ followed by pure dephasing
+(Lemma~\ref{lem:mix}). The error is then quadratic in the grid spacing, so a grid with
+$\Delta\approx\sqrt{2\epsilon}$, half the bits, suffices. Since the cost of a rotation in a
+shared addition is set by the number of nonzero digits of its integer, which grows as
+$\log_2(\theta/\Delta)$, halving $\log_2(1/\Delta)$ halves the cost of large rotations and makes
+the cost of every rotation depend on $\theta^2/\epsilon$:
+\begin{itemize}
+\item For $\theta^2\gtrsim\epsilon$, a rotation costs about
+  $\tfrac43\log_2(\theta/\Delta)\approx\tfrac23\log_2(\theta^2/2\epsilon)$ T gates. This is the
+  range in which synthesis, even angle-dependent synthesis, pays the full
+  $0.53\log_2(1/\epsilon)+4.86$.
+\item For $\theta^2<\epsilon/2$, rounding onto a sparse pair of grid points, $0$ and a power of
+  two, costs at most about $16\theta^2/\epsilon$ T gates in expectation
+  (Proposition~\ref{prop:tiny}), the scaling of Ref.~\cite{Bothe2026}.
+\end{itemize}
+To have a shared addition for any angles we also need the weighted sum $\sum_jK_jx_j$ in a
+register at a cost linear in the number of digits. We assemble it from known parts: the signed
+digits of the angles, as in Ref.~\cite{Sanders2020}, give columns of bits of equal weight, and
+Gidney's adder tree for Hamming weights~\cite{Gidney2018} reduces them, one Toffoli per bit
+removed (Theorem~\ref{thm:layer}). This is the encoder for general weights that
+Ref.~\cite{Wu2026} leaves open, and it is the oldest trick of multiplier
+design~\cite{Wallace1964}; we claim no novelty for it, only the count.
 
-\emph{For one rotation, no.} Adding $\theta$ into a $b$-qubit gradient costs $b-2-p_0$
-Toffoli gates, $p_0$ the position of the lowest digit of the angle (Proposition~\ref{prop:one}),
-about $4\log_2(1/\epsilon)$ T gates against gridsynth's $3.03\log_2(1/\epsilon)+5.4$, and, with
-randomised rounding, about $2\log_2(1/\epsilon)$ against $0.53\log_2(1/\epsilon)+4.86$.
-
-\emph{For a layer, yes.} The phase of a layer, $\sum_j\theta_jx_j$ on bits $x_j$, is a
-weighted sum of bits, and once the angles are written in signed binary digits it is a sum of
-columns of bits of equal weight. A column can be reduced with full adders, one Toffoli for every
-bit removed, exactly as Hamming-weight phasing reduces one column of equal angles. After the
-reduction one bit is left per column, and those bits are added into the gradient register once,
-for $b-2$ Toffoli gates shared by the whole layer (Theorem~\ref{thm:layer}). A rotation then
-costs about four T gates per signed digit of its angle. Its angle has about
-$\tfrac13\log_2(\theta/\Delta)$ nonzero digits on a grid of spacing $\Delta$, so the cost falls
-with the angle; and since rounding at random to the grid leaves only dephasing
-(Lemma~\ref{lem:mix}), $\Delta$ can be as coarse as $\sqrt{2\epsilon}$. So the gradient's cost
-falls with the angle over the whole range $\sqrt\epsilon\lesssim\theta\lesssim1$, the range in
-which the cost of Ref.~\cite{Bothe2026} does not. For $\theta\lesssim\sqrt\epsilon$, rounding at
-random onto a sparse pair of grid points gives the same $\theta^2/\epsilon$ scaling as
-Ref.~\cite{Bothe2026} (Proposition~\ref{prop:tiny}). With batches sized by their digits rather
-than by their rotations, the gradient stays the cheaper down to about $\sqrt\epsilon/10$; below
-that, synthesis is, and both cost a few hundredths of a T gate per rotation.
-
-Section~\ref{sec:setting} sets up the layer and the gradient. Section~\ref{sec:layer} gives the
-circuit and its cost, Sec.~\ref{sec:rounding} the rounding and its error, and
+Section~\ref{sec:setting} sets up the layer and the gradient. Section~\ref{sec:rounding} gives
+the rounding and its error, Sec.~\ref{sec:layer} the layer circuit and its cost, and
 Sec.~\ref{sec:numbers} the counts, against the angle-dependent formulas of
-Ref.~\cite{Bothe2026} evaluated on the same angles, and against gridsynth, for single layers and
-for Heisenberg chains run to a fixed time.
-Section~\ref{sec:discussion} says what the comparison leaves out. The code, which compiles each
-layer to Clifford gates, T gates and \AND{} gates and simulates it exactly, is
-available~\cite{code}.
+Ref.~\cite{Bothe2026} evaluated on the same angles and against gridsynth, for single layers and
+for Heisenberg chains run to a fixed time. Section~\ref{sec:discussion} says what the comparison
+leaves out. The code, which compiles each layer to Clifford gates, T gates and \AND{} gates and
+simulates it exactly, is available~\cite{code}.
 
 % ----------------------------------------------------------------------------------------------
 \section{Setting}\label{sec:setting}
@@ -185,7 +186,127 @@ random one about $\ell/3$~\cite{Arno1993}. Modulo $2^b$ we expand the representa
 $(-2^{b-1},2^{b-1}]$; a digit at position $b$ would be worth a whole turn and is dropped.
 
 % ----------------------------------------------------------------------------------------------
-\section{One addition per layer}\label{sec:layer}
+\section{Rounding}\label{sec:rounding}
+
+The integers $K_j$ approximate $\theta_j/\Delta$. The usual choice is the nearest grid point.
+
+\paragraph*{Nearest.} $K=\mathrm{round}(\theta/\Delta)$ leaves a rotation error $|\delta|\le
+\Delta/2$, a diamond error $2\sin(\Delta/2)\le\Delta$. A per-rotation error $\epsilon$ needs
+the least $b$ with $2\sin(\pi/2^{b+1})\le\epsilon$, $b\approx\log_2(\pi/\epsilon)$. The errors
+of a layer are coherent and add.
+
+\paragraph*{Randomised.} Choose between the two neighbours at random, with the probability that
+cancels the coherent part of the error.
+
+\begin{lemma}[randomised rounding]\label{lem:mix}
+Let $u,v\ge0$, $0<u+v\le\pi/2$, and let $q=\sin2u/(\sin2u+\sin2v)$. The channel that applies
+$e^{-i(\theta+v)Z}$ with probability $q$ and $e^{-i(\theta-u)Z}$ with probability $1-q$ is
+$\mathcal U_\theta\circ\mathcal D_p$, where $\mathcal U_\theta$ is the rotation by $\theta$,
+$\mathcal D_p(\rho)=(1-p)\rho+pZ\rho Z$, and
+\begin{equation}
+  p=\frac{\sin u\sin v}{\cos(u-v)}=\frac12\Bigl(1-\frac{\cos(u+v)}{\cos(u-v)}\Bigr)
+  \le\sin^2\frac{u+v}{2}.
+\end{equation}
+Its diamond distance from $\mathcal U_\theta$ is $2p$.
+\end{lemma}
+
+\begin{proof}
+For a rotation by $\delta$ after $\mathcal U_\theta$,
+$e^{-i\delta Z}\rho e^{i\delta Z}=\cos^2\!\delta\,\rho+\sin^2\!\delta\,Z\rho Z
+-\tfrac i2\sin2\delta\,[Z,\rho]$. Averaged over $\delta=v$ with probability $q$ and
+$\delta=-u$ with probability $1-q$, the commutator term has weight
+$q\sin2v-(1-q)\sin2u=0$, and the rest is $\mathcal D_p$ with
+$p=(1-q)\sin^2u+q\sin^2v$. Substituting $q$ and using $\sin2x=2\sin x\cos x$ gives
+$p=\sin u\sin v\,\sin(u+v)/[\sin(u+v)\cos(u-v)]$, and $2\sin u\sin v=\cos(u-v)-\cos(u+v)$
+gives the second form; it is largest at $u=v$. Finally
+$\diam{\mathcal D_p-\mathrm{id}}=2p\,\diam{\tfrac12(Z\cdot Z-\mathrm{id})}=2p$, the norm
+attained on a maximally entangled input.
+\end{proof}
+
+With $u+v=\Delta$ the dephasing is at most $\sin^2(\Delta/2)$ and the error at most
+$2\sin^2(\Delta/2)\approx\Delta^2/2$, against $2\sin(\Delta/2)\approx\Delta$ for nearest
+rounding.
+
+\begin{corollary}[half the bits]\label{cor:bits}
+Randomised rounding onto the grid of a $b$-qubit gradient gives diamond error $\epsilon$ per
+rotation with the least $b$ for which $2\sin^2(\pi/2^{b+1})\le\epsilon$,
+$b\approx\tfrac12\log_2(\pi^2/2\epsilon)$; nearest rounding needs
+$b\approx\log_2(\pi/\epsilon)$. At $\epsilon=10^{-6}$, $10^{-10}$ and $10^{-14}$ the two give
+$b=12$, $18$, $25$ and $b=22$, $35$, $49$.
+\end{corollary}
+
+This is the mixing of Hastings~\cite{Hastings2017} and Campbell~\cite{Campbell2017}, and of the
+mixed diagonal protocol of Ref.~\cite{Kliuchnikov2023}, applied to the grid. There it is exact
+and costs nothing to find: both neighbours are implemented exactly by the same circuit with a
+different integer, they differ only in their $Z$ angle, so no off-axis error survives the
+average, and the mixing probability is a formula. In synthesis the two ends of the mixture are
+themselves approximations that must be searched for.
+
+\paragraph*{A layer.} In a layer the roundings are drawn independently, the circuit compiled
+for each draw implements its rotations exactly (Theorem~\ref{thm:layer} below), and the averaged
+channel is $V(\boldsymbol\theta)$ followed by independent dephasings by the operators $Z_j$.
+These commute, so by subadditivity the layer's error is at most $\sum_j2p_j$. The same holds for
+a rotation of a computed bit, such as a bit $w_k$ of a Hamming weight: $(-1)^{w_k(x)}$ is a
+diagonal involution and the proof of Lemma~\ref{lem:mix} is unchanged. The draws are classical
+and made at compile time; each Trotter step draws afresh. We have not worked out the controlled
+layer of phase estimation, where the generator $\ket1\!\bra1\otimes Z_j$ is not an involution.
+
+\paragraph*{Sparse pairs.}
+Nothing in Lemma~\ref{lem:mix} needs $u$ and $v$ to be one grid step. Rounding onto a farther
+pair $K_-<\theta/\Delta<K_+$ costs more dephasing and may cost fewer digits. Our code searches,
+for each weight $w$, the nearest grid points of weight at most $w$ on either side and the
+farthest partner each can have within the dephasing budget, and takes the pair with the least
+expected weight $(1-q)\wt(K_-)+q\wt(K_+)$; the adjacent pair is among the candidates. For
+moderate angles this saves little (Sec.~\ref{sec:numbers}). For small angles it is what matters.
+
+\begin{proposition}[small angles]\label{prop:tiny}
+Let $\theta>0$, $\theta^2\le\epsilon/2$ and $\sin^2(\Delta/2)\le\epsilon/2$. Let $D=2^k\Delta$
+with $k$ the largest integer for which $D\ge\theta$ and the pair $\{0,D\}$ has dephasing at most
+$\epsilon/2$, and suppose $2D\le\pi/4$. Randomised rounding onto $\{0,D\}$ has error at most
+$\epsilon$, and uses one digit with probability
+\begin{equation}
+  q\le\frac{4\theta^2}{\epsilon}\cdot\frac{1}{\cos2D\,(1-2D^2/3)}
+\end{equation}
+and none otherwise. Its expected T count is at most $4q$, that is $16\theta^2/\epsilon$ to
+leading order, plus its share of an addition that is needed only if some digit of the batch is
+drawn.
+\end{proposition}
+
+\begin{proof}
+Such a $k$ exists: let $D_0$ be the least $2^j\Delta\ge\theta$. If $D_0=\Delta$ the dephasing of
+$\{0,D_0\}$ is at most $\sin^2(\Delta/2)\le\epsilon/2$ by Lemma~\ref{lem:mix}; otherwise
+$D_0<2\theta$ and it is at most $\sin^2(D_0/2)<\theta^2\le\epsilon/2$. By maximality the pair
+$\{0,2D\}$ has dephasing above $\epsilon/2$:
+$\sin\theta\sin(2D-\theta)>\tfrac\epsilon2\cos(2D-2\theta)\ge\tfrac\epsilon2\cos2D$, and with
+$\sin x\le x$, $D>\epsilon\cos2D/(4\theta)$. Next, $q=\sin2\theta/(\sin2\theta+\sin2(D-\theta))$,
+and since $\sin a+\sin b\ge\sin(a+b)$ for $a,b\ge0$, $a+b\le\pi$,
+$\sin2\theta+\sin2(D-\theta)\ge\sin2D\ge2D(1-2D^2/3)$. So $q\le\theta/[D(1-2D^2/3)]$, and the
+bound on $D$ gives the result. The error is $2p\le\epsilon$ by Lemma~\ref{lem:mix}. A drawn digit
+costs at most four T gates: by the proof of Theorem~\ref{thm:layer} it adds at most one \AND{}
+to the compute part, or one T gate if it lands in column $b-3$.
+\end{proof}
+
+When $\theta<\epsilon/2$ the rotation can be dropped altogether, at error $2\sin\theta<
+\epsilon$. Proposition~\ref{prop:tiny} is the gradient's version of the small-angle regime of
+Ref.~\cite{Bothe2026}: in both, the cost of a rotation with $\theta^2\ll\epsilon$ is of order
+$\theta^2/\epsilon$, because a rotation that small is mostly not applied. The gradient's
+expected digit cost, $16\theta^2/\epsilon$, is below theirs, which at $\theta=\sqrt\epsilon/10$
+is between $30$ and $50$ times $\theta^2/\epsilon$; what decides the comparison there is the
+share of the addition, paid by a batch only if it draws a digit (Sec.~\ref{sec:numbers}).
+
+\paragraph*{Sparse nearest rounding.}
+The same search for nearest rounding (the lightest grid point within the error, on a grid finer
+than needed) changes the mean weight by less than one per cent for every angle scale we tried.
+For nearest rounding the precision, not the choice of point, sets the digits.
+
+% ----------------------------------------------------------------------------------------------
+\section{The layer circuit}\label{sec:layer}
+
+The rounding pays off only if the cost of a rotation is set by the digits of its integer. That
+is the case when a layer's rotations share one addition and the weighted sum
+$\sum_jK_jx_j$ is computed digit by digit. The scheme, compute the sum, add it into the gradient,
+uncompute, is that of Refs.~\cite{Sanders2020,Wu2026}; the encoder below assembles the signed
+digits of Ref.~\cite{Sanders2020} and the adder tree of Ref.~\cite{Gidney2018}.
 
 \begin{figure}[t]
 \centering
@@ -299,8 +420,8 @@ that share an angle are added into a $\lfloor\log_2L\rfloor+1$-bit count with ab
 every column of the angles' digits at once, the reduction of a multiplier's partial
 products~\cite{Wallace1964}, with the gradient register as the final adder. Equal angles can be
 combined with it: our code first sums a class of bits that share an angle into its Hamming
-weight $W=\sum_kw_k2^k$, and then treats each bit $w_k$ as one rotation, by $2^k\theta$ or by
-its own rounding of it.
+weight $W=\sum_kw_k2^k$, and then treats each bit $w_k$ as one rotation, by $2^k\theta$, with its
+own rounding.
 
 \begin{proposition}[one rotation]\label{prop:one}
 For $L=1$ and $K$ with lowest nonzero digit at position $p_0\le b-4$, the circuit has no adders
@@ -312,130 +433,27 @@ Each column holds at most one bit, so the compute part only copies. The rest is 
 the adder in the proof of Theorem~\ref{thm:layer}.
 \end{proof}
 
-The proposition is also the cost of the controlled constant addition that rotates one qubit:
-fanning the bit out to the positions of the digits of $K$ with CNOTs makes it an ordinary
-addition, so the control costs nothing extra. For a generic angle $p_0$ is small, and at the
-error $\epsilon$ of a unitary rounding (Sec.~\ref{sec:rounding}), $b=\lceil\log_2(\pi/\epsilon)
-\rceil$ and $\Tc\approx4\log_2(1/\epsilon)$, against $3.03\log_2(1/\epsilon)+5.4$ for gridsynth.
-For channels the comparison is worse: $\Tc\approx2\log_2(1/\epsilon)$ against
-$0.53\log_2(1/\epsilon)+4.86$. A phase gradient on its own does not make an isolated rotation
-cheaper. What it does is make the $b-2$ Toffoli gates of the carry chain a cost per layer
-rather than per rotation.
+For a generic angle $p_0$ is small, and with nearest rounding $b=\lceil\log_2(\pi/\epsilon)
+\rceil$ and $\Tc\approx4\log_2(1/\epsilon)$, against $3.03\log_2(1/\epsilon)+5.4$ for gridsynth;
+with randomised rounding $\Tc\approx2\log_2(1/\epsilon)$, against
+$0.53\log_2(1/\epsilon)+4.86$ for mixed fallback synthesis. Neither rounding rescues an isolated
+rotation; the carry chain must be shared.
 
 \begin{corollary}[cost per rotation]\label{cor:per}
-Split a layer into batches of $B$ rotations, each with its own compute part and addition. A
-rotation costs at most $4\wt(K)+4(b-2)/B+[\text{digit at }b-3]$ T gates, its share of the
-addition included. If $|\theta|\le2^\ell\Delta$, then $\wt(K)\le\lceil(\ell+2)/2\rceil$.
+Split a layer into batches, each with its own compute part and addition. A rotation in a batch
+of $B$ costs at most $4\wt(K)+4(b-2)/B+[\text{digit at }b-3]$ T gates, its share of the addition
+included. If $|\theta|\le2^\ell\Delta$, then $\wt(K)\le\lceil(\ell+2)/2\rceil$; for a random
+integer of that size, about $(\ell+1)/3$.
 \end{corollary}
 
-So the cost per rotation is set by the number of nonzero digits of its angle, which grows as
-$\log_2(\theta/\Delta)$ and not as $\log_2(1/\Delta)$: the digits below position $\log_2\Delta$
-are not there, and those above $\log_2\theta$ are zero.
-
-% ----------------------------------------------------------------------------------------------
-\section{Rounding}\label{sec:rounding}
-
-The integers $K_j$ approximate $\theta_j/\Delta$. There are two ways to choose them.
-
-\paragraph*{Nearest.} $K=\mathrm{round}(\theta/\Delta)$ leaves a rotation error $|\delta|\le
-\Delta/2$, a diamond error $2\sin(\Delta/2)\le\Delta$. A per-rotation error $\epsilon$ needs
-the least $b$ with $2\sin(\pi/2^{b+1})\le\epsilon$, $b\approx\log_2(\pi/\epsilon)$.
-
-\paragraph*{Randomised.} Choose between the two neighbours at random, with the probability that
-cancels the coherent part of the error.
-
-\begin{lemma}[randomised rounding]\label{lem:mix}
-Let $u,v\ge0$, $0<u+v\le\pi/2$, and let $q=\sin2u/(\sin2u+\sin2v)$. The channel that applies
-$e^{-i(\theta+v)Z}$ with probability $q$ and $e^{-i(\theta-u)Z}$ with probability $1-q$ is
-$\mathcal U_\theta\circ\mathcal D_p$, where $\mathcal U_\theta$ is the rotation by $\theta$,
-$\mathcal D_p(\rho)=(1-p)\rho+pZ\rho Z$, and
-\begin{equation}
-  p=\frac{\sin u\sin v}{\cos(u-v)}=\frac12\Bigl(1-\frac{\cos(u+v)}{\cos(u-v)}\Bigr)
-  \le\sin^2\frac{u+v}{2}.
-\end{equation}
-Its diamond distance from $\mathcal U_\theta$ is $2p$.
-\end{lemma}
-
-\begin{proof}
-For a rotation by $\delta$ after $\mathcal U_\theta$,
-$e^{-i\delta Z}\rho e^{i\delta Z}=\cos^2\!\delta\,\rho+\sin^2\!\delta\,Z\rho Z
--\tfrac i2\sin2\delta\,[Z,\rho]$. Averaged over $\delta=v$ with probability $q$ and
-$\delta=-u$ with probability $1-q$, the commutator term has weight
-$q\sin2v-(1-q)\sin2u=0$, and the rest is $\mathcal D_p$ with
-$p=(1-q)\sin^2u+q\sin^2v$. Substituting $q$ and using $\sin2x=2\sin x\cos x$ gives
-$p=\sin u\sin v\,\sin(u+v)/[\sin(u+v)\cos(u-v)]$, and $2\sin u\sin v=\cos(u-v)-\cos(u+v)$
-gives the second form; it is largest at $u=v$. Finally
-$\diam{\mathcal D_p-\mathrm{id}}=2p\,\diam{\tfrac12(Z\cdot Z-\mathrm{id})}=2p$, the norm
-attained on a maximally entangled input.
-\end{proof}
-
-With $u+v=\Delta$ the dephasing is at most $\sin^2(\Delta/2)$ and the error at most
-$2\sin^2(\Delta/2)\approx\Delta^2/2$: the grid can be coarser, $b\approx\tfrac12\log_2(\pi^2/
-2\epsilon)$, half the bits of nearest rounding. This is the mixing of
-Hastings~\cite{Hastings2017} and Campbell~\cite{Campbell2017} applied to the grid, where it is
-exact: the two neighbours differ only in their $Z$ angle, so no off-axis error survives the
-average. In a layer the roundings are drawn independently, the circuit compiled for each draw
-implements its rotations exactly (Theorem~\ref{thm:layer}), and the averaged channel is
-$V(\boldsymbol\theta)$ followed by independent dephasings by the operators $Z_j$. These commute,
-so the layer's error is at most $\sum_j2p_j$. The same holds for a rotation of a computed bit,
-such as a bit $w_k$ of a Hamming weight: $(-1)^{w_k(x)}$ is a diagonal involution and the
-proof is unchanged. The draws are classical and made at compile time; each Trotter step draws
-afresh.
-
-\paragraph*{Sparse pairs.}
-Nothing in Lemma~\ref{lem:mix} needs $u$ and $v$ to be one grid step. Rounding onto a farther
-pair $K_-<\theta/\Delta<K_+$ costs more dephasing and may cost fewer digits. Our code searches,
-for each weight $w$, the nearest grid points of weight at most $w$ on either side and the
-farthest partner each can have within the dephasing budget, and takes the pair with the least
-expected weight $(1-q)\wt(K_-)+q\wt(K_+)$; the adjacent pair is among the candidates. For
-moderate angles this saves little (Sec.~\ref{sec:numbers}). For small angles it is what matters.
-
-\begin{proposition}[small angles]\label{prop:tiny}
-Let $\theta>0$, $\theta^2\le\epsilon/2$ and $\sin^2(\Delta/2)\le\epsilon/2$. Let $D=2^k\Delta$
-with $k$ the largest integer for which $D\ge\theta$ and the pair $\{0,D\}$ has dephasing at most
-$\epsilon/2$, and suppose $2D\le\pi/4$. Randomised rounding onto $\{0,D\}$ has error at most
-$\epsilon$, and uses one digit with probability
-\begin{equation}
-  q\le\frac{4\theta^2}{\epsilon}\cdot\frac{1}{\cos2D\,(1-2D^2/3)}
-\end{equation}
-and none otherwise. Its expected T count is at most $4q$, that is $16\theta^2/\epsilon$ to
-leading order, plus its share of an addition that is needed only if some digit of the batch is
-drawn.
-\end{proposition}
-
-\begin{proof}
-Such a $k$ exists: let $D_0$ be the least $2^j\Delta\ge\theta$. If $D_0=\Delta$ the dephasing of
-$\{0,D_0\}$ is at most $\sin^2(\Delta/2)\le\epsilon/2$ by Lemma~\ref{lem:mix}; otherwise
-$D_0<2\theta$ and it is at most $\sin^2(D_0/2)<\theta^2\le\epsilon/2$. By maximality the pair
-$\{0,2D\}$ has dephasing above $\epsilon/2$:
-$\sin\theta\sin(2D-\theta)>\tfrac\epsilon2\cos(2D-2\theta)\ge\tfrac\epsilon2\cos2D$, and with
-$\sin x\le x$, $D>\epsilon\cos2D/(4\theta)$. Next, $q=\sin2\theta/(\sin2\theta+\sin2(D-\theta))$,
-and since $\sin a+\sin b\ge\sin(a+b)$ for $a,b\ge0$, $a+b\le\pi$,
-$\sin2\theta+\sin2(D-\theta)\ge\sin2D\ge2D(1-2D^2/3)$. So $q\le\theta/[D(1-2D^2/3)]$, and the
-bound on $D$ gives the result. The error is $2p\le\epsilon$ by Lemma~\ref{lem:mix}. A drawn digit
-costs at most four T gates: by the proof of Theorem~\ref{thm:layer} it adds at most one \AND{}
-to the compute part, or one T gate if it lands in column $b-3$.
-\end{proof}
-
-When $\theta<\epsilon/2$ the rotation can be dropped altogether, at error $2\sin\theta<
-\epsilon$. Proposition~\ref{prop:tiny} is the gradient's version of the small-angle regime of
-Ref.~\cite{Bothe2026}: in both, the cost of a rotation with $\theta^2\ll\epsilon$ is of order
-$\theta^2/\epsilon$, because a rotation that small is mostly not applied. The gradient's
-expected digit cost, $16\theta^2/\epsilon$, is below theirs, which at $\theta=\sqrt\epsilon/10$
-is between $30$ and $50$ times $\theta^2/\epsilon$; what decides the comparison there is the
-share of the addition, paid by a batch only if it draws a digit (Sec.~\ref{sec:numbers}). Between the two regimes, for $\epsilon\ll\theta^2$, the
-gradient's cost is about $\tfrac43\log_2(\theta/\Delta)\approx\tfrac23\log_2(\theta^2/2\epsilon)$
-T gates with randomised rounding, and still falls with the angle; theirs is
-$\min\{0.53\log_2(1/\epsilon)+4.86,\ \dots\}$ and in this regime equal to the first term.
-
-\paragraph*{Sparse nearest rounding.}
-The same search for nearest rounding (the lightest grid point within the error, on a grid finer
-than needed) changes the mean weight by less than one per cent for every angle scale we tried,
-and we do not use it.
+Together with Corollary~\ref{cor:bits}: with randomised rounding $\ell\approx\log_2(\theta/
+\sqrt{2\epsilon})$, so a rotation costs about $\tfrac43\log_2(\theta/\Delta)\approx
+\tfrac23\log_2(\theta^2/2\epsilon)$ T gates on average and at most about $\log_2(\theta^2/
+\epsilon)$, plus its share of the addition. With nearest rounding the same circuit costs about
+$\tfrac43\log_2(\theta/\epsilon)$: for angles of order one, twice as much.
 
 % ----------------------------------------------------------------------------------------------
 \section{Counts}\label{sec:numbers}
-
 \paragraph*{The gradient.}
 The gradient layers are compiled by our code to Clifford gates, T gates and \AND{}s, and every
 compiled circuit is checked by exact simulation: with the system in each basis state and the
@@ -514,11 +532,15 @@ $\epsilon=10^{-14}$ the gradient is 4 per cent worse (30.7 against 29.5). Plain 
 rounding, onto adjacent grid points, agrees with sparse pairs down to $\sqrt\epsilon$ and costs
 more below (0.31 against 0.09 at $10^{-6}$).
 
-Nearest rounding ($b=35$) uses 45.6 T gates per rotation at angles of order one, 41.0 at
-$10^{-2}$, 32.2 at $10^{-4}$ and 23.0 at $10^{-6}$, against 106 for gridsynth and 40.0 for the
-unmixed fallback protocol. Its cost falls by about one T gate per halving of the angle, a little
-below the $4/3$ of the digit count because the digits in the top three columns cost one T gate
-or none.
+The rounding alone accounts for most of this. The same circuit with nearest rounding ($b=35$
+against $18$) uses 45.6 T gates per rotation at angles of order one, 41.0 at $10^{-2}$, 32.2 at
+$10^{-4}$ and 23.0 at $10^{-6}$; randomised rounding uses $0.45$, $0.40$ and $0.22$ times as
+much at the first three, and the ratios at $\epsilon=10^{-6}$ and $10^{-14}$ are the same to
+within a few per cent at angles of order one. Nearest rounding gives a unitary, and against
+unitary synthesis it does well enough, 106 T gates for gridsynth and 40.0 for the unmixed
+fallback protocol of Ref.~\cite{Kliuchnikov2023}; against mixed synthesis it loses. Both costs
+fall by about one T gate per halving of the angle, a little below the $4/3$ of the digit count
+because the digits in the top three columns cost one T gate or none.
 
 \begin{figure}[t]
 \centering
@@ -590,29 +612,45 @@ factor of $1.19$: there the sparse pairs matter. Sending each rotation to whiche
 methods has the lower expected cost, judged per rotation before the draw, changed the totals by
 $-7$ to $+12$ per cent: the per-rotation estimate misses the shared addition and the
 Hamming-weight tree. We do not show it; a better router would judge whole batches. Nearest
-rounding uses $0.24$ to $0.51$ times the T gates of gridsynth. The ancillas peak at 589 for the
+rounding uses $0.24$ to $0.51$ times the T gates of gridsynth, and the randomised layers $0.05$
+to $0.62$ times those of nearest rounding. The ancillas peak at 589 for the
 randomised layers and 656 for nearest rounding.
 
 % ----------------------------------------------------------------------------------------------
 \section{Discussion}\label{sec:discussion}
 
-So the answer to the question we started with is that a phase gradient does not make a
-rotation cheaper, but it makes a layer of rotations cheaper, because it turns the precision of
-each angle into a cost per nonzero digit and pays for the carry chain once per layer. The cost
-of a rotation is then about four T gates per signed digit, so it depends on
-$\log_2(\theta/\Delta)$ rather than on $\log_2(1/\epsilon)$, and randomised rounding halves the
-number of digits by halving $\log_2(1/\Delta)$. Angle-dependent synthesis~\cite{Bothe2026} and
-the gradient exploit small angles in different ranges: synthesis below $\sqrt\epsilon$, where a
-rotation is mostly the identity, and the gradient everywhere above it, where synthesis still
-pays the full $0.53\log_2(1/\epsilon)$. Most rotations of a Trotter step at a useful precision
-are in the second range, and there the gradient wins by a factor of up to six in our examples.
+The point of this paper is a small one with a large effect. A phase gradient implements every
+grid angle exactly, so the mixing that synthesis has to search for is, on the grid, a coin toss
+between neighbours, and it halves the number of bits the grid needs. In a layer whose
+rotations share one addition, each rotation costs about four T gates per nonzero signed digit,
+so halving the bits halves the cost of a large rotation and makes the cost of every rotation a
+function of $\theta^2/\epsilon$: about $\tfrac23\log_2(\theta^2/2\epsilon)$ T gates when
+$\theta^2\gtrsim\epsilon$, and of order $\theta^2/\epsilon$ below. Angle-dependent
+synthesis~\cite{Bothe2026} has the second regime but not the first; the gradient with nearest
+rounding has neither. Most rotations of a Trotter step at a useful precision are in the first,
+and there the randomised gradient wins by a factor of up to six in our examples.
 
-Several things are not in the comparison.
+\paragraph*{What is known.} The parts are not new. Phase gradients and their addition are
+Kitaev's and Gidney's~\cite{Kitaev2002,Gidney2018}, with the measured \AND{} of
+Refs.~\cite{Jones2013,Gidney2018}; computing a phase into a register, adding it once and
+uncomputing it is in Sanders \textit{et al.}~\cite{Sanders2020}, who also multiply by a fixed
+angle through its signed powers of two, and Wu \textit{et al.}~\cite{Wu2026} state it for layers
+of rotations; reducing bits of equal weight with adders is Gidney's Hamming-weight
+tree~\cite{Gidney2018,Kivlichan2020}, extended to weights that are powers of two by Dutta and
+Sarkar~\cite{Dutta2026}; and mixing is Hastings' and Campbell's~\cite{Hastings2017,Campbell2017}.
+The encoder of Sec.~\ref{sec:layer} puts these together for arbitrary angles. What we add is the
+randomised rounding onto the grid, its exactness (Lemma~\ref{lem:mix}) and its consequence for
+the number of bits (Corollary~\ref{cor:bits}); the sparse pairs and the small-angle cost
+(Proposition~\ref{prop:tiny}); and the comparison with angle-dependent synthesis.
+
+\paragraph*{What the comparison leaves out.}
 \begin{itemize}
 \item \emph{T gates only.} We count T gates and ancillas. We have not laid out the circuits,
   scheduled them or counted their depth. The \AND{}s of a column reduction are sequential within
   a column; the additions are a carry chain of $b-2$ Toffolis. Synthesised rotations are
-  sequences of T gates on one qubit, and they parallelise across the layer.
+  sequences of T gates on one qubit, and they parallelise across the layer. Huggins
+  \textit{et al.}~\cite{Huggins2025} find that the layout and ancillas of Hamming-weight phasing
+  can eat its T-count savings in early fault tolerance; the same question applies here.
 \item \emph{Toffolis as four T gates.} With a catalysed CCZ factory a Toffoli costs about as
   much as two T gates~\cite{Gidney2019}, which would roughly halve the gradient's counts. We
   have not used this.
@@ -630,22 +668,10 @@ Several things are not in the comparison.
   columns were streamed, would need fewer; we have not tried. Synthesis needs none (or one, for
   fallback).
 \item \emph{Equal angles.} When a layer has many equal angles, Hamming-weight phasing does most
-  of the work and the gradient adds less (the uniform chain). Angles that share digits but are
-  not equal, as in a Fourier series of coefficients, could share partial sums across columns;
-  we have not looked at this.
-\item \emph{The gradient register.} It needs $b$ qubits and $b-3$ synthesised rotations, once.
-  Its error enters once. We have not included either.
+  of the work and the rounding matters less (the uniform chain).
+\item \emph{The gradient register.} It needs $b$ qubits and $b-3$ synthesised rotations, once;
+  randomised rounding halves $b$ here too. Its error enters once. We have not included either.
 \end{itemize}
-
-The construction is the oldest trick in multiplier design, a column reduction of partial
-products~\cite{Wallace1964}, put in front of the phase-gradient adder; and its parts, the
-measured \AND{}~\cite{Jones2013,Gidney2018}, Hamming-weight
-phasing~\cite{Gidney2018,Kivlichan2020}, weighted sums of bits into a gradient~\cite{Sanders2020,
-Dutta2026}, and mixing~\cite{Hastings2017,Campbell2017}, are all known. What we have added is
-the observation that for fixed angles the reduction can run over signed digits, the count that
-follows from it, and the comparison with angle-dependent synthesis that shows where it pays:
-for angles between about $\sqrt\epsilon$ and one, once a batch holds a few rotations, which is
-where most of a Trotter step lies.
 
 \paragraph*{Code availability.}
 The code that compiles the layers, simulates them, counts them and makes the figures, with its
