@@ -174,9 +174,11 @@ so the $Z$ angles live on a grid of spacing $\Delta$.
 We count T gates. The circuits use Clifford gates, T gates, and the logical \AND{} of
 Jones~\cite{Jones2013} and Gidney~\cite{Gidney2018}: a Toffoli onto a fresh qubit, four T
 gates, uncomputed by an $X$-basis measurement and a CZ conditioned on the outcome, with no T
-gate. Every \AND{} below is uncomputed this way, so a Toffoli costs four T gates once. In a
-surface-code factory a Toffoli is cheaper than four T gates~\cite{Gidney2019}; counting
-four is the conservative choice for the gradient.
+gate. Every \AND{} below is uncomputed this way, so a Toffoli costs four T gates once. This is
+the conservative choice for the gradient: an \AND{} can instead consume one $\ket{CCZ}$ state
+made directly by a factory, and Gidney and Fowler's catalysed conversion of one $\ket{CCZ}$ into
+two $\ket T$ states~\cite{Gidney2019} shows that, where T states are made that way, one
+$\ket{CCZ}$ costs no more than two of them (Sec.~\ref{sec:discussion}).
 
 \paragraph*{Errors.}
 Errors are diamond distances~\cite{Aharonov1998}, per rotation, as in the synthesis
@@ -697,9 +699,13 @@ the number of bits (Corollary~\ref{cor:bits}); the sparse pairs and the small-an
   sequences of T gates on one qubit, and they parallelise across the layer. Huggins
   \textit{et al.}~\cite{Huggins2025} find that the layout and ancillas of Hamming-weight phasing
   can eat its T-count savings in early fault tolerance; the same question applies here.
-\item \emph{Toffolis as four T gates.} With a catalysed CCZ factory a Toffoli costs about as
-  much as two T gates~\cite{Gidney2019}, which would roughly halve the gradient's counts. We
-  have not used this.
+\item \emph{Toffolis as four T gates.} Gidney and Fowler~\cite{Gidney2019} make $\ket{CCZ}$
+  states in a factory and turn one $\ket{CCZ}$, with a catalyst, into two $\ket T$ states; the
+  conversion goes that way only, and there is no corresponding way to make a $\ket{CCZ}$ from two
+  $\ket T$ states. If all magic states come from such factories, a T gate costs half a
+  $\ket{CCZ}$ and a Toffoli one, so the gradient's \AND{}s cost two T gates each rather than
+  four and its counts relative to synthesis would roughly halve. With T factories alone a
+  Toffoli costs four T gates, as counted here. We have not used the cheaper accounting.
 \item \emph{Synthesis costs are formulas.} We evaluate the formulas of
   Refs.~\cite{Bothe2026,Kliuchnikov2023} on our angles; we have not run their methods. The
   fallback scheme's small-angle term is their substitution $\epsilon\to2\epsilon$ in the
