@@ -26,7 +26,7 @@ import numpy as np
 from .circuit import Circ, _Compute, compile_layer
 from .digits import digits_mod
 from . import bothe
-from .digits import grid, mixing_probability, naf_weight, round_nearest, sparse_pair, wrap
+from .digits import lp_mixture, grid, mixing_probability, naf_weight, round_nearest, sparse_pair, wrap
 
 HERE = os.path.dirname(__file__)
 DATA = os.path.join(HERE, '..', 'data')
@@ -83,7 +83,8 @@ def choose_K(theta: float, eps: float, mode: str, rng: np.random.Generator) -> T
 
     mode 'det': nearest point on the b_det grid; 'rand': randomised rounding between the two
     neighbours on the b_rand grid; 'sparse': randomised rounding onto the sparse pair of
-    digits.sparse_pair on the b_rand grid (dephasing <= eps / 2)."""
+    digits.sparse_pair on the b_rand grid (dephasing <= eps / 2); 'lp': the mixture of at most
+    three grid points of least expected weight, digits.lp_mixture."""
     if mode == 'det':
         b = b_det(eps)
         return round_nearest(theta, b), b
@@ -92,6 +93,10 @@ def choose_K(theta: float, eps: float, mode: str, rng: np.random.Generator) -> T
         K_lo, K_hi, q = mixing_probability(theta, b)
     elif mode == 'sparse':
         K_lo, K_hi, q, _ = sparse_pair(theta, b, eps / 2)
+    elif mode == 'lp':
+        mix = lp_mixture(float(theta), b, eps / 2)
+        ks, ps = zip(*mix)
+        return int(ks[rng.choice(len(ks), p=np.array(ps) / sum(ps))]), b
     else:
         raise ValueError(mode)
     return (K_hi if rng.random() < q else K_lo), b

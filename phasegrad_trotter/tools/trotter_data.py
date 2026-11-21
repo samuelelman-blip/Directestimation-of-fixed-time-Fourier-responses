@@ -22,7 +22,7 @@ from pgt.costs import DATA, heisenberg_step_cost  # noqa: E402
 N = 64
 T_TOTAL = 10.0
 EPSS = (1e-3, 1e-1)
-METHODS = ('gridsynth', 'bothe', 'bothe_af', 'det', 'rand', 'sparse', 'hybrid')
+METHODS = ('gridsynth', 'bothe', 'bothe_af', 'det', 'rand', 'sparse', 'lp', 'hybrid')
 SYNTH = ('gridsynth', 'bothe', 'bothe_af')
 BATCH_DIGITS = 256
 

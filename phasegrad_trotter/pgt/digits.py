@@ -229,3 +229,58 @@ def sparse_nearest(theta: float, b: int, tol: float) -> int:
 
 def sparse_in_wrapped(lo: int, hi: int, b: int) -> int:
     return sparsest_in(lo, hi)
+
+
+def lp_candidates(theta: float, b: int, window: int = 300) -> List[int]:
+    """Grid points for the linear program: a window around theta / Delta, zero, the signed powers
+    of two, and theta / Delta with its low k bits cleared and +-2^k added (its sparse neighbours)."""
+    D = grid(b)
+    c = math.floor(theta / D)
+    cand = set(range(c - window, c + window + 1)) | {0}
+    for k in range(b):
+        cand |= {2 ** k, -(2 ** k)}
+        base = (c >> k) << k
+        cand |= {base, base + 2 ** k, base - 2 ** k}
+    return [K for K in cand if abs(K * D - theta) < 0.7]
+
+
+@lru_cache(maxsize=200000)
+def lp_mixture(theta: float, b: int, p_max: float) -> Tuple[Tuple[int, float], ...]:
+    """The mixture of grid points of least expected NAF weight whose averaged channel is the
+    rotation by theta followed by Z dephasing of probability <= p_max: the linear program
+
+        min sum_k p_k wt(K_k)  s.t.  sum_k p_k = 1,  sum_k p_k sin 2 d_k = 0,
+                                     sum_k p_k sin^2 d_k <= p_max,  p >= 0,
+
+    d_k = K_k Delta - theta.  A vertex optimum has at most three points.  Returns ((K, p), ...)."""
+    import numpy as np
+    from scipy.optimize import linprog
+    D = grid(b)
+    K = np.array(lp_candidates(theta, b))
+    d = K * D - theta
+    w = np.array([naf_weight(wrap(int(k), b)) for k in K], float)
+    # rows scaled to order one: unscaled, the solver meets sum p sin 2d = 0 only to ~1e-7,
+    # far coarser than the grid, and the 'optimum' would leak coherent error
+    r = linprog(w, A_eq=np.vstack([np.ones_like(d), np.sin(2 * d) / D]), b_eq=[1.0, 0.0],
+                A_ub=[np.sin(d) ** 2 / p_max], b_ub=[1.0], bounds=(0, None), method='highs-ds',
+                options={'primal_feasibility_tolerance': 1e-10,
+                         'dual_feasibility_tolerance': 1e-10})
+    if r.status != 0:
+        Kl, Kh, q, _ = sparse_pair(theta, b, p_max)
+        return ((Kl, 1 - q), (Kh, q))
+    keep = r.x > 1e-12
+    Ks, x, dd = K[keep], r.x[keep], d[keep]
+    # the solver meets the equalities only to its tolerance: project onto them exactly
+    A = np.vstack([np.ones_like(dd), np.sin(2 * dd)])
+    x = x - A.T @ np.linalg.lstsq(A @ A.T, A @ x - np.array([1.0, 0.0]), rcond=None)[0]
+    if (x < 0).any() or (x * np.sin(dd) ** 2).sum() > p_max * (1 + 1e-9):
+        Kl, Kh, q, _ = sparse_pair(theta, b, p_max)
+        return ((Kl, 1 - q), (Kh, q))
+    return tuple((int(k), float(p)) for k, p in zip(Ks, x))
+
+
+def mixture_channel_error(theta: float, b: int, mix) -> Tuple[float, float]:
+    """(coherent weight sum p sin 2d, dephasing sum p sin^2 d) of a mixture."""
+    D = grid(b)
+    return (sum(p * math.sin(2 * (k * D - theta)) for k, p in mix),
+            sum(p * math.sin(k * D - theta) ** 2 for k, p in mix))

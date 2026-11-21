@@ -96,3 +96,26 @@ def test_sparse_nearest():
         K = sparse_nearest(th, b, tol)
         assert abs(K * grid(b) - th) <= tol
         assert naf_weight(K) <= naf_weight(round_nearest(th, b))
+
+
+def test_lp_mixture():
+    from pgt.costs import b_rand
+    from pgt.digits import lp_mixture, mixture_channel_error
+    rng = np.random.default_rng(9)
+    for eps in (1e-6, 1e-10):
+        b = b_rand(eps)
+        for _ in range(60):
+            th = float(10 ** rng.uniform(-7, 0)) * float(rng.choice([-1, 1]))
+            mix = lp_mixture(th, b, eps / 2)
+            assert len(mix) <= 3 and abs(sum(p for _, p in mix) - 1) < 1e-9
+            coh, p = mixture_channel_error(th, b, mix)
+            assert abs(coh) < 1e-12 and p <= eps / 2 * (1 + 1e-7)
+            # the averaged channel is the rotation followed by dephasing p
+            D = grid(b)
+            S = _channel([(q, k * D) for k, q in mix])
+            U = np.diag([np.exp(-1j * th), np.exp(1j * th)])
+            Zs = np.kron(np.diag([1, -1]), np.diag([1, -1]))
+            assert np.abs(S - np.kron(U, U.conj()) @ ((1 - p) * np.eye(4) + p * Zs)).max() < 1e-10
+            Kl, Kh, q, _ = sparse_pair(th, b, eps / 2)
+            two = (1 - q) * naf_weight(wrap(Kl, b)) + q * naf_weight(wrap(Kh, b))
+            assert sum(q * naf_weight(wrap(k, b)) for k, q in mix) <= two * (1 + 1e-6) + 1e-6

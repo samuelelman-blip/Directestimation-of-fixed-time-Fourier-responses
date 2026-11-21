@@ -21,6 +21,7 @@ STYLE = {
     'det': dict(color='#1baf7a', ls='-', marker='o', label='gradient, nearest'),
     'rand': dict(color='#eda100', ls='-', marker='s', label='gradient, randomised'),
     'sparse': dict(color='#e87ba4', ls='-', marker='^', label='gradient, sparse pair'),
+    'lp': dict(color='#6250d6', ls=':', marker='D', label='gradient, three-point LP'),
 }
 INK = '#0b0b0b'
 INK2 = '#52514e'
@@ -53,7 +54,7 @@ def fig_layer():
         for m, key in (('bothe', 'bothe_fallback'), ('bothe_af', 'bothe_ancilla_free')):
             st = STYLE[m]
             ax.plot(x, [r[key] for r in rs], color=st['color'], ls=st['ls'], label=st['label'])
-        for mode in ('det', 'rand', 'sparse'):
+        for mode in ('det', 'rand', 'sparse', 'lp'):
             rs = [r for r in d['rows'] if r['eps'] == eps and r['mode'] == mode]
             st = STYLE[mode]
             ax.plot([r['theta'] for r in rs], [r['t_per_rot'] for r in rs], color=st['color'],
@@ -68,7 +69,7 @@ def fig_layer():
         ax.set_xlabel(r'angle scale $\theta$')
     axs[0].set_ylabel('T gates per rotation')
     h, l = axs[0].get_legend_handles_labels()
-    fig.legend(h, l, loc='upper center', ncol=6, frameon=False, bbox_to_anchor=(0.5, 1.08),
+    fig.legend(h, l, loc='upper center', ncol=4, frameon=False, bbox_to_anchor=(0.5, 1.08),
                fontsize=6.3)
     save(fig, 'fig_layer')
 
@@ -107,7 +108,7 @@ def fig_trotter():
     for i, eps in enumerate(d['eps_totals']):
         for j, chain in enumerate(('random bonds', 'uniform bonds')):
             ax = axs[i, j]
-            for m in ('gridsynth', 'bothe', 'bothe_af', 'det', 'rand', 'sparse'):
+            for m in ('gridsynth', 'bothe', 'bothe_af', 'det', 'rand', 'sparse', 'lp'):
                 rs = [r for r in d['rows'] if r['chain'] == chain and r['method'] == m
                       and r['eps_total'] == eps]
                 st = STYLE[m]
@@ -123,7 +124,7 @@ def fig_trotter():
                 ax.set_ylabel('T gates per step')
     axs[0, 0].invert_xaxis()
     h, l = axs[0, 0].get_legend_handles_labels()
-    fig.legend(h, l, loc='upper center', ncol=6, frameon=False, bbox_to_anchor=(0.5, 1.03),
+    fig.legend(h, l, loc='upper center', ncol=4, frameon=False, bbox_to_anchor=(0.5, 1.03),
                fontsize=6.3)
     fig.tight_layout(rect=(0, 0, 1, 0.97))
     save(fig, 'fig_trotter')

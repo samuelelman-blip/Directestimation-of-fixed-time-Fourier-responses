@@ -55,7 +55,7 @@ def main():
     for eps in (1e-6, 1e-10, 1e-14):
         for s in np.arange(0.0, 9.01, 0.5):
             theta = 10.0 ** -s
-            for mode in ('det', 'rand', 'sparse'):
+            for mode in ('det', 'rand', 'sparse', 'lp'):
                 rows.append(run(eps, theta, mode, rng))
         print(eps, 'done')
     batches = []
