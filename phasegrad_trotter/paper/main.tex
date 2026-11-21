@@ -47,14 +47,16 @@ the cost of a rotation by $\theta$ into about $\tfrac23\log_2(\theta^2/2\epsilon
 falls with the angle wherever $\theta^2\gtrsim\epsilon$. Rounding at random onto a sparse pair of
 grid points, such as $0$ and a power of two, costs at most about $16\theta^2/\epsilon$ T gates in
 expectation when $\theta^2<\epsilon/2$, the small-angle scaling recently found for Clifford+T
-synthesis by Bothe \textit{et al.} We prove these statements, compile and simulate the circuits
+synthesis by Bothe \textit{et al.} Choosing the mixture by a linear program, as Kliuchnikov
+\textit{et al.} do for synthesis, gives the cheapest mixture of at most three grid points and
+saves a further 1 to 12 per cent per rotation. We prove these statements, compile and simulate the circuits
 exactly, and compare with the angle-dependent synthesis costs of Bothe \textit{et al.}, built on
 the mixed fallback protocol of Kliuchnikov \textit{et al.}, evaluated on the same angles. In a
-layer of 1,024 rotations at $\epsilon=10^{-10}$ the randomised gradient uses 20.5 T gates per
-rotation at angles of order one against 22.5, and 7.3 against 22.5 at $10^{-4}$; the same
-circuit with nearest rounding uses 45.6 and 32.2. For Heisenberg chains of 64 spins in a random
+layer of 1,024 rotations at $\epsilon=10^{-10}$ the randomised gradient uses 20.2 T gates per
+rotation at angles of order one against 22.5, and 6.9 against 22.5 at $10^{-4}$; the same
+circuit with nearest rounding uses 45.7 and 31.9. For Heisenberg chains of 64 spins in a random
 field, run to time 10 with Trotter steps from $0.3$ to $10^{-6}$, the randomised gradient layers
-use $0.16$ to $0.88$ times the T gates of that synthesis, never more, with at most 589 ancillas.
+use $0.15$ to $0.85$ times the T gates of that synthesis, never more, with at most 547 ancillas.
 \end{abstract}
 
 \maketitle
@@ -114,6 +116,10 @@ the cost of every rotation depend on $\theta^2/\epsilon$:
 \item For $\theta^2<\epsilon/2$, rounding onto a sparse pair of grid points, $0$ and a power of
   two, costs at most about $16\theta^2/\epsilon$ T gates in expectation
   (Proposition~\ref{prop:tiny}), the scaling of Ref.~\cite{Bothe2026}.
+\item Over any set of candidate grid points, the cheapest admissible mixture is a linear program
+  whose optimum mixes at most three points (Proposition~\ref{prop:lp}), the analogue of the
+  optimised mixtures of Ref.~\cite{Kliuchnikov2023}. It saves 1 to 12 per cent per rotation over
+  the best pair.
 \end{itemize}
 To have a shared addition for any angles we also need the weighted sum $\sum_jK_jx_j$ in a
 register at a cost linear in the number of digits. We assemble it from known parts: the signed
@@ -293,6 +299,37 @@ $\theta^2/\epsilon$, because a rotation that small is mostly not applied. The gr
 expected digit cost, $16\theta^2/\epsilon$, is below theirs, which at $\theta=\sqrt\epsilon/10$
 is between $30$ and $50$ times $\theta^2/\epsilon$; what decides the comparison there is the
 share of the addition, paid by a batch only if it draws a digit (Sec.~\ref{sec:numbers}).
+
+\paragraph*{Three-point mixtures.}
+Lemma~\ref{lem:mix} is a statement about any distribution of angle errors, not only two.
+
+\begin{proposition}[the cheapest mixture]\label{prop:lp}
+Let $K_1,\dots,K_m$ be grid points, $d_k=K_k\Delta-\theta$ with $|d_k|\le\pi/4$, and $p_k\ge0$,
+$\sum_kp_k=1$. If $\sum_kp_k\sin2d_k=0$, the mixture of the rotations by $K_k\Delta$ is
+$\mathcal U_\theta\circ\mathcal D_p$ with $p=\sum_kp_k\sin^2d_k$. The mixture of least expected
+weight $\sum_kp_k\wt(K_k)$ subject to $p\le\epsilon/2$ is the solution of a linear program with
+three constraints besides $p_k\ge0$, so an optimal mixture has at most three points.
+\end{proposition}
+
+\begin{proof}
+The first part is the proof of Lemma~\ref{lem:mix} with the average taken over $m$ points. The
+objective and the constraints $\sum_kp_k=1$, $\sum_kp_k\sin2d_k=0$, $\sum_kp_k\sin^2d_k\le
+\epsilon/2$ are linear in $p$, and a linear program with three constraints in standard form has
+an optimal basic solution with at most three nonzero variables.
+\end{proof}
+
+The same three constraints also show why mixing cannot buy a finer grid: subject to the first
+two, $\sum_kp_k\sin^2d_k$ is least for the two neighbours of $\theta$, so Lemma~\ref{lem:mix}
+already gives the least dephasing a grid allows. What a linear program buys is cost at fixed
+error. This is the device Kliuchnikov \textit{et al.}~\cite{Kliuchnikov2023} use to set the
+weights of their mixtures; on the grid the candidates are integers, their costs are digit
+counts, and the program is small. Our code takes as candidates the 601 grid points nearest
+$\theta/\Delta$, zero, the signed powers of two, and $\theta/\Delta$ with its low bits cleared
+and a power of two added or taken away. One practical point: the constraint
+$\sum_kp_k\sin2d_k=0$ has coefficients of order $\Delta$, and an unscaled solver meets it only to
+about $10^{-7}$, far coarser than the grid; its apparent optimum then leaks coherent error and
+looks 10 to 50 per cent cheaper than it is. Scaling the rows to order one and projecting the
+solution exactly onto the equalities removes this.
 
 \paragraph*{Sparse nearest rounding.}
 The same search for nearest rounding (the lightest grid point within the error, on a grid finer
@@ -518,25 +555,28 @@ gate per halving of the angle over the whole range above $\sqrt\epsilon$.}
 
 \paragraph*{One layer.}
 Figure~\ref{fig:layer} shows the cost per rotation in a layer of 1,024 rotations. At
-$\epsilon=10^{-10}$, randomised rounding onto sparse pairs ($b=18$) uses 20.5 T gates per
-rotation for angles of order one, 16.2 at $10^{-2}$, 7.3 at $10^{-4}$ and 2.6 at $10^{-5}$.
+$\epsilon=10^{-10}$, randomised rounding onto three-point mixtures ($b=18$,
+Proposition~\ref{prop:lp}) uses 20.2 T gates per rotation for angles of order one, 16.1 at
+$10^{-2}$, 6.9 at $10^{-4}$ and 2.3 at $10^{-5}$; sparse pairs use 20.8, 16.3, 7.2 and 2.6. The
+linear program saves 1 to 12 per cent here, 7 to 11 per cent at $\epsilon=10^{-6}$ and up to
+10 per cent at $\epsilon=10^{-14}$, most where the angles approach $\sqrt\epsilon$.
 Bothe \textit{et al.}'s fallback scheme uses 22.5 at all of these but the last, where it is 18.9,
 and their ancilla-free scheme 50.5 and 30.6. Below $\theta\approx\sqrt\epsilon=10^{-5}$ both
-costs collapse: 0.65 against 2.84 at $3\times10^{-6}$, 0.09 against 0.28 at $10^{-6}$, and then
+costs collapse: 0.68 against 2.86 at $3\times10^{-6}$, 0.09 against 0.27 at $10^{-6}$, and then
 0.05 against 0.02 at $3\times10^{-7}$, where theirs is the smaller. At $\epsilon=10^{-14}$ and
 $10^{-6}$ the picture is the same; the crossing, where there is one, lies below
 $\sqrt\epsilon/10$. So the gradient wins by a factor that grows as the angle falls from one
 towards $\sqrt\epsilon$, and synthesis wins well below it, at a few hundredths of a T gate. For
-angles of order one the two are close: 9 per cent apart at $\epsilon=10^{-10}$, and at
-$\epsilon=10^{-14}$ the gradient is 4 per cent worse (30.7 against 29.5). Plain randomised
-rounding, onto adjacent grid points, agrees with sparse pairs down to $\sqrt\epsilon$ and costs
-more below (0.31 against 0.09 at $10^{-6}$).
+angles of order one the two are close: 10 per cent apart at $\epsilon=10^{-10}$, and at
+$\epsilon=10^{-14}$ level (29.52 against 29.51), where sparse pairs were 4 per cent worse. Plain
+randomised rounding, onto adjacent grid points, agrees with sparse pairs down to $\sqrt\epsilon$
+and costs more below.
 
 The rounding alone accounts for most of this. The same circuit with nearest rounding ($b=35$
-against $18$) uses 45.6 T gates per rotation at angles of order one, 41.0 at $10^{-2}$, 32.2 at
-$10^{-4}$ and 23.0 at $10^{-6}$; randomised rounding uses $0.45$, $0.40$ and $0.22$ times as
-much at the first three, and the ratios at $\epsilon=10^{-6}$ and $10^{-14}$ are the same to
-within a few per cent at angles of order one. Nearest rounding gives a unitary, and against
+against $18$) uses 45.7 T gates per rotation at angles of order one, 41.5 at $10^{-2}$, 31.9 at
+$10^{-4}$ and 22.8 at $10^{-6}$; randomised rounding uses $0.44$, $0.39$ and $0.22$ times as
+much at the first three, and $0.40$ to $0.43$ at angles of order one for $\epsilon=10^{-6}$ and
+$10^{-14}$. Nearest rounding gives a unitary, and against
 unitary synthesis it does well enough, 106 T gates for gridsynth and 40.0 for the unmixed
 fallback protocol of Ref.~\cite{Kliuchnikov2023}; against mixed synthesis it loses. Both costs
 fall by about one T gate per halving of the angle, a little below the $4/3$ of the digit count
@@ -596,25 +636,29 @@ $10^{-6}$, so the per-rotation errors run from $4\times10^{-5}$ to $3\times10^{-
 $0.5$ to $10^{-6}$: the small-angle regime $\theta^2\lesssim\epsilon$ is reached only at the
 smallest steps of the looser budget.
 
-At $\epsilon_{\rm tot}=10^{-3}$ with random bonds, the gradient layers (sparse pairs) use $0.76$
-times the T gates of Bothe \textit{et al.}'s fallback scheme at $\delta t=0.3$, $0.61$ at
-$3\times10^{-3}$, $0.34$ at $3\times10^{-5}$ and $0.16$ at $10^{-6}$. At $\delta t=10^{-3}$ the
-whole run costs $6.81\times10^7$ T gates by their fallback scheme, $1.51\times10^8$ by their
-ancilla-free scheme, $3.19\times10^8$ by gridsynth, and $3.41\times10^7$ with the gradient. With
-uniform bonds, where Hamming-weight phasing already takes much of the cost, the ratio runs from
-$0.83$ to $0.53$. At $\epsilon_{\rm tot}=10^{-1}$ the ratios fall to $0.20$ with random bonds and
-$0.39$ with uniform bonds; here the smallest steps reach the regime where synthesis falls as
-$\theta^2/\epsilon$, and the ratio climbs back to $0.74$ and $0.77$ at $\delta t=10^{-6}$. Over
-all four cases and all 23 steps the gradient never uses more T gates than Bothe
-\textit{et al.}'s fallback scheme; the ratio lies between $0.16$ and $0.88$. Randomised rounding
-onto adjacent grid points does lose at the smallest steps of the looser budget, by up to a
-factor of $1.19$: there the sparse pairs matter. Sending each rotation to whichever of the two
-methods has the lower expected cost, judged per rotation before the draw, changed the totals by
-$-7$ to $+12$ per cent: the per-rotation estimate misses the shared addition and the
-Hamming-weight tree. We do not show it; a better router would judge whole batches. Nearest
-rounding uses $0.24$ to $0.51$ times the T gates of gridsynth, and the randomised layers $0.05$
-to $0.62$ times those of nearest rounding. The ancillas peak at 589 for the
-randomised layers and 656 for nearest rounding.
+At $\epsilon_{\rm tot}=10^{-3}$ with random bonds, the gradient layers (three-point mixtures)
+use $0.74$ times the T gates of Bothe \textit{et al.}'s fallback scheme at $\delta t=0.3$, $0.58$
+at $3\times10^{-3}$, $0.30$ at $3\times10^{-5}$ and $0.15$ at $10^{-6}$. At $\delta t=10^{-3}$
+the whole run costs $6.81\times10^7$ T gates by their fallback scheme, $1.51\times10^8$ by their
+ancilla-free scheme, $3.19\times10^8$ by gridsynth, $3.42\times10^7$ with sparse pairs and
+$3.34\times10^7$ with three-point mixtures. With uniform bonds, where Hamming-weight phasing
+already takes much of the cost, the ratio runs from $0.84$ to $0.52$. At
+$\epsilon_{\rm tot}=10^{-1}$ the ratios fall to $0.17$ with random bonds and $0.33$ with uniform
+bonds; here the smallest steps reach the regime where synthesis falls as $\theta^2/\epsilon$,
+and the ratio climbs back to $0.66$ and $0.80$ at $\delta t=10^{-6}$. Over all four cases and
+all 23 steps the gradient never uses more T gates than Bothe \textit{et al.}'s fallback scheme;
+the ratio lies between $0.15$ and $0.85$, against $0.16$ and $0.88$ with sparse pairs. The
+linear program saves up to 35 per cent of a step over sparse pairs, at the small steps of the
+looser budget where the angles are near $\sqrt\epsilon$, and a few per cent elsewhere; at one
+step it costs 2 per cent more, within the scatter of the draws. Randomised rounding onto
+adjacent grid points loses to synthesis at the smallest steps of the looser budget, by up to a
+factor of $1.26$: there the choice of mixture matters. Sending each rotation to whichever of
+synthesis and the gradient has the lower expected cost, judged per rotation before the draw,
+changed the totals by $-6$ to $+6$ per cent; the per-rotation estimate misses the shared
+addition and the Hamming-weight tree, and we do not show it. Nearest rounding uses $0.24$ to
+$0.51$ times the T gates of gridsynth, and the three-point layers $0.03$ to $0.60$ times those
+of nearest rounding. The ancillas peak at 547 for the three-point layers and 656 for nearest
+rounding.
 
 % ----------------------------------------------------------------------------------------------
 \section{Discussion}\label{sec:discussion}
@@ -641,7 +685,9 @@ Sarkar~\cite{Dutta2026}; and mixing is Hastings' and Campbell's~\cite{Hastings20
 The encoder of Sec.~\ref{sec:layer} puts these together for arbitrary angles. What we add is the
 randomised rounding onto the grid, its exactness (Lemma~\ref{lem:mix}) and its consequence for
 the number of bits (Corollary~\ref{cor:bits}); the sparse pairs and the small-angle cost
-(Proposition~\ref{prop:tiny}); and the comparison with angle-dependent synthesis.
+(Proposition~\ref{prop:tiny}); the cheapest mixture as a linear program over grid points
+(Proposition~\ref{prop:lp}), which borrows the optimisation of Kliuchnikov
+\textit{et al.}~\cite{Kliuchnikov2023}; and the comparison with angle-dependent synthesis.
 
 \paragraph*{What the comparison leaves out.}
 \begin{itemize}
